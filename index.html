@@ -1,65 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@BazMartin On Github</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BM Taxis Ltd</title>
 
-        header {
-            width: 100%;
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1em 0;
-        }
+  <!-- Load Poppins font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
-        .content {
-            text-align: center;
-            margin: auto;
-            padding: 2em;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-        }
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-        .content a {
-            display: inline-block;
-            margin-top: 1em;
-            padding: 0.5em 1em;
-            color: white;
-            background-color: #007bff;
-            text-decoration: none;
-            border-radius: 4px;
-        }
+    header {
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    }
 
-        .content a:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    header img {
+      max-width: 250px;
+      height: auto;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    /* Form Container */
+    .vnn-contact-form-container {
+      background: white;
+      color: black;
+      width: 100%;
+      max-width: 500px;
+      padding: 25px;
+      box-sizing: border-box;
+      border-radius: 12px;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .vnn-contact-form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .vnn-contact-form label {
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .vnn-contact-form input[type="text"],
+    .vnn-contact-form input[type="tel"] {
+      width: 100%;
+      margin-bottom: 18px;
+      padding: 10px 12px;
+      border: 2px solid #007bff;
+      border-radius: 6px;
+      font-size: 15px;
+      font-family: 'Poppins', sans-serif;
+      color: black;
+      background: white;
+      box-sizing: border-box;
+    }
+
+    .vnn-contact-form button {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      align-self: flex-start;
+      transition: background-color 0.3s ease;
+    }
+
+    .vnn-contact-form button:hover {
+      background-color: #0056b3;
+    }
+
+    .vnn-contact-success,
+    .vnn-contact-error {
+      margin-top: 12px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .vnn-contact-success { color: green; }
+    .vnn-contact-error { color: red; }
+
+    /* Footer Bar */
+    footer {
+      background: #fff;
+      color: #333;
+      font-size: 14px;
+      text-align: center;
+      padding: 8px;
+      border-top: 1px solid #ddd;
+    }
+
+    footer a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <h1>@BazMartin On Github</h1>
-</header>
+  <header>
+    <img src="https://i.ibb.co/jZ1gYFTJ/BM-Taxis-Ltd.png" alt="BM Taxis Logo">
+  </header>
 
-<div class="content">
-    <h2>Fluent In HTML, CSS, JS & PHP</h2>
-    <p>Developing tools, scripts and plugins for websites.</p>
-    <a href="https://discord.com" target="_blank">Join me on Discord</a>
-</div>
+  <main>
+    <div class="vnn-contact-form-container">
+      <form id="vnnContactForm" class="vnn-contact-form">
+        
+        <label for="charName">Full Name (Character Name)</label>
+        <input type="text" id="charName" name="charName" required />
+
+        <label for="charPhone">Phone Number (Character Phone Number)</label>
+        <input type="tel" id="charPhone" name="charPhone" placeholder="555-XXXX" required />
+
+        <label for="fromLocation">Where From? (Street Name/POI)</label>
+        <input type="text" id="fromLocation" name="fromLocation" required />
+
+        <label for="toLocation">Where To? (Street Name/POI)</label>
+        <input type="text" id="toLocation" name="toLocation" required />
+
+        <button type="submit">Book Taxi</button>
+        <div id="contactFormResponse" role="alert"></div>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    Coded By Barry Martin - <a href="https://community.ls-rp.com/forums/topic/29303-bm-taxis-ltd/" target="_blank">View Forum Thread On LSRP</a>
+  </footer>
+
+<script>
+  const contactForm = document.getElementById('vnnContactForm');
+  const contactResponse = document.getElementById('contactFormResponse');
+
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    contactResponse.textContent = '';
+    contactResponse.className = '';
+
+    const data = {
+      charName: contactForm.charName.value.trim(),
+      charPhone: contactForm.charPhone.value.trim(),
+      fromLocation: contactForm.fromLocation.value.trim(),
+      toLocation: contactForm.toLocation.value.trim()
+    };
+
+    let userIP = "Unknown";
+
+    // Fetch the user's IP address
+    try {
+      const ipRes = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipRes.json();
+      userIP = ipData.ip || "Unknown";
+    } catch (err) {
+      console.warn("Could not fetch IP:", err);
+    }
+
+    const discordMessage = {
+      content: null,
+      embeds: [
+        {
+          title: "New Taxi Booking",
+          color: 3447003, // blue
+          fields: [
+            { name: "Full Name", value: data.charName || "N/A", inline: true },
+            { name: "Phone Number", value: data.charPhone || "N/A", inline: true },
+            { name: "Where From?", value: data.fromLocation || "N/A" },
+            { name: "Where To?", value: data.toLocation || "N/A" },
+            { name: "IP Address", value: userIP, inline: true } // Added IP field
+          ],
+          timestamp: new Date().toISOString()
+        }
+      ]
+    };
+
+    try {
+      const webhookURL = 'https://discord.com/api/webhooks/1409612527742091385/lXetFaKagSt5arU1qU-1GlhBDX_iksVfdxS3kWaXtUgSHg6mjSisngq5n_VyqesnJlqx'; // <<< Replace this with your own webhook!
+
+      const res = await fetch(webhookURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(discordMessage),
+      });
+
+      if (res.ok) {
+        contactResponse.textContent = "Booking submitted successfully.";
+        contactResponse.className = "vnn-contact-success";
+        contactForm.reset();
+      } else {
+        throw new Error(`HTTP error ${res.status}`);
+      }
+    } catch (err) {
+      contactResponse.textContent = "Failed to submit booking. Please try again later.";
+      contactResponse.className = "vnn-contact-error";
+      console.error(err);
+    }
+  });
+</script>
 
 </body>
 </html>
