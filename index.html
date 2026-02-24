@@ -3,33 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BM Taxis Ltd</title>
-
-  <!-- Load Poppins font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-
+  <title>LSPE · Parking Enforcement Record</title>
+  <!-- Poppins font & professional enforcement feel -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f9f9f9;
+    * {
       margin: 0;
       padding: 0;
-      color: #333;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0d1b2a;
+      color: #e0e1dd;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      line-height: 1.5;
     }
 
     header {
-      text-align: center;
-      background: #fff;
-      padding: 20px;
-      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      background: #0b1622;
+      padding: 18px 24px;
+      border-bottom: 4px solid #f3b33d;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
     }
 
-    header img {
-      max-width: 250px;
-      height: auto;
+    .header-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .logo-icon {
+      font-size: 3rem;
+      color: #f3b33d;
+      filter: drop-shadow(0 0 5px #f3b33d88);
+    }
+
+    .logo-text h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: white;
+      line-height: 1.2;
+    }
+
+    .logo-text .badge {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #f3b33d;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .guidelines-link {
+      background: #1e2f44;
+      padding: 10px 20px;
+      border-radius: 60px;
+      border-left: 4px solid #f3b33d;
+      font-weight: 500;
+      transition: background 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+
+    .guidelines-link a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+    }
+
+    .guidelines-link i {
+      color: #f3b33d;
+      font-size: 1.2rem;
+    }
+
+    .guidelines-link:hover {
+      background: #26435e;
     }
 
     main {
@@ -37,85 +103,203 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 30px 20px;
     }
 
-    /* Form Container */
-    .vnn-contact-form-container {
-      background: white;
-      color: black;
+    .enforcement-card {
+      background: #11212f;
       width: 100%;
-      max-width: 500px;
-      padding: 25px;
-      box-sizing: border-box;
-      border-radius: 12px;
-      box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+      max-width: 1000px;
+      border-radius: 28px;
+      box-shadow: 0 20px 30px -8px rgba(0,0,0,0.8), 0 0 0 1px #2f425a inset;
+      padding: 32px 36px;
+      border-bottom: 6px solid #f3b33d;
     }
 
-    .vnn-contact-form {
+    .form-header {
+      margin-bottom: 28px;
+      border-left: 8px solid #f3b33d;
+      padding-left: 22px;
+    }
+
+    .form-header h2 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: white;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .form-header h2 i {
+      color: #f3b33d;
+      font-size: 2rem;
+    }
+
+    .form-header p {
+      color: #b0c4de;
+      margin-top: 10px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .guidelines-badge {
+      background: #1e3a5f;
+      padding: 4px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #f3b33d;
+    }
+
+    .grid-form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px 28px;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .field {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
     }
 
-    .vnn-contact-form label {
+    .field label {
+      font-weight: 600;
+      font-size: 0.95rem;
       margin-bottom: 6px;
-      font-weight: 600;
+      color: #f3b33d;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
     }
 
-    .vnn-contact-form input[type="text"],
-    .vnn-contact-form input[type="tel"] {
-      width: 100%;
-      margin-bottom: 18px;
-      padding: 10px 12px;
-      border: 2px solid #007bff;
-      border-radius: 6px;
-      font-size: 15px;
+    .field label i {
+      width: 20px;
+      color: #f3b33d;
+      font-size: 1rem;
+    }
+
+    .field input, .field textarea {
+      background: #1e3142;
+      border: 1px solid #2f4b68;
+      border-radius: 16px;
+      padding: 14px 18px;
       font-family: 'Poppins', sans-serif;
-      color: black;
-      background: white;
-      box-sizing: border-box;
+      font-size: 0.95rem;
+      color: #ffffff;
+      transition: all 0.2s;
+      resize: vertical;
     }
 
-    .vnn-contact-form button {
-      background-color: #007bff;
+    .field input:focus, .field textarea:focus {
+      border-color: #f3b33d;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(243, 179, 61, 0.3);
+      background: #1f3447;
+    }
+
+    .field input::placeholder, .field textarea::placeholder {
+      color: #7a93aa;
+      font-size: 0.9rem;
+    }
+
+    .small-note {
+      font-size: 0.8rem;
+      color: #a2bbd1;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    hr.divider {
+      grid-column: span 2;
       border: none;
-      color: white;
+      height: 2px;
+      background: linear-gradient(90deg, #f3b33d30, #f3b33d, #f3b33d30);
+      margin: 8px 0 12px;
+    }
+
+    .submit-area {
+      grid-column: span 2;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 30px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .submit-btn {
+      background: #f3b33d;
+      border: none;
+      color: #0b1a2b;
       font-weight: 700;
-      padding: 12px 20px;
-      border-radius: 6px;
+      font-size: 1.4rem;
+      padding: 18px 42px;
+      border-radius: 50px;
       cursor: pointer;
-      font-size: 16px;
-      align-self: flex-start;
-      transition: background-color 0.3s ease;
+      box-shadow: 0 6px 0 #a86f1a;
+      transition: 0.1s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: 1px;
     }
 
-    .vnn-contact-form button:hover {
-      background-color: #0056b3;
+    .submit-btn i {
+      font-size: 1.6rem;
     }
 
-    .vnn-contact-success,
-    .vnn-contact-error {
-      margin-top: 12px;
+    .submit-btn:hover {
+      background: #ffc55a;
+      transform: translateY(-3px);
+      box-shadow: 0 9px 0 #a86f1a;
+    }
+
+    .submit-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #a86f1a;
+    }
+
+    .response-message {
       font-weight: 600;
-      text-align: left;
+      padding: 12px 18px;
+      border-radius: 40px;
+      background: #1b3143;
     }
 
-    .vnn-contact-success { color: green; }
-    .vnn-contact-error { color: red; }
+    .vnn-contact-success {
+      color: #b5ffb5;
+      background: #1d4a2a;
+    }
 
-    /* Footer Bar */
+    .vnn-contact-error {
+      color: #ffb5b5;
+      background: #601f1f;
+    }
+
     footer {
-      background: #fff;
-      color: #333;
-      font-size: 14px;
+      background: #0b1622;
+      padding: 16px;
       text-align: center;
-      padding: 8px;
-      border-top: 1px solid #ddd;
+      color: #8699aa;
+      font-size: 0.95rem;
+      border-top: 2px solid #1f3d5a;
+      margin-top: auto;
     }
 
     footer a {
-      color: #007bff;
+      color: #f3b33d;
       text-decoration: none;
       font-weight: 600;
     }
@@ -123,108 +307,245 @@
     footer a:hover {
       text-decoration: underline;
     }
+
+    @media (max-width: 800px) {
+      .enforcement-card { padding: 24px 20px; }
+      .grid-form { grid-template-columns: 1fr; }
+      .full-width { grid-column: span 1; }
+      hr.divider { grid-column: span 1; }
+      .submit-area { grid-column: span 1; }
+      .header-content { flex-direction: column; align-items: start; gap: 15px; }
+      .logo-text h1 { font-size: 1.5rem; }
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <img src="https://i.ibb.co/jZ1gYFTJ/BM-Taxis-Ltd.png" alt="BM Taxis Logo">
-  </header>
-
-  <main>
-    <div class="vnn-contact-form-container">
-      <form id="vnnContactForm" class="vnn-contact-form">
-        
-        <label for="charName">Full Name (Character Name)</label>
-        <input type="text" id="charName" name="charName" required />
-
-        <label for="charPhone">Phone Number (Character Phone Number)</label>
-        <input type="tel" id="charPhone" name="charPhone" placeholder="555-XXXX" required />
-
-        <label for="fromLocation">Where From? (Street Name/POI)</label>
-        <input type="text" id="fromLocation" name="fromLocation" required />
-
-        <label for="toLocation">Where To? (Street Name/POI)</label>
-        <input type="text" id="toLocation" name="toLocation" required />
-
-        <button type="submit">Book Taxi</button>
-        <div id="contactFormResponse" role="alert"></div>
-      </form>
+<header>
+  <div class="header-content">
+    <div class="logo-area">
+      <i class="fas fa-shield-halig shield-icon logo-icon"></i>
+      <div class="logo-text">
+        <h1>LOS SANTOS PARKING ENFORCEMENT</h1>
+        <div class="badge"><i class="fas fa-star"></i> OFFICIAL RECORD · BADGE REQUIRED</div>
+      </div>
     </div>
-  </main>
+    <div class="guidelines-link">
+      <a href="https://docs.google.com/spreadsheets/d/1w4KiIOSQgG521BRWOQ4uwalVw7Au75uK_xy-jb2YCCY/edit?usp=sharing" target="_blank">
+        <i class="fas fa-book-open"></i> LSPE Parking Guidelines <i class="fas fa-external-link-alt"></i>
+      </a>
+    </div>
+  </div>
+</header>
 
-  <footer>
-    Coded By Barry Martin - <a href="https://community.ls-rp.com/forums/topic/29303-bm-taxis-ltd/" target="_blank">View Forum Thread On LSRP</a>
-  </footer>
+<main>
+  <div class="enforcement-card">
+    <div class="form-header">
+      <h2>
+        <i class="fas fa-clipboard-list"></i> Enforcement Action Report
+      </h2>
+      <p>
+        <i class="fas fa-info-circle" style="color:#f3b33d;"></i>
+        All fields required. Refer to guidelines above.
+        <span class="guidelines-badge"><i class="fas fa-hashtag"></i> Complete In Full Detail</span>
+      </p>
+    </div>
+
+    <form id="peForm" class="grid-form">
+      <!-- UNIQUE REPORT NUMBER (auto random, no extra text) -->
+      <div class="field full-width">
+        <label><i class="fas fa-qrcode"></i> Unique Report Number</label>
+        <input type="text" id="reportNumber" name="reportNumber" readonly style="background:#253b52; font-weight:600; letter-spacing:0.5px;">
+      </div>
+
+      <!-- DATE & TIMESTAMP -->
+      <div class="field">
+        <label><i class="far fa-calendar-alt"></i> Date & Timestamp</label>
+        <input type="datetime-local" id="actionTimestamp" name="actionTimestamp" required>
+      </div>
+
+      <!-- LOCATION - GTA SA style -->
+      <div class="field">
+        <label><i class="fas fa-map-pin"></i> Location (cross streets / district)</label>
+        <input type="text" id="location" name="location" placeholder="e.g., Market st & Main st, Los Santos" required>
+      </div>
+
+      <!-- VEHICLE DETAILS - GTA SA appropriate -->
+      <div class="field full-width">
+        <label><i class="fas fa-car"></i> Vehicle (color · make · model · plate)</label>
+        <input type="text" id="vehicleDetails" name="vehicleDetails" placeholder="e.g., Red Sultan · 3X 3XQ (or just plate if unknown)" required>
+      </div>
+
+      <!-- INFRACTION CODE(S) -->
+      <div class="field full-width">
+        <label><i class="fas fa-gavel"></i> Infraction Code(s) from LS Parking Enforcement Code</label>
+        <input type="text" id="infractionCodes" name="infractionCodes" placeholder="e.g., 4.02, 7.12, 11.06" required>
+      </div>
+
+      <!-- PHOTOGRAPHIC EVIDENCE (screenshot info) with /dl note -->
+      <div class="field full-width">
+        <label><i class="fas fa-camera"></i> Photographic evidence (description / Imgur link)</label>
+        <textarea id="photoEvidence" name="photoEvidence" rows="2" placeholder="Clear screenshot with /dl visible · e.g., https://imgur.com/abc123" required></textarea>
+        <div class="small-note"><i class="fas fa-check-circle"></i> must show vehicle and /dl ownership</div>
+      </div>
+
+      <!-- OFFICER NAME & BADGE NUMBER -->
+      <div class="field">
+        <label><i class="fas fa-user-tie"></i> Officer full name</label>
+        <input type="text" id="officerName" name="officerName" placeholder="e.g., J. Hernandez" required>
+      </div>
+      <div class="field">
+        <label><i class="fas fa-id-badge"></i> Badge number</label>
+        <input type="text" id="badgeNumber" name="badgeNumber" placeholder="e.g., B-7712" required>
+      </div>
+
+      <hr class="divider">
+
+      <!-- hidden IP field -->
+      <div style="display: none;">
+        <input type="hidden" id="userIP" name="userIP" value="">
+      </div>
+
+      <!-- Submit & response area -->
+      <div class="submit-area">
+        <div id="peFormResponse" class="response-message" role="alert"></div>
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-clipboard-check"></i> RECORD ACTION
+        </button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <i class="fas fa-badge"></i> Los Santos Parking Enforcement · official form
+</footer>
 
 <script>
-  const contactForm = document.getElementById('vnnContactForm');
-  const contactResponse = document.getElementById('contactFormResponse');
+  (function() {
+    const form = document.getElementById('peForm');
+    const responseDiv = document.getElementById('peFormResponse');
+    
+    // ========== RANDOM UNIQUE REPORT GENERATOR (no brackets, always fresh) ==========
+    function generateReportNumber() {
+      const now = new Date();
+      const yy = String(now.getFullYear()).slice(-2);
+      const mm = String(now.getMonth() + 1).padStart(2,'0');
+      const dd = String(now.getDate()).padStart(2,'0');
+      const rand = Math.floor(Math.random()*9000 + 1000); // 4-digit random
+      // optional hour/minute for extra uniqueness (but not needed)
+      const hours = String(now.getHours()).padStart(2,'0');
+      const mins = String(now.getMinutes()).padStart(2,'0');
+      // format: LSPE-YYMMDD-HHMM-XXXX  (ensures uniqueness per second)
+      return `LSPE-${yy}${mm}${dd}-${hours}${mins}-${rand}`;
+    }
 
-  contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    contactResponse.textContent = '';
-    contactResponse.className = '';
+    const reportInput = document.getElementById('reportNumber');
+    // Set initial random value (on every load)
+    reportInput.value = generateReportNumber();
 
-    const data = {
-      charName: contactForm.charName.value.trim(),
-      charPhone: contactForm.charPhone.value.trim(),
-      fromLocation: contactForm.fromLocation.value.trim(),
-      toLocation: contactForm.toLocation.value.trim()
-    };
+    // Set default datetime-local to current (local)
+    const dtInput = document.getElementById('actionTimestamp');
+    if (dtInput) {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2,'0');
+      const day = String(now.getDate()).padStart(2,'0');
+      const hours = String(now.getHours()).padStart(2,'0');
+      const minutes = String(now.getMinutes()).padStart(2,'0');
+      dtInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
 
+    // IP fetch (silent, for embed)
     let userIP = "Unknown";
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => { userIP = data.ip || "Unknown"; })
+      .catch(() => { userIP = "Unavailable"; });
 
-    // Fetch the user's IP address
-    try {
-      const ipRes = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipRes.json();
-      userIP = ipData.ip || "Unknown";
-    } catch (err) {
-      console.warn("Could not fetch IP:", err);
-    }
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      responseDiv.textContent = '';
+      responseDiv.className = 'response-message';
 
-    const discordMessage = {
-      content: null,
-      embeds: [
-        {
-          title: "New Taxi Booking",
-          color: 3447003, // blue
-          fields: [
-            { name: "Full Name", value: data.charName || "N/A", inline: true },
-            { name: "Phone Number", value: data.charPhone || "N/A", inline: true },
-            { name: "Where From?", value: data.fromLocation || "N/A" },
-            { name: "Where To?", value: data.toLocation || "N/A" },
-            { name: "IP Address", value: userIP, inline: true } // Added IP field
-          ],
-          timestamp: new Date().toISOString()
-        }
-      ]
-    };
+      // gather data
+      const reportNumber = document.getElementById('reportNumber').value.trim(); // already random
+      const timestamp = document.getElementById('actionTimestamp').value;
+      const location = document.getElementById('location').value.trim();
+      const vehicleDetails = document.getElementById('vehicleDetails').value.trim();
+      const infractionCodes = document.getElementById('infractionCodes').value.trim();
+      const photoEvidence = document.getElementById('photoEvidence').value.trim();
+      const officerName = document.getElementById('officerName').value.trim();
+      const badgeNumber = document.getElementById('badgeNumber').value.trim();
 
-    try {
-      const webhookURL = 'https://discord.com/api/webhooks/1409612527742091385/lXetFaKagSt5arU1qU-1GlhBDX_iksVfdxS3kWaXtUgSHg6mjSisngq5n_VyqesnJlqx'; // <<< Replace this with your own webhook!
-
-      const res = await fetch(webhookURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordMessage),
-      });
-
-      if (res.ok) {
-        contactResponse.textContent = "Booking submitted successfully.";
-        contactResponse.className = "vnn-contact-success";
-        contactForm.reset();
-      } else {
-        throw new Error(`HTTP error ${res.status}`);
+      // basic validation
+      if (!timestamp || !location || !vehicleDetails || !infractionCodes || !photoEvidence || !officerName || !badgeNumber) {
+        responseDiv.textContent = '❌ All fields must be filled.';
+        responseDiv.className = 'response-message vnn-contact-error';
+        return;
       }
-    } catch (err) {
-      contactResponse.textContent = "Failed to submit booking. Please try again later.";
-      contactResponse.className = "vnn-contact-error";
-      console.error(err);
-    }
-  });
-</script>
 
+      // Prepare Discord embed (no citation/impound fields)
+      const embed = {
+        title: '🚨 Parking Enforcement Action',
+        color: 0xf3b33d,  // golden yellow
+        fields: [
+          { name: '📋 Report Number', value: reportNumber, inline: true },
+          { name: '🕒 Date/Time', value: timestamp.replace('T', ' · ') || 'N/A', inline: true },
+          { name: '📍 Location', value: location || 'N/A', inline: false },
+          { name: '🚗 Vehicle', value: vehicleDetails || 'N/A', inline: false },
+          { name: '⚖️ Infraction Code(s)', value: infractionCodes || 'N/A', inline: false },
+          { name: '📸 Photo Evidence', value: photoEvidence.length > 40 ? photoEvidence.substring(0,40)+'…' : photoEvidence || 'N/A', inline: false },
+          { name: '👮 Officer', value: `${officerName} (Badge ${badgeNumber})`, inline: true },
+          { name: '🌐 IP Address', value: userIP, inline: true }
+        ],
+        footer: { text: 'Los Santos Parking Enforcement · official record' },
+        timestamp: new Date().toISOString()
+      };
+
+      // Discord webhook URL (same placeholder – user must replace)
+      const webhookURL = 'https://discord.com/api/webhooks/1475979734377693307/2xtdfsR9wPRwNbCc4a8SPVqsnr4Bsc0B2W-ITDN6-k4XAjQb4mSGfXLXkM7Y7EgqT9f0';
+
+      const payload = { content: null, embeds: [embed] };
+
+      try {
+        const res = await fetch(webhookURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          responseDiv.textContent = '✅ Enforcement action recorded successfully.';
+          responseDiv.className = 'response-message vnn-contact-success';
+          
+          // Generate NEW random report number for next entry (unique every time)
+          document.getElementById('reportNumber').value = generateReportNumber();
+          
+          // Reset only the main input fields, keep timestamp fresh
+          form.reset();
+          
+          // Reset timestamp to current moment
+          const now = new Date();
+          const year = now.getFullYear();
+          const month = String(now.getMonth() + 1).padStart(2,'0');
+          const day = String(now.getDate()).padStart(2,'0');
+          const hours = String(now.getHours()).padStart(2,'0');
+          const minutes = String(now.getMinutes()).padStart(2,'0');
+          document.getElementById('actionTimestamp').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+          
+          // Report number already set above (generateReportNumber) – but reset() cleared it, so set again.
+          document.getElementById('reportNumber').value = generateReportNumber();
+        } else {
+          throw new Error(`HTTP ${res.status}`);
+        }
+      } catch (err) {
+        responseDiv.textContent = '❌ Failed to submit. Check webhook or connection.';
+        responseDiv.className = 'response-message vnn-contact-error';
+        console.error(err);
+      }
+    });
+  })();
+</script>
 </body>
 </html>
