@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LSPE · Parking Enforcement Record</title>
-  <!-- Poppins font & professional enforcement feel -->
+  <title>LSCS · Action Report</title>
+  <!-- Poppins + orange/white professional vibe -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome 6 (free) for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: #0d1b2a;
-      color: #e0e1dd;
+      background: #f4f5f7;   /* soft grey background – white card pops */
+      color: #1e2b37;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
@@ -26,14 +21,14 @@
     }
 
     header {
-      background: #0b1622;
-      padding: 18px 24px;
-      border-bottom: 4px solid #f3b33d;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      background: #ffffff;
+      padding: 16px 28px;
+      border-bottom: 4px solid #f6861f;  /* LSCS orange */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     }
 
     .header-content {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
@@ -48,54 +43,41 @@
     }
 
     .logo-icon {
-      font-size: 3rem;
-      color: #f3b33d;
-      filter: drop-shadow(0 0 5px #f3b33d88);
+      font-size: 2.8rem;
+      color: #f6861f;
     }
 
     .logo-text h1 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 700;
-      letter-spacing: 1.5px;
-      color: white;
+      letter-spacing: 1px;
+      color: #1e2b37;
       line-height: 1.2;
     }
 
     .logo-text .badge {
       font-size: 1rem;
       font-weight: 500;
-      color: #f3b33d;
+      color: #f6861f;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .guidelines-link {
-      background: #1e2f44;
-      padding: 10px 20px;
-      border-radius: 60px;
-      border-left: 4px solid #f3b33d;
-      font-weight: 500;
-      transition: background 0.2s;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    .report-ref {
+      background: #f0f3f7;
+      padding: 10px 22px;
+      border-radius: 40px;
+      border-left: 5px solid #f6861f;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      color: #1e2b37;
+      font-size: 1.1rem;
     }
 
-    .guidelines-link a {
-      color: white;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1rem;
-    }
-
-    .guidelines-link i {
-      color: #f3b33d;
-      font-size: 1.2rem;
-    }
-
-    .guidelines-link:hover {
-      background: #26435e;
+    .report-ref i {
+      color: #f6861f;
+      margin-right: 8px;
     }
 
     main {
@@ -106,150 +88,183 @@
       padding: 30px 20px;
     }
 
-    .enforcement-card {
-      background: #11212f;
+    /* white card, orange accent */
+    .action-card {
+      background: #ffffff;
       width: 100%;
-      max-width: 1000px;
-      border-radius: 28px;
-      box-shadow: 0 20px 30px -8px rgba(0,0,0,0.8), 0 0 0 1px #2f425a inset;
-      padding: 32px 36px;
-      border-bottom: 6px solid #f3b33d;
+      max-width: 1100px;
+      border-radius: 32px;
+      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.15);
+      border-bottom: 6px solid #f6861f;
+      padding: 36px 40px;
     }
 
     .form-header {
-      margin-bottom: 28px;
-      border-left: 8px solid #f3b33d;
+      margin-bottom: 30px;
+      border-left: 8px solid #f6861f;
       padding-left: 22px;
     }
 
     .form-header h2 {
       font-size: 2.2rem;
       font-weight: 600;
-      color: white;
-      letter-spacing: -0.5px;
+      color: #1e2b37;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
     .form-header h2 i {
-      color: #f3b33d;
-      font-size: 2rem;
+      color: #f6861f;
+      font-size: 2.2rem;
     }
 
     .form-header p {
-      color: #b0c4de;
-      margin-top: 10px;
-      font-size: 1.1rem;
+      color: #4a5f73;
+      margin-top: 8px;
+      font-size: 1.05rem;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
-    .guidelines-badge {
-      background: #1e3a5f;
-      padding: 4px 16px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #f3b33d;
-    }
-
-    .grid-form {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 22px 28px;
-    }
-
-    .full-width {
-      grid-column: span 2;
-    }
-
-    .field {
+    /* single‑line fields: each field row uses flex for inline label+input */
+    .form-container {
       display: flex;
       flex-direction: column;
+      gap: 18px;
     }
 
-    .field label {
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-      color: #f3b33d;
+    .field-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      letter-spacing: 0.3px;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #f9fafc;
+      padding: 6px 16px 6px 10px;
+      border-radius: 60px;
+      border: 1px solid #e2e8f0;
+      transition: 0.15s;
+    }
+    .field-row:focus-within {
+      border-color: #f6861f;
+      box-shadow: 0 0 0 3px rgba(246,134,31,0.15);
     }
 
-    .field label i {
-      width: 20px;
-      color: #f3b33d;
-      font-size: 1rem;
+    .field-row label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      min-width: 150px;
+      color: #2c3e4f;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .field input, .field textarea {
-      background: #1e3142;
-      border: 1px solid #2f4b68;
-      border-radius: 16px;
-      padding: 14px 18px;
+    .field-row label i {
+      width: 22px;
+      color: #f6861f;
+      font-size: 1.1rem;
+    }
+
+    .field-row input,
+    .field-row select,
+    .field-row textarea {
+      flex: 1;
+      min-width: 240px;
+      background: white;
+      border: 1px solid #d0dae6;
+      border-radius: 40px;
+      padding: 12px 20px;
       font-family: 'Poppins', sans-serif;
       font-size: 0.95rem;
-      color: #ffffff;
-      transition: all 0.2s;
+      color: #1e2b37;
       resize: vertical;
     }
 
-    .field input:focus, .field textarea:focus {
-      border-color: #f3b33d;
+    .field-row textarea {
+      border-radius: 24px;
+      line-height: 1.4;
+    }
+
+    .field-row input:focus,
+    .field-row select:focus,
+    .field-row textarea:focus {
+      border-color: #f6861f;
       outline: none;
-      box-shadow: 0 0 0 3px rgba(243, 179, 61, 0.3);
-      background: #1f3447;
     }
 
-    .field input::placeholder, .field textarea::placeholder {
-      color: #7a93aa;
+    /* badge prefix hint */
+    .badge-hint {
+      background: #f0f3f7;
+      border-radius: 40px;
+      padding: 6px 16px;
       font-size: 0.9rem;
+      color: #1e2b37;
+      white-space: nowrap;
+    }
+    .badge-hint i {
+      color: #f6861f;
+      margin-right: 4px;
     }
 
-    .small-note {
-      font-size: 0.8rem;
-      color: #a2bbd1;
-      margin-top: 5px;
-      display: flex;
+    /* conditional (other reason) small field */
+    .other-reason-field {
+      display: none;
+      margin-top: 8px;
+      margin-left: 50px;
+      background: #ffffff;
+      border: 1px dashed #f6861f;
+      border-radius: 40px;
+      padding: 10px 20px;
       align-items: center;
-      gap: 6px;
+      gap: 15px;
+    }
+    .other-reason-field.active {
+      display: flex;
+    }
+    .other-reason-field label {
+      font-weight: 500;
+      color: #1e2b37;
+      min-width: 100px;
+    }
+    .other-reason-field input {
+      flex: 1;
+      background: white;
+      border: 1px solid #d0dae6;
+      border-radius: 30px;
+      padding: 10px 16px;
     }
 
-    hr.divider {
-      grid-column: span 2;
+    /* divider */
+    .section-divider {
+      margin: 20px 0 10px;
       border: none;
       height: 2px;
-      background: linear-gradient(90deg, #f3b33d30, #f3b33d, #f3b33d30);
-      margin: 8px 0 12px;
+      background: linear-gradient(90deg, #f6861f20, #f6861f, #f6861f20);
     }
 
     .submit-area {
-      grid-column: span 2;
       display: flex;
       justify-content: flex-end;
       align-items: center;
       gap: 30px;
-      margin-top: 22px;
+      margin-top: 30px;
       flex-wrap: wrap;
     }
 
     .submit-btn {
-      background: #f3b33d;
+      background: #f6861f;
       border: none;
-      color: #0b1a2b;
+      color: white;
       font-weight: 700;
       font-size: 1.4rem;
-      padding: 18px 42px;
-      border-radius: 50px;
+      padding: 18px 46px;
+      border-radius: 60px;
       cursor: pointer;
-      box-shadow: 0 6px 0 #a86f1a;
-      transition: 0.1s ease;
+      box-shadow: 0 6px 0 #b1580e;
+      transition: 0.12s;
       display: inline-flex;
       align-items: center;
       gap: 12px;
@@ -261,61 +276,64 @@
     }
 
     .submit-btn:hover {
-      background: #ffc55a;
+      background: #ff983d;
       transform: translateY(-3px);
-      box-shadow: 0 9px 0 #a86f1a;
+      box-shadow: 0 9px 0 #b1580e;
     }
 
     .submit-btn:active {
       transform: translateY(4px);
-      box-shadow: 0 2px 0 #a86f1a;
+      box-shadow: 0 2px 0 #b1580e;
     }
 
     .response-message {
       font-weight: 600;
-      padding: 12px 18px;
-      border-radius: 40px;
-      background: #1b3143;
+      padding: 14px 24px;
+      border-radius: 60px;
+      background: #edf2f7;
     }
 
-    .vnn-contact-success {
-      color: #b5ffb5;
-      background: #1d4a2a;
+    .response-success {
+      color: #0f5c2e;
+      background: #e0ffe6;
     }
-
-    .vnn-contact-error {
-      color: #ffb5b5;
-      background: #601f1f;
+    .response-error {
+      color: #a13020;
+      background: #ffe6e0;
     }
 
     footer {
-      background: #0b1622;
-      padding: 16px;
+      background: white;
+      padding: 18px;
       text-align: center;
-      color: #8699aa;
+      color: #556b7c;
       font-size: 0.95rem;
-      border-top: 2px solid #1f3d5a;
+      border-top: 2px solid #f6861f30;
       margin-top: auto;
     }
 
-    footer a {
-      color: #f3b33d;
-      text-decoration: none;
-      font-weight: 600;
+    /* dynamic visibility for parking/city fields */
+    .parking-fields, .city-fields {
+      display: none;
+    }
+    .show-parking .parking-fields {
+      display: block;
+    }
+    .show-city .city-fields {
+      display: block;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    /* extra inline grouping */
+    .nested-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
     }
 
     @media (max-width: 800px) {
-      .enforcement-card { padding: 24px 20px; }
-      .grid-form { grid-template-columns: 1fr; }
-      .full-width { grid-column: span 1; }
-      hr.divider { grid-column: span 1; }
-      .submit-area { grid-column: span 1; }
-      .header-content { flex-direction: column; align-items: start; gap: 15px; }
-      .logo-text h1 { font-size: 1.5rem; }
+      .action-card { padding: 24px 18px; }
+      .field-row { border-radius: 30px; }
     }
   </style>
 </head>
@@ -324,93 +342,155 @@
 <header>
   <div class="header-content">
     <div class="logo-area">
-      <i class="fas fa-shield-halig shield-icon logo-icon"></i>
+      <i class="fas fa-clipboard-list logo-icon"></i>
       <div class="logo-text">
-        <h1>LOS SANTOS PARKING ENFORCEMENT</h1>
-        <div class="badge"><i class="fas fa-star"></i> OFFICIAL RECORD · BADGE REQUIRED</div>
+        <h1>LSCS · ACTION REPORT</h1>
+        <div class="badge"><i class="fas fa-bolt"></i> OFFICIAL · LOS SANTOS CITY SERVICES</div>
       </div>
     </div>
-    <div class="guidelines-link">
-      <a href="https://docs.google.com/spreadsheets/d/1w4KiIOSQgG521BRWOQ4uwalVw7Au75uK_xy-jb2YCCY/edit?usp=sharing" target="_blank">
-        <i class="fas fa-book-open"></i> LSPE Parking Guidelines <i class="fas fa-external-link-alt"></i>
-      </a>
+    <div class="report-ref">
+      <i class="fas fa-qrcode"></i> <span id="headerReportCode">LSCS-0000</span>
     </div>
   </div>
 </header>
 
 <main>
-  <div class="enforcement-card">
+  <div class="action-card" id="actionCard">
     <div class="form-header">
       <h2>
-        <i class="fas fa-clipboard-list"></i> Enforcement Action Report
+        <i class="fas fa-pen-to-square"></i> Field Action Report
       </h2>
       <p>
-        <i class="fas fa-info-circle" style="color:#f3b33d;"></i>
-        All fields required. Refer to guidelines above.
-        <span class="guidelines-badge"><i class="fas fa-hashtag"></i> Complete In Full Detail</span>
+        <i class="fas fa-circle-info" style="color:#f6861f;"></i>
+        All lines are single · complete each field
       </p>
     </div>
 
-    <form id="peForm" class="grid-form">
-      <!-- UNIQUE REPORT NUMBER (auto random, no extra text) -->
-      <div class="field full-width">
-        <label><i class="fas fa-qrcode"></i> Unique Report Number</label>
-        <input type="text" id="reportNumber" name="reportNumber" readonly style="background:#253b52; font-weight:600; letter-spacing:0.5px;">
+    <form id="actionForm" class="form-container">
+      <!-- UNIQUE REPORT CODE (random LSCS-XXXX) -->
+      <div class="field-row">
+        <label><i class="fas fa-hashtag"></i> Report code</label>
+        <input type="text" id="reportCode" name="reportCode" readonly value="LSCS-0000" style="background:#f2f2f2; font-weight:600;">
       </div>
 
-      <!-- DATE & TIMESTAMP -->
-      <div class="field">
-        <label><i class="far fa-calendar-alt"></i> Date & Timestamp</label>
-        <input type="datetime-local" id="actionTimestamp" name="actionTimestamp" required>
+      <!-- ACTION TYPE DROPDOWN (Parking / City) -->
+      <div class="field-row">
+        <label><i class="fas fa-bolt"></i> Action type</label>
+        <select id="actionType" name="actionType" required>
+          <option value="" disabled selected>— select one —</option>
+          <option value="parking">🚗 Parking Action</option>
+          <option value="city">🏙️ City Action</option>
+        </select>
       </div>
 
-      <!-- LOCATION - GTA SA style -->
-      <div class="field">
-        <label><i class="fas fa-map-pin"></i> Location (cross streets / district)</label>
-        <input type="text" id="location" name="location" placeholder="e.g., Market st & Main st, Los Santos" required>
+      <!-- ========== PARKING ACTION FIELDS ========= -->
+      <div class="parking-fields" id="parkingFields">
+        <div class="nested-rows">
+          <div class="field-row">
+            <label><i class="far fa-calendar-alt"></i> Date & Time</label>
+            <input type="datetime-local" id="parkingTimestamp" name="parkingTimestamp">
+          </div>
+          <div class="field-row">
+            <label><i class="fas fa-map-pin"></i> Location</label>
+            <input type="text" id="parkingLocation" placeholder="e.g., Vespucci Blvd & Palomino" >
+          </div>
+          <div class="field-row">
+            <label><i class="fas fa-gavel"></i> Guideline</label>
+            <select id="parkingGuideline">
+              <option value="">— select PRK code —</option>
+              <option>PRK001.1: Directly on an intersection, crosswalk or within 5 feet of an intersection or crosswalk.</option>
+              <option>PRK001.2: Vehicle abandonment on a sidewalk or intersection.</option>
+              <option>PRK001.3: Vehicle abandonment on a roadway</option>
+              <option>PRK001.4: Parked with THREE or more wheels on the sidewalk.</option>
+              <option>PRK001.5: Parked in front of, or within 5 feet of a Bus Stop, thus preventing flow of traffic.</option>
+              <option>PRK001.6: Parked in a marked No-Parking Zone or areas where such signage is visible.</option>
+              <option>PRK001.7: Vehicle abandonment within Pay-2-Park lots without payment.</option>
+              <option>PRK001.8: Parked in tunnels where such parking would pose a hazard.</option>
+              <option>PRK001.9: Parked on the interstate, posing a hazard.</option>
+              <option>PRK001.10: Vehicle blocking Emergency Services, Emergency Exits or Fire Lanes.</option>
+              <option>PRK001.11: Vehicle abandonment posing a risk.</option>
+              <option>PRK002.1: Vehicle parked in a Pay-2-Park zone with an expired ticket.</option>
+              <option>PRK002.2: Vehicle parked against flow of traffic.</option>
+              <option>PRK002.3: Vehicle parked during snowplowing periods.</option>
+              <option>PRK002.4: Vehicle parked outside of marked space.</option>
+              <option>PRK002.5: Vehicle parked in a construction only zone.</option>
+              <option>PRK002.6: Vehicle parked without required permit.</option>
+              <option>PRK003.1: Requested By LSPD</option>
+              <option>PRK003.2: Requested By LSFD</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label><i class="fas fa-car"></i> Vehicle Description</label>
+            <input type="text" id="parkingVehicle" placeholder="e.g., yellow Sultan / plate 4X 5FH" >
+          </div>
+          <div class="field-row">
+            <label><i class="fas fa-camera"></i> Photographic Evidence</label>
+            <textarea id="parkingPhoto" rows="1" placeholder="imgur link / description (full URL)"></textarea>
+          </div>
+        </div>
       </div>
 
-      <!-- VEHICLE DETAILS - GTA SA appropriate -->
-      <div class="field full-width">
-        <label><i class="fas fa-car"></i> Vehicle (color · make · model · plate)</label>
-        <input type="text" id="vehicleDetails" name="vehicleDetails" placeholder="e.g., Red Sultan · 3X 3XQ (or just plate if unknown)" required>
+      <!-- ========== CITY ACTION FIELDS ========= -->
+      <div class="city-fields" id="cityFields">
+        <div class="nested-rows">
+          <div class="field-row">
+            <label><i class="far fa-calendar-alt"></i> Date & Time</label>
+            <input type="datetime-local" id="cityTimestamp" name="cityTimestamp">
+          </div>
+          <div class="field-row">
+            <label><i class="fas fa-map-pin"></i> Location</label>
+            <input type="text" id="cityLocation" placeholder="street / district" >
+          </div>
+          <div class="field-row">
+            <label><i class="fas fa-tasks"></i> Action Taken</label>
+            <select id="cityActionTaken">
+              <option value="">— select —</option>
+              <option value="Graffiti Removal">Graffiti Removal</option>
+              <option value="Road Closure">Road Closure</option>
+              <option value="Road Disruption">Road Disruption</option>
+              <option value="Trashcan Empty">Trashcan Empty</option>
+              <option value="Trashcan Removal">Trashcan Removal</option>
+              <option value="Other">Other (click below)</option>
+            </select>
+          </div>
+          <!-- other reason (conditional) -->
+          <div class="other-reason-field" id="otherReasonContainer">
+            <label><i class="fas fa-pen"></i> Other description</label>
+            <input type="text" id="cityOtherReason" placeholder="specify action...">
+          </div>
+          <div class="field-row">
+            <label><i class="fas fa-note-sticky"></i> Details of Action</label>
+            <textarea id="cityDetails" rows="1" placeholder="full description / paragraph"></textarea>
+          </div>
+          <div class="field-row">
+            <label><i class="fas fa-question-circle"></i> Reason for Action</label>
+            <input type="text" id="cityReason" placeholder="why this action?">
+          </div>
+        </div>
       </div>
 
-      <!-- INFRACTION CODE(S) -->
-      <div class="field full-width">
-        <label><i class="fas fa-gavel"></i> Infraction Code(s) from LS Parking Enforcement Code</label>
-        <input type="text" id="infractionCodes" name="infractionCodes" placeholder="e.g., 4.02, 7.12, 11.06" required>
+      <!-- COMMON FIELDS (Officer + Badge) -->
+      <div class="field-row">
+        <label><i class="fas fa-user-tie"></i> Officer Name</label>
+        <input type="text" id="officerName" placeholder="full name" required>
       </div>
 
-      <!-- PHOTOGRAPHIC EVIDENCE (screenshot info) with /dl note -->
-      <div class="field full-width">
-        <label><i class="fas fa-camera"></i> Photographic evidence (description / Imgur link)</label>
-        <textarea id="photoEvidence" name="photoEvidence" rows="2" placeholder="Clear screenshot with /dl visible · e.g., https://imgur.com/abc123" required></textarea>
-        <div class="small-note"><i class="fas fa-check-circle"></i> must show vehicle and /dl ownership</div>
+      <div class="field-row">
+        <label><i class="fas fa-id-badge"></i> Badge Number</label>
+        <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+          <span class="badge-hint"><i class="fas fa-lock"></i> CS</span>
+          <input type="text" id="badgeNumber" placeholder="two‑digit number (e.g., 17)" style="flex:1; min-width:140px;" required>
+        </div>
       </div>
 
-      <!-- OFFICER NAME & BADGE NUMBER -->
-      <div class="field">
-        <label><i class="fas fa-user-tie"></i> Officer full name</label>
-        <input type="text" id="officerName" name="officerName" placeholder="e.g., J. Hernandez" required>
-      </div>
-      <div class="field">
-        <label><i class="fas fa-id-badge"></i> Badge number</label>
-        <input type="text" id="badgeNumber" name="badgeNumber" placeholder="e.g., B-7712" required>
-      </div>
+      <hr class="section-divider">
 
-      <hr class="divider">
+      <!-- NO IP FIELD – REMOVED AS REQUESTED -->
 
-      <!-- hidden IP field -->
-      <div style="display: none;">
-        <input type="hidden" id="userIP" name="userIP" value="">
-      </div>
-
-      <!-- Submit & response area -->
       <div class="submit-area">
-        <div id="peFormResponse" class="response-message" role="alert"></div>
+        <div id="formResponse" class="response-message"></div>
         <button type="submit" class="submit-btn">
-          <i class="fas fa-clipboard-check"></i> RECORD ACTION
+          <i class="fas fa-paper-plane"></i> SUBMIT REPORT
         </button>
       </div>
     </form>
@@ -418,130 +498,193 @@
 </main>
 
 <footer>
-  <i class="fas fa-badge"></i> Los Santos Parking Enforcement · official form
+  <i class="fas fa-shield"></i> LSCS · official action reporting
 </footer>
 
 <script>
   (function() {
-    const form = document.getElementById('peForm');
-    const responseDiv = document.getElementById('peFormResponse');
-    
-    // ========== RANDOM UNIQUE REPORT GENERATOR (no brackets, always fresh) ==========
-    function generateReportNumber() {
-      const now = new Date();
-      const yy = String(now.getFullYear()).slice(-2);
-      const mm = String(now.getMonth() + 1).padStart(2,'0');
-      const dd = String(now.getDate()).padStart(2,'0');
-      const rand = Math.floor(Math.random()*9000 + 1000); // 4-digit random
-      // optional hour/minute for extra uniqueness (but not needed)
-      const hours = String(now.getHours()).padStart(2,'0');
-      const mins = String(now.getMinutes()).padStart(2,'0');
-      // format: LSPE-YYMMDD-HHMM-XXXX  (ensures uniqueness per second)
-      return `LSPE-${yy}${mm}${dd}-${hours}${mins}-${rand}`;
+    const form = document.getElementById('actionForm');
+    const responseDiv = document.getElementById('formResponse');
+    const actionType = document.getElementById('actionType');
+    const card = document.getElementById('actionCard');
+    const headerCodeSpan = document.getElementById('headerReportCode');
+    const reportCodeInput = document.getElementById('reportCode');
+
+    // random LSCS-XXXX generator (4 digits)
+    function randomLSCScode() {
+      const rand = Math.floor(Math.random() * 9000 + 1000); // 1000-9999
+      return `LSCS-${rand}`;
     }
 
-    const reportInput = document.getElementById('reportNumber');
-    // Set initial random value (on every load)
-    reportInput.value = generateReportNumber();
+    function setNewCode() {
+      const code = randomLSCScode();
+      reportCodeInput.value = code;
+      headerCodeSpan.textContent = code;
+    }
+    setNewCode(); // initial
 
-    // Set default datetime-local to current (local)
-    const dtInput = document.getElementById('actionTimestamp');
-    if (dtInput) {
+    // toggling parking / city classes
+    function updateVisibility() {
+      const val = actionType.value;
+      card.classList.remove('show-parking', 'show-city');
+      if (val === 'parking') {
+        card.classList.add('show-parking');
+      } else if (val === 'city') {
+        card.classList.add('show-city');
+      }
+    }
+    actionType.addEventListener('change', updateVisibility);
+    updateVisibility(); // run on load
+
+    // "Other" reason field toggle for city
+    const cityActionSelect = document.getElementById('cityActionTaken');
+    const otherContainer = document.getElementById('otherReasonContainer');
+    cityActionSelect.addEventListener('change', function() {
+      if (this.value === 'Other') {
+        otherContainer.classList.add('active');
+      } else {
+        otherContainer.classList.remove('active');
+      }
+    });
+
+    // set default datetimes (now)
+    function setDefaultDatetime() {
       const now = new Date();
       const year = now.getFullYear();
       const month = String(now.getMonth() + 1).padStart(2,'0');
       const day = String(now.getDate()).padStart(2,'0');
       const hours = String(now.getHours()).padStart(2,'0');
       const minutes = String(now.getMinutes()).padStart(2,'0');
-      dtInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+      const value = `${year}-${month}-${day}T${hours}:${minutes}`;
+      
+      const parkingDT = document.getElementById('parkingTimestamp');
+      const cityDT = document.getElementById('cityTimestamp');
+      if (parkingDT) parkingDT.value = value;
+      if (cityDT) cityDT.value = value;
     }
+    setDefaultDatetime();
 
-    // IP fetch (silent, for embed)
-    let userIP = "Unknown";
-    fetch('https://api.ipify.org?format=json')
-      .then(res => res.json())
-      .then(data => { userIP = data.ip || "Unknown"; })
-      .catch(() => { userIP = "Unavailable"; });
+    // IP FUNCTION REMOVED – no IP fetch, no IP field
 
+    // submit handler
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       responseDiv.textContent = '';
       responseDiv.className = 'response-message';
 
-      // gather data
-      const reportNumber = document.getElementById('reportNumber').value.trim(); // already random
-      const timestamp = document.getElementById('actionTimestamp').value;
-      const location = document.getElementById('location').value.trim();
-      const vehicleDetails = document.getElementById('vehicleDetails').value.trim();
-      const infractionCodes = document.getElementById('infractionCodes').value.trim();
-      const photoEvidence = document.getElementById('photoEvidence').value.trim();
-      const officerName = document.getElementById('officerName').value.trim();
-      const badgeNumber = document.getElementById('badgeNumber').value.trim();
-
-      // basic validation
-      if (!timestamp || !location || !vehicleDetails || !infractionCodes || !photoEvidence || !officerName || !badgeNumber) {
-        responseDiv.textContent = '❌ All fields must be filled.';
-        responseDiv.className = 'response-message vnn-contact-error';
+      const type = actionType.value;
+      if (!type) {
+        responseDiv.textContent = '❌ Select Parking Action or City Action.';
+        responseDiv.classList.add('response-error');
         return;
       }
 
-      // Prepare Discord embed (no citation/impound fields)
+      // common
+      const officerName = document.getElementById('officerName').value.trim();
+      let badgeRaw = document.getElementById('badgeNumber').value.trim();
+      const badgeFull = badgeRaw ? `CS-${badgeRaw.padStart(2,'0').slice(0,2)}` : 'CS-??';
+
+      if (!officerName || !badgeRaw) {
+        responseDiv.textContent = '❌ Officer name and badge number required.';
+        responseDiv.classList.add('response-error');
+        return;
+      }
+
+      // building embed fields (simple lines, no inline limits)
+      let fields = [];
+
+      // base report code
+      fields.push({ name: '📋 Report Code', value: reportCodeInput.value, inline: false });
+
+      if (type === 'parking') {
+        const dt = document.getElementById('parkingTimestamp').value;
+        const loc = document.getElementById('parkingLocation').value.trim();
+        const guid = document.getElementById('parkingGuideline').value.trim();
+        const vehicle = document.getElementById('parkingVehicle').value.trim();
+        const photo = document.getElementById('parkingPhoto').value.trim();
+
+        if (!dt || !loc || !guid || !vehicle || !photo) {
+          responseDiv.textContent = '❌ Please fill all parking fields.';
+          responseDiv.classList.add('response-error');
+          return;
+        }
+
+        fields.push({ name: '🕒 Date & Time', value: dt.replace('T', ' · ') || 'N/A', inline: false });
+        fields.push({ name: '📍 Location', value: loc, inline: false });
+        fields.push({ name: '📏 Guideline', value: guid, inline: false });
+        fields.push({ name: '🚙 Vehicle Description', value: vehicle, inline: false });
+        fields.push({ name: '📸 Photographic Evidence', value: photo, inline: false }); // full URL
+      } 
+      else { // city
+        const dt = document.getElementById('cityTimestamp').value;
+        const loc = document.getElementById('cityLocation').value.trim();
+        let actionTaken = document.getElementById('cityActionTaken').value;
+        const details = document.getElementById('cityDetails').value.trim();
+        const reason = document.getElementById('cityReason').value.trim();
+
+        if (!dt || !loc || !actionTaken || !details || !reason) {
+          responseDiv.textContent = '❌ Fill all city fields (action, details, reason).';
+          responseDiv.classList.add('response-error');
+          return;
+        }
+
+        // handle "Other" text
+        if (actionTaken === 'Other') {
+          const otherText = document.getElementById('cityOtherReason').value.trim();
+          if (!otherText) {
+            responseDiv.textContent = '❌ Please specify "Other" action.';
+            responseDiv.classList.add('response-error');
+            return;
+          }
+          actionTaken = `Other: ${otherText}`;
+        }
+
+        fields.push({ name: '🕒 Date & Time', value: dt.replace('T', ' · ') || 'N/A', inline: false });
+        fields.push({ name: '📍 Location', value: loc, inline: false });
+        fields.push({ name: '🔨 Action Taken', value: actionTaken, inline: false });
+        fields.push({ name: '📝 Details of Action', value: details, inline: false });
+        fields.push({ name: '❓ Reason for Action', value: reason, inline: false });
+      }
+
+      // common officer and badge (IP removed)
+      fields.push({ name: '👮 Officer Name', value: officerName, inline: false });
+      fields.push({ name: '🪪 Badge Number', value: badgeFull, inline: false });
+      // NO IP FIELD
+
+      // Discord embed
       const embed = {
-        title: '🚨 Parking Enforcement Action',
-        color: 0xf3b33d,  // golden yellow
-        fields: [
-          { name: '📋 Report Number', value: reportNumber, inline: true },
-          { name: '🕒 Date/Time', value: timestamp.replace('T', ' · ') || 'N/A', inline: true },
-          { name: '📍 Location', value: location || 'N/A', inline: false },
-          { name: '🚗 Vehicle', value: vehicleDetails || 'N/A', inline: false },
-          { name: '⚖️ Infraction Code(s)', value: infractionCodes || 'N/A', inline: false },
-          { name: '📸 Photo Evidence', value: photoEvidence.length > 40 ? photoEvidence.substring(0,40)+'…' : photoEvidence || 'N/A', inline: false },
-          { name: '👮 Officer', value: `${officerName} (Badge ${badgeNumber})`, inline: true },
-          { name: '🌐 IP Address', value: userIP, inline: true }
-        ],
-        footer: { text: 'Los Santos Parking Enforcement · official record' },
+        title: 'LSCS · Action Report',
+        color: 0xf6861f, // orange
+        fields: fields,
+        footer: { text: 'Los Santos City Services · Reporting' },
         timestamp: new Date().toISOString()
       };
 
-      // Discord webhook URL (same placeholder – user must replace)
       const webhookURL = 'https://discord.com/api/webhooks/1475979734377693307/2xtdfsR9wPRwNbCc4a8SPVqsnr4Bsc0B2W-ITDN6-k4XAjQb4mSGfXLXkM7Y7EgqT9f0';
-
-      const payload = { content: null, embeds: [embed] };
 
       try {
         const res = await fetch(webhookURL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ content: null, embeds: [embed] })
         });
 
         if (res.ok) {
-          responseDiv.textContent = '✅ Enforcement action recorded successfully.';
-          responseDiv.className = 'response-message vnn-contact-success';
-          
-          // Generate NEW random report number for next entry (unique every time)
-          document.getElementById('reportNumber').value = generateReportNumber();
-          
-          // Reset only the main input fields, keep timestamp fresh
+          responseDiv.textContent = '✅ Action report filed.';
+          responseDiv.classList.add('response-success');
+
+          // reset form but keep new random code
           form.reset();
-          
-          // Reset timestamp to current moment
-          const now = new Date();
-          const year = now.getFullYear();
-          const month = String(now.getMonth() + 1).padStart(2,'0');
-          const day = String(now.getDate()).padStart(2,'0');
-          const hours = String(now.getHours()).padStart(2,'0');
-          const minutes = String(now.getMinutes()).padStart(2,'0');
-          document.getElementById('actionTimestamp').value = `${year}-${month}-${day}T${hours}:${minutes}`;
-          
-          // Report number already set above (generateReportNumber) – but reset() cleared it, so set again.
-          document.getElementById('reportNumber').value = generateReportNumber();
+          setNewCode();           // fresh LSCS-XXXX
+          setDefaultDatetime();   // set both timestamps to now
+          card.classList.remove('show-parking', 'show-city'); // hide dynamic sections
+          otherContainer.classList.remove('active'); // hide other
         } else {
           throw new Error(`HTTP ${res.status}`);
         }
       } catch (err) {
-        responseDiv.textContent = '❌ Failed to submit. Check webhook or connection.';
-        responseDiv.className = 'response-message vnn-contact-error';
+        responseDiv.textContent = '❌ Discord webhook error.';
+        responseDiv.classList.add('response-error');
         console.error(err);
       }
     });
