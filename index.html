@@ -3,35 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LSCS · Action Report</title>
-  <!-- Poppins + orange/white professional vibe -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>LSCS · MDC REPORT</title>
+  <!-- Inter - clean, technical font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #f4f5f7;   /* soft grey background – white card pops */
-      color: #1e2b37;
+      font-family: 'Inter', sans-serif;
+      background: #1a1e24;  /* dark grey-black - MDC background */
+      color: #e5e9f0;        /* light grey text */
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       line-height: 1.5;
     }
 
+    /* SIMPLIFIED HEADER - no white */
     header {
-      background: #ffffff;
-      padding: 16px 28px;
-      border-bottom: 4px solid #f6861f;  /* LSCS orange */
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      background: #23282e;  /* dark grey */
+      padding: 12px 24px;
+      border-bottom: 3px solid #f39c12;  /* orange accent */
     }
 
     .header-content {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
     }
@@ -39,45 +38,39 @@
     .logo-area {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 12px;
     }
 
     .logo-icon {
-      font-size: 2.8rem;
-      color: #f6861f;
+      font-size: 1.8rem;
+      color: #f39c12;
     }
 
     .logo-text h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: #1e2b37;
-      line-height: 1.2;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.5px;
     }
 
     .logo-text .badge {
-      font-size: 1rem;
-      font-weight: 500;
-      color: #f6861f;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      display: none;  /* simplified - removed */
     }
 
     .report-ref {
-      background: #f0f3f7;
-      padding: 10px 22px;
-      border-radius: 40px;
-      border-left: 5px solid #f6861f;
-      font-weight: 600;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-      color: #1e2b37;
-      font-size: 1.1rem;
+      background: #2d343b;  /* medium grey */
+      padding: 6px 16px;
+      border-radius: 6px;   /* slight rounding only */
+      border-left: 4px solid #f39c12;
+      font-weight: 500;
+      color: #ffffff;
+      font-size: 1rem;
+      font-family: 'Inter', monospace;
     }
 
     .report-ref i {
-      color: #f6861f;
-      margin-right: 8px;
+      color: #f39c12;
+      margin-right: 6px;
     }
 
     main {
@@ -85,87 +78,86 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 30px 20px;
+      padding: 24px;
     }
 
-    /* white card, orange accent */
+    /* MDC CARD - squared, technical */
     .action-card {
-      background: #ffffff;
+      background: #23282e;  /* dark grey card, no white */
       width: 100%;
-      max-width: 1100px;
-      border-radius: 32px;
-      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.15);
-      border-bottom: 6px solid #f6861f;
-      padding: 36px 40px;
+      max-width: 1200px;
+      border-radius: 8px;    /* minimal rounding */
+      border: 1px solid #3a424a;
+      border-top: 4px solid #f39c12;  /* orange top accent */
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+      padding: 28px 32px;
     }
 
     .form-header {
-      margin-bottom: 30px;
-      border-left: 8px solid #f6861f;
-      padding-left: 22px;
+      margin-bottom: 24px;
+      border-left: 4px solid #f39c12;
+      padding-left: 16px;
     }
 
     .form-header h2 {
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: 600;
-      color: #1e2b37;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .form-header h2 i {
-      color: #f6861f;
-      font-size: 2.2rem;
-    }
-
-    .form-header p {
-      color: #4a5f73;
-      margin-top: 8px;
-      font-size: 1.05rem;
+      color: #ffffff;
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
     }
 
-    /* single‑line fields: each field row uses flex for inline label+input */
+    .form-header h2 i {
+      color: #f39c12;
+      font-size: 1.8rem;
+    }
+
+    .form-header p {
+      color: #a0a8b3;  /* lighter grey */
+      margin-top: 4px;
+      font-size: 0.95rem;
+    }
+
     .form-container {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
     }
 
+    /* FIELD ROWS - squared, grey on grey */
     .field-row {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      background: #f9fafc;
-      padding: 6px 16px 6px 10px;
-      border-radius: 60px;
-      border: 1px solid #e2e8f0;
-      transition: 0.15s;
+      background: #2d343b;  /* medium grey */
+      padding: 8px 16px 8px 12px;
+      border-radius: 6px;    /* subtle rounding */
+      border: 1px solid #3f4852;
+      transition: 0.1s;
     }
     .field-row:focus-within {
-      border-color: #f6861f;
-      box-shadow: 0 0 0 3px rgba(246,134,31,0.15);
+      border-color: #f39c12;
+      box-shadow: 0 0 0 1px #f39c12;
     }
 
     .field-row label {
-      font-weight: 600;
-      font-size: 0.95rem;
-      min-width: 150px;
-      color: #2c3e4f;
+      font-weight: 500;
+      font-size: 0.9rem;
+      min-width: 140px;
+      color: #cbd5e0;  /* light grey */
       display: flex;
       align-items: center;
       gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
     .field-row label i {
-      width: 22px;
-      color: #f6861f;
-      font-size: 1.1rem;
+      width: 20px;
+      color: #f39c12;
+      font-size: 1rem;
     }
 
     .field-row input,
@@ -173,167 +165,173 @@
     .field-row textarea {
       flex: 1;
       min-width: 240px;
-      background: white;
-      border: 1px solid #d0dae6;
-      border-radius: 40px;
-      padding: 12px 20px;
-      font-family: 'Poppins', sans-serif;
+      background: #1e242a;  /* darker grey */
+      border: 1px solid #3f4852;
+      border-radius: 4px;    /* minimal rounding */
+      padding: 10px 16px;
+      font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
-      color: #1e2b37;
+      color: #ffffff;
       resize: vertical;
     }
 
-    .field-row textarea {
-      border-radius: 24px;
-      line-height: 1.4;
+    .field-row input::placeholder,
+    .field-row textarea::placeholder {
+      color: #7b8a9b;
+      opacity: 0.8;
+    }
+
+    .field-row select {
+      color: #ffffff;
+      background: #1e242a;
+    }
+
+    .field-row select option {
+      background: #23282e;
+      color: #ffffff;
+    }
+
+    .field-row select optgroup {
+      background: #23282e;
+      color: #f39c12;
+      font-weight: 600;
     }
 
     .field-row input:focus,
     .field-row select:focus,
     .field-row textarea:focus {
-      border-color: #f6861f;
+      border-color: #f39c12;
       outline: none;
     }
 
-    /* badge prefix hint */
+    /* badge hint - squared */
     .badge-hint {
-      background: #f0f3f7;
-      border-radius: 40px;
-      padding: 6px 16px;
-      font-size: 0.9rem;
-      color: #1e2b37;
+      background: #1e242a;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      color: #f39c12;
       white-space: nowrap;
+      border: 1px solid #3f4852;
+      font-weight: 500;
     }
     .badge-hint i {
-      color: #f6861f;
+      color: #f39c12;
       margin-right: 4px;
     }
 
-    /* conditional (other reason) small field */
-    .other-reason-field {
-      display: none;
-      margin-top: 8px;
-      margin-left: 50px;
-      background: #ffffff;
-      border: 1px dashed #f6861f;
-      border-radius: 40px;
-      padding: 10px 20px;
-      align-items: center;
-      gap: 15px;
-    }
-    .other-reason-field.active {
+    /* nested rows - for grouped fields */
+    .nested-rows {
       display: flex;
-    }
-    .other-reason-field label {
-      font-weight: 500;
-      color: #1e2b37;
-      min-width: 100px;
-    }
-    .other-reason-field input {
-      flex: 1;
-      background: white;
-      border: 1px solid #d0dae6;
-      border-radius: 30px;
-      padding: 10px 16px;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      background: #2d343b;
+      padding: 16px;
+      border-radius: 6px;
+      border: 1px solid #3f4852;
     }
 
-    /* divider */
+    /* divider - subtle orange */
     .section-divider {
-      margin: 20px 0 10px;
+      margin: 16px 0 8px;
       border: none;
       height: 2px;
-      background: linear-gradient(90deg, #f6861f20, #f6861f, #f6861f20);
+      background: #3a424a;
     }
 
     .submit-area {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      gap: 30px;
-      margin-top: 30px;
+      gap: 20px;
+      margin-top: 24px;
       flex-wrap: wrap;
     }
 
+    /* MDC style button - squared, tactical */
     .submit-btn {
-      background: #f6861f;
+      background: #f39c12;
       border: none;
-      color: white;
+      color: #1a1e24;
       font-weight: 700;
-      font-size: 1.4rem;
-      padding: 18px 46px;
-      border-radius: 60px;
+      font-size: 1.2rem;
+      padding: 14px 40px;
+      border-radius: 4px;    /* minimal rounding */
       cursor: pointer;
-      box-shadow: 0 6px 0 #b1580e;
-      transition: 0.12s;
+      box-shadow: 0 3px 0 #b1580e;
+      transition: 0.05s linear;
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      letter-spacing: 1px;
+      gap: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid #f39c12;
     }
 
     .submit-btn i {
-      font-size: 1.6rem;
+      font-size: 1.3rem;
     }
 
     .submit-btn:hover {
-      background: #ff983d;
-      transform: translateY(-3px);
-      box-shadow: 0 9px 0 #b1580e;
+      background: #f5b041;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 0 #b1580e;
     }
 
     .submit-btn:active {
-      transform: translateY(4px);
-      box-shadow: 0 2px 0 #b1580e;
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #b1580e;
     }
 
     .response-message {
-      font-weight: 600;
-      padding: 14px 24px;
-      border-radius: 60px;
-      background: #edf2f7;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 4px;
+      background: #2d343b;
+      border: 1px solid #3f4852;
+      color: #e5e9f0;
     }
 
     .response-success {
-      color: #0f5c2e;
-      background: #e0ffe6;
+      color: #ffffff;
+      background: #2b5e3b;
+      border-color: #f39c12;
     }
     .response-error {
-      color: #a13020;
-      background: #ffe6e0;
+      color: #ffffff;
+      background: #712b1f;
+      border-color: #f39c12;
     }
 
     footer {
-      background: white;
-      padding: 18px;
+      background: #23282e;
+      padding: 12px;
       text-align: center;
-      color: #556b7c;
-      font-size: 0.95rem;
-      border-top: 2px solid #f6861f30;
+      color: #8a9bb0;
+      font-size: 0.85rem;
+      border-top: 2px solid #f39c1230;
       margin-top: auto;
     }
 
-    /* dynamic visibility for parking/city fields */
-    .parking-fields, .city-fields {
+    /* action block visibility */
+    .action-block {
       display: none;
     }
-    .show-parking .parking-fields {
-      display: block;
-    }
-    .show-city .city-fields {
+    .action-block.visible {
       display: block;
     }
 
-    /* extra inline grouping */
-    .nested-rows {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
+    /* parking subtype visibility */
+    .parking-subtype-fields {
+      display: none;
+    }
+    .parking-subtype-fields.visible {
+      display: block;
     }
 
     @media (max-width: 800px) {
-      .action-card { padding: 24px 18px; }
-      .field-row { border-radius: 30px; }
+      .action-card { padding: 20px; }
     }
   </style>
 </head>
@@ -342,155 +340,186 @@
 <header>
   <div class="header-content">
     <div class="logo-area">
-      <i class="fas fa-clipboard-list logo-icon"></i>
+      <i class="fas fa-shield-alt logo-icon"></i>
       <div class="logo-text">
-        <h1>LSCS · ACTION REPORT</h1>
-        <div class="badge"><i class="fas fa-bolt"></i> OFFICIAL · LOS SANTOS CITY SERVICES</div>
+        <h1>LSCS· ACTIONS</h1>
       </div>
     </div>
     <div class="report-ref">
-      <i class="fas fa-qrcode"></i> <span id="headerReportCode">LSCS-0000</span>
+      <i class="fas fa-hashtag"></i> <span id="headerReportCode">LSCS-0000</span>
     </div>
   </div>
 </header>
 
 <main>
-  <div class="action-card" id="actionCard">
+  <div class="action-card">
     <div class="form-header">
       <h2>
-        <i class="fas fa-pen-to-square"></i> Field Action Report
+        <i class="fas fa-pen-to-square"></i> ACTION REPORT
       </h2>
-      <p>
-        <i class="fas fa-circle-info" style="color:#f6861f;"></i>
-        All lines are single · complete each field
-      </p>
+      <p>INTERNAL REPORTING</p>
     </div>
 
     <form id="actionForm" class="form-container">
-      <!-- UNIQUE REPORT CODE (random LSCS-XXXX) -->
+      <!-- UNIQUE REPORT CODE (readonly) -->
       <div class="field-row">
-        <label><i class="fas fa-hashtag"></i> Report code</label>
-        <input type="text" id="reportCode" name="reportCode" readonly value="LSCS-0000" style="background:#f2f2f2; font-weight:600;">
+        <label><i class="fas fa-barcode"></i> REPORT CODE</label>
+        <input type="text" id="reportCode" name="reportCode" readonly value="LSCS-0000" style="background:#1a1e24; font-weight:600; color:#f39c12;">
       </div>
 
-      <!-- ACTION TYPE DROPDOWN (Parking / City) -->
+      <!-- ACTION TYPE DROPDOWN -->
       <div class="field-row">
-        <label><i class="fas fa-bolt"></i> Action type</label>
+        <label><i class="fas fa-bolt"></i> ACTION TYPE</label>
         <select id="actionType" name="actionType" required>
-          <option value="" disabled selected>— select one —</option>
-          <option value="parking">🚗 Parking Action</option>
-          <option value="city">🏙️ City Action</option>
+          <option value="" disabled selected>— SELECT —</option>
+          <option value="parking">PARKING ENFORCEMENT</option>
+          <option value="publicworks">PUBLIC WORKS</option>
+          <option value="departmental">DEPARTMENTAL ACTION</option>
         </select>
       </div>
 
-      <!-- ========== PARKING ACTION FIELDS ========= -->
-      <div class="parking-fields" id="parkingFields">
-        <div class="nested-rows">
-          <div class="field-row">
-            <label><i class="far fa-calendar-alt"></i> Date & Time</label>
-            <input type="datetime-local" id="parkingTimestamp" name="parkingTimestamp">
+      <!-- PARKING ENFORCEMENT BLOCK -->
+      <div id="parkingBlock" class="action-block">
+        <div class="field-row">
+          <label><i class="fas fa-exclamation-triangle"></i> ENFORCEMENT TYPE</label>
+          <select id="parkingSubtype">
+            <option value="" disabled selected>— SELECT —</option>
+            <option value="impound">VEHICLE IMPOUND</option>
+            <option value="ticket">VEHICLE TICKET</option>
+          </select>
+        </div>
+
+        <!-- Impound Fields -->
+        <div id="impoundFields" class="parking-subtype-fields">
+          <div class="nested-rows">
+            <div class="field-row"><label><i class="far fa-calendar-alt"></i> DATE/TIME</label><input type="datetime-local" id="parkingImpoundDatetime"></div>
+            <div class="field-row"><label><i class="fas fa-map-pin"></i> LOCATION</label><input type="text" id="parkingImpoundLocation" placeholder="street/intersection"></div>
+            
+            <!-- GUIDELINE DROPDOWN for Impound -->
+            <div class="field-row">
+              <label><i class="fas fa-gavel"></i> GUIDELINE</label>
+              <select id="parkingImpoundGuideline">
+                <option value="" disabled selected>— SELECT VIOLATION —</option>
+                <optgroup label="MINOR VIOLATIONS">
+                  <option value="P-101 - Expired Parking Meter - $150 - No Tow">P-101 - Expired Parking Meter - $150 - No Tow</option>
+                  <option value="P-102 - Overtime in Time-Limited Zone - $200 - No Tow">P-102 - Overtime in Time-Limited Zone - $200 - No Tow</option>
+                  <option value="P-103 - Parking Within 5ft of Driveway - $200 - No Tow">P-103 - Parking Within 5ft of Driveway - $200 - No Tow</option>
+                  <option value="P-104 - Double Parking - $250 - No Tow">P-104 - Double Parking - $250 - No Tow</option>
+                  <option value="P-105 - Parking Facing Wrong Direction - $250 - No Tow">P-105 - Parking Facing Wrong Direction - $250 - No Tow</option>
+                  <option value="P-106 - Blocking Sidewalk - $300 - No Tow">P-106 - Blocking Sidewalk - $300 - No Tow</option>
+                  <option value="P-107 - Parking Over Line - $200 - No Tow">P-107 - Parking Over Line - $200 - No Tow</option>
+                  <option value="P-108 - Parking in No-Parking Zone - $300 - No Tow">P-108 - Parking in No-Parking Zone - $300 - No Tow</option>
+                </optgroup>
+                <optgroup label="MODERATE VIOLATIONS">
+                  <option value="P-201 - Blocking Fire Hydrant - $500 - Discretionary Tow">P-201 - Blocking Fire Hydrant - $500 - Discretionary Tow</option>
+                  <option value="P-202 - Blocking Emergency Access - $600 - Discretionary Tow">P-202 - Blocking Emergency Access - $600 - Discretionary Tow</option>
+                  <option value="P-203 - Parking in Bus Stop - $450 - Discretionary Tow">P-203 - Parking in Bus Stop - $450 - Discretionary Tow</option>
+                  <option value="P-204 - Unauthorized Loading Zone Parking - $400 - No Tow">P-204 - Unauthorized Loading Zone Parking - $400 - No Tow</option>
+                  <option value="P-205 - Disabled Bay (No Permit) - $750 - Discretionary Tow">P-205 - Disabled Bay (No Permit) - $750 - Discretionary Tow</option>
+                  <option value="P-206 - Government Restricted Zone - $600 - Discretionary Tow">P-206 - Government Restricted Zone - $600 - Discretionary Tow</option>
+                  <option value="P-207 - Abandoned Vehicle - $700 - Immediate Tow">P-207 - Abandoned Vehicle - $700 - Immediate Tow</option>
+                </optgroup>
+                <optgroup label="MAJOR VIOLATIONS">
+                  <option value="P-301 - Obstructing Traffic - $900 - Immediate Tow">P-301 - Obstructing Traffic - $900 - Immediate Tow</option>
+                  <option value="P-302 - Parking on Railroad Crossing - $1,200 - Immediate Tow">P-302 - Parking on Railroad Crossing - $1,200 - Immediate Tow</option>
+                  <option value="P-303 - Emergency Response Area - $1,000 - Immediate Tow">P-303 - Emergency Response Area - $1,000 - Immediate Tow</option>
+                  <option value="P-304 - Repeat Offender (3+ Unpaid) - $1,500 - Immediate Tow">P-304 - Repeat Offender (3+ Unpaid) - $1,500 - Immediate Tow</option>
+                  <option value="P-305 - Vehicle Deemed Hazardous - $1,000 - Immediate Tow">P-305 - Vehicle Deemed Hazardous - $1,000 - Immediate Tow</option>
+                </optgroup>
+              </select>
+            </div>
+            
+            <div class="field-row"><label><i class="fas fa-car"></i> VEHICLE DESC</label><input type="text" id="parkingImpoundVehicle" placeholder="make/model/plate"></div>
+            <div class="field-row"><label><i class="fas fa-camera"></i> EVIDENCE</label><textarea id="parkingImpoundEvidence" rows="1" placeholder="URL / reference"></textarea></div>
+            <div class="field-row"><label><i class="fas fa-align-left"></i> FURTHER DETAILS</label><textarea id="parkingImpoundDetails" rows="1" placeholder="additional info"></textarea></div>
           </div>
-          <div class="field-row">
-            <label><i class="fas fa-map-pin"></i> Location</label>
-            <input type="text" id="parkingLocation" placeholder="e.g., Vespucci Blvd & Palomino" >
-          </div>
-          <div class="field-row">
-            <label><i class="fas fa-gavel"></i> Guideline</label>
-            <select id="parkingGuideline">
-              <option value="">— select PRK code —</option>
-              <option>PRK001.1: Directly on an intersection, crosswalk or within 5 feet of an intersection or crosswalk.</option>
-              <option>PRK001.2: Vehicle abandonment on a sidewalk or intersection.</option>
-              <option>PRK001.3: Vehicle abandonment on a roadway</option>
-              <option>PRK001.4: Parked with THREE or more wheels on the sidewalk.</option>
-              <option>PRK001.5: Parked in front of, or within 5 feet of a Bus Stop, thus preventing flow of traffic.</option>
-              <option>PRK001.6: Parked in a marked No-Parking Zone or areas where such signage is visible.</option>
-              <option>PRK001.7: Vehicle abandonment within Pay-2-Park lots without payment.</option>
-              <option>PRK001.8: Parked in tunnels where such parking would pose a hazard.</option>
-              <option>PRK001.9: Parked on the interstate, posing a hazard.</option>
-              <option>PRK001.10: Vehicle blocking Emergency Services, Emergency Exits or Fire Lanes.</option>
-              <option>PRK001.11: Vehicle abandonment posing a risk.</option>
-              <option>PRK002.1: Vehicle parked in a Pay-2-Park zone with an expired ticket.</option>
-              <option>PRK002.2: Vehicle parked against flow of traffic.</option>
-              <option>PRK002.3: Vehicle parked during snowplowing periods.</option>
-              <option>PRK002.4: Vehicle parked outside of marked space.</option>
-              <option>PRK002.5: Vehicle parked in a construction only zone.</option>
-              <option>PRK002.6: Vehicle parked without required permit.</option>
-              <option>PRK003.1: Requested By LSPD</option>
-              <option>PRK003.2: Requested By LSFD</option>
-            </select>
-          </div>
-          <div class="field-row">
-            <label><i class="fas fa-car"></i> Vehicle Description</label>
-            <input type="text" id="parkingVehicle" placeholder="e.g., yellow Sultan / plate 4X 5FH" >
-          </div>
-          <div class="field-row">
-            <label><i class="fas fa-camera"></i> Photographic Evidence</label>
-            <textarea id="parkingPhoto" rows="1" placeholder="imgur link / description (full URL)"></textarea>
+        </div>
+
+        <!-- Ticket Fields -->
+        <div id="ticketFields" class="parking-subtype-fields">
+          <div class="nested-rows">
+            <div class="field-row"><label><i class="far fa-calendar-alt"></i> DATE/TIME</label><input type="datetime-local" id="parkingTicketDatetime"></div>
+            <div class="field-row"><label><i class="fas fa-map-pin"></i> LOCATION</label><input type="text" id="parkingTicketLocation" placeholder="street/intersection"></div>
+            
+            <!-- GUIDELINE DROPDOWN for Ticket -->
+            <div class="field-row">
+              <label><i class="fas fa-gavel"></i> GUIDELINE</label>
+              <select id="parkingTicketGuideline">
+                <option value="" disabled selected>— SELECT VIOLATION —</option>
+                <optgroup label="MINOR VIOLATIONS">
+                  <option value="P-101 - Expired Parking Meter - $150 - No Tow">P-101 - Expired Parking Meter - $150 - No Tow</option>
+                  <option value="P-102 - Overtime in Time-Limited Zone - $200 - No Tow">P-102 - Overtime in Time-Limited Zone - $200 - No Tow</option>
+                  <option value="P-103 - Parking Within 5ft of Driveway - $200 - No Tow">P-103 - Parking Within 5ft of Driveway - $200 - No Tow</option>
+                  <option value="P-104 - Double Parking - $250 - No Tow">P-104 - Double Parking - $250 - No Tow</option>
+                  <option value="P-105 - Parking Facing Wrong Direction - $250 - No Tow">P-105 - Parking Facing Wrong Direction - $250 - No Tow</option>
+                  <option value="P-106 - Blocking Sidewalk - $300 - No Tow">P-106 - Blocking Sidewalk - $300 - No Tow</option>
+                  <option value="P-107 - Parking Over Line - $200 - No Tow">P-107 - Parking Over Line - $200 - No Tow</option>
+                  <option value="P-108 - Parking in No-Parking Zone - $300 - No Tow">P-108 - Parking in No-Parking Zone - $300 - No Tow</option>
+                </optgroup>
+                <optgroup label="MODERATE VIOLATIONS">
+                  <option value="P-201 - Blocking Fire Hydrant - $500 - Discretionary Tow">P-201 - Blocking Fire Hydrant - $500 - Discretionary Tow</option>
+                  <option value="P-202 - Blocking Emergency Access - $600 - Discretionary Tow">P-202 - Blocking Emergency Access - $600 - Discretionary Tow</option>
+                  <option value="P-203 - Parking in Bus Stop - $450 - Discretionary Tow">P-203 - Parking in Bus Stop - $450 - Discretionary Tow</option>
+                  <option value="P-204 - Unauthorized Loading Zone Parking - $400 - No Tow">P-204 - Unauthorized Loading Zone Parking - $400 - No Tow</option>
+                  <option value="P-205 - Disabled Bay (No Permit) - $750 - Discretionary Tow">P-205 - Disabled Bay (No Permit) - $750 - Discretionary Tow</option>
+                  <option value="P-206 - Government Restricted Zone - $600 - Discretionary Tow">P-206 - Government Restricted Zone - $600 - Discretionary Tow</option>
+                  <option value="P-207 - Abandoned Vehicle - $700 - Immediate Tow">P-207 - Abandoned Vehicle - $700 - Immediate Tow</option>
+                </optgroup>
+                <optgroup label="MAJOR VIOLATIONS">
+                  <option value="P-301 - Obstructing Traffic - $900 - Immediate Tow">P-301 - Obstructing Traffic - $900 - Immediate Tow</option>
+                  <option value="P-302 - Parking on Railroad Crossing - $1,200 - Immediate Tow">P-302 - Parking on Railroad Crossing - $1,200 - Immediate Tow</option>
+                  <option value="P-303 - Emergency Response Area - $1,000 - Immediate Tow">P-303 - Emergency Response Area - $1,000 - Immediate Tow</option>
+                  <option value="P-304 - Repeat Offender (3+ Unpaid) - $1,500 - Immediate Tow">P-304 - Repeat Offender (3+ Unpaid) - $1,500 - Immediate Tow</option>
+                  <option value="P-305 - Vehicle Deemed Hazardous - $1,000 - Immediate Tow">P-305 - Vehicle Deemed Hazardous - $1,000 - Immediate Tow</option>
+                </optgroup>
+              </select>
+            </div>
+            
+            <div class="field-row"><label><i class="fas fa-car"></i> VEHICLE DESC</label><input type="text" id="parkingTicketVehicle" placeholder="make/model/plate"></div>
+            <div class="field-row"><label><i class="fas fa-camera"></i> EVIDENCE</label><textarea id="parkingTicketEvidence" rows="1" placeholder="URL / reference"></textarea></div>
+            <div class="field-row"><label><i class="fas fa-align-left"></i> FURTHER DETAILS</label><textarea id="parkingTicketDetails" rows="1" placeholder="additional info"></textarea></div>
           </div>
         </div>
       </div>
 
-      <!-- ========== CITY ACTION FIELDS ========= -->
-      <div class="city-fields" id="cityFields">
+      <!-- PUBLIC WORKS BLOCK -->
+      <div id="publicworksBlock" class="action-block">
         <div class="nested-rows">
-          <div class="field-row">
-            <label><i class="far fa-calendar-alt"></i> Date & Time</label>
-            <input type="datetime-local" id="cityTimestamp" name="cityTimestamp">
-          </div>
-          <div class="field-row">
-            <label><i class="fas fa-map-pin"></i> Location</label>
-            <input type="text" id="cityLocation" placeholder="street / district" >
-          </div>
-          <div class="field-row">
-            <label><i class="fas fa-tasks"></i> Action Taken</label>
-            <select id="cityActionTaken">
-              <option value="">— select —</option>
-              <option value="Graffiti Removal">Graffiti Removal</option>
-              <option value="Road Closure">Road Closure</option>
-              <option value="Road Disruption">Road Disruption</option>
-              <option value="Trashcan Empty">Trashcan Empty</option>
-              <option value="Trashcan Removal">Trashcan Removal</option>
-              <option value="Other">Other (click below)</option>
-            </select>
-          </div>
-          <!-- other reason (conditional) -->
-          <div class="other-reason-field" id="otherReasonContainer">
-            <label><i class="fas fa-pen"></i> Other description</label>
-            <input type="text" id="cityOtherReason" placeholder="specify action...">
-          </div>
-          <div class="field-row">
-            <label><i class="fas fa-note-sticky"></i> Details of Action</label>
-            <textarea id="cityDetails" rows="1" placeholder="full description / paragraph"></textarea>
-          </div>
-          <div class="field-row">
-            <label><i class="fas fa-question-circle"></i> Reason for Action</label>
-            <input type="text" id="cityReason" placeholder="why this action?">
-          </div>
+          <div class="field-row"><label><i class="far fa-calendar-alt"></i> DATE/TIME</label><input type="datetime-local" id="publicworksDatetime"></div>
+          <div class="field-row"><label><i class="fas fa-map-pin"></i> LOCATION</label><input type="text" id="publicworksLocation" placeholder="street/district"></div>
+          <div class="field-row"><label><i class="fas fa-broom"></i> ACTION DETAILS</label><textarea id="publicworksDetails" rows="2" placeholder="description of work"></textarea></div>
+          <div class="field-row"><label><i class="fas fa-camera"></i> EVIDENCE</label><textarea id="publicworksEvidence" rows="1" placeholder="URL / reference"></textarea></div>
         </div>
       </div>
 
-      <!-- COMMON FIELDS (Officer + Badge) -->
+      <!-- DEPARTMENTAL ACTION BLOCK -->
+      <div id="departmentalBlock" class="action-block">
+        <div class="nested-rows">
+          <div class="field-row"><label><i class="far fa-calendar-alt"></i> DATE/TIME</label><input type="datetime-local" id="departmentalDatetime"></div>
+          <div class="field-row"><label><i class="fas fa-sticky-note"></i> ACTION DETAILS</label><textarea id="departmentalDetails" rows="3" placeholder="internal action description"></textarea></div>
+        </div>
+      </div>
+
+      <!-- OPERATIVE & BADGE (always visible) -->
       <div class="field-row">
-        <label><i class="fas fa-user-tie"></i> Officer Name</label>
-        <input type="text" id="officerName" placeholder="full name" required>
+        <label><i class="fas fa-user-tie"></i> OPERATIVE</label>
+        <input type="text" id="operativeName" placeholder="full name" required>
       </div>
 
       <div class="field-row">
-        <label><i class="fas fa-id-badge"></i> Badge Number</label>
+        <label><i class="fas fa-id-badge"></i> BADGE</label>
         <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
           <span class="badge-hint"><i class="fas fa-lock"></i> CS</span>
-          <input type="text" id="badgeNumber" placeholder="two‑digit number (e.g., 17)" style="flex:1; min-width:140px;" required>
+          <input type="text" id="badgeNumber" placeholder="##" style="flex:1; min-width:80px;" required>
         </div>
       </div>
 
       <hr class="section-divider">
 
-      <!-- NO IP FIELD – REMOVED AS REQUESTED -->
-
       <div class="submit-area">
         <div id="formResponse" class="response-message"></div>
         <button type="submit" class="submit-btn">
-          <i class="fas fa-paper-plane"></i> SUBMIT REPORT
+          <i class="fas fa-paper-plane"></i> SUBMIT
         </button>
       </div>
     </form>
@@ -498,7 +527,7 @@
 </main>
 
 <footer>
-  <i class="fas fa-shield"></i> LSCS · official action reporting
+  <i class="fas fa-shield"></i> LSCS MOBILE DATA COMPUTER · v.3
 </footer>
 
 <script>
@@ -506,49 +535,35 @@
     const form = document.getElementById('actionForm');
     const responseDiv = document.getElementById('formResponse');
     const actionType = document.getElementById('actionType');
-    const card = document.getElementById('actionCard');
     const headerCodeSpan = document.getElementById('headerReportCode');
     const reportCodeInput = document.getElementById('reportCode');
 
-    // random LSCS-XXXX generator (4 digits)
+    const parkingBlock = document.getElementById('parkingBlock');
+    const publicworksBlock = document.getElementById('publicworksBlock');
+    const departmentalBlock = document.getElementById('departmentalBlock');
+    
+    const parkingSubtype = document.getElementById('parkingSubtype');
+    const impoundFields = document.getElementById('impoundFields');
+    const ticketFields = document.getElementById('ticketFields');
+
+    // Your webhooks
+    const WEBHOOK_PARKING = 'https://discord.com/api/webhooks/1475979734377693307/2xtdfsR9wPRwNbCc4a8SPVqsnr4Bsc0B2W-ITDN6-k4XAjQb4mSGfXLXkM7Y7EgqT9f0';
+    const WEBHOOK_PUBLICWORKS = 'https://discord.com/api/webhooks/1477778745850073291/kSqwt0eupya4JudHq7atM7RUDvzZPpEWeE0vnEgKXZFDr-LlfF-ikiPshs3jdMHX4VGq';
+    const WEBHOOK_DEPARTMENTAL = 'https://discord.com/api/webhooks/1477778858261614644/TuFYB_tHSV3qFE7oh2gL5coSJlyg9_5hShcL0FMuEGeC-9ZnL89uvxsRpIaD3PNNhV0w';
+
     function randomLSCScode() {
-      const rand = Math.floor(Math.random() * 9000 + 1000); // 1000-9999
+      const rand = Math.floor(Math.random() * 9000 + 1000);
       return `LSCS-${rand}`;
     }
-
+    
     function setNewCode() {
       const code = randomLSCScode();
       reportCodeInput.value = code;
       headerCodeSpan.textContent = code;
     }
-    setNewCode(); // initial
+    setNewCode();
 
-    // toggling parking / city classes
-    function updateVisibility() {
-      const val = actionType.value;
-      card.classList.remove('show-parking', 'show-city');
-      if (val === 'parking') {
-        card.classList.add('show-parking');
-      } else if (val === 'city') {
-        card.classList.add('show-city');
-      }
-    }
-    actionType.addEventListener('change', updateVisibility);
-    updateVisibility(); // run on load
-
-    // "Other" reason field toggle for city
-    const cityActionSelect = document.getElementById('cityActionTaken');
-    const otherContainer = document.getElementById('otherReasonContainer');
-    cityActionSelect.addEventListener('change', function() {
-      if (this.value === 'Other') {
-        otherContainer.classList.add('active');
-      } else {
-        otherContainer.classList.remove('active');
-      }
-    });
-
-    // set default datetimes (now)
-    function setDefaultDatetime() {
+    function setDefaultDatetimes() {
       const now = new Date();
       const year = now.getFullYear();
       const month = String(now.getMonth() + 1).padStart(2,'0');
@@ -557,133 +572,203 @@
       const minutes = String(now.getMinutes()).padStart(2,'0');
       const value = `${year}-${month}-${day}T${hours}:${minutes}`;
       
-      const parkingDT = document.getElementById('parkingTimestamp');
-      const cityDT = document.getElementById('cityTimestamp');
-      if (parkingDT) parkingDT.value = value;
-      if (cityDT) cityDT.value = value;
+      ['parkingImpoundDatetime','parkingTicketDatetime','publicworksDatetime','departmentalDatetime'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = value;
+      });
     }
-    setDefaultDatetime();
+    setDefaultDatetimes();
 
-    // IP FUNCTION REMOVED – no IP fetch, no IP field
+    function updateMainVisibility() {
+      const val = actionType.value;
+      parkingBlock.classList.remove('visible');
+      publicworksBlock.classList.remove('visible');
+      departmentalBlock.classList.remove('visible');
+      impoundFields.classList.remove('visible');
+      ticketFields.classList.remove('visible');
+      if (parkingSubtype) parkingSubtype.value = '';
 
-    // submit handler
+      if (val === 'parking') parkingBlock.classList.add('visible');
+      else if (val === 'publicworks') publicworksBlock.classList.add('visible');
+      else if (val === 'departmental') departmentalBlock.classList.add('visible');
+    }
+    
+    actionType.addEventListener('change', updateMainVisibility);
+    updateMainVisibility();
+
+    parkingSubtype.addEventListener('change', function() {
+      const sub = this.value;
+      impoundFields.classList.remove('visible');
+      ticketFields.classList.remove('visible');
+      if (sub === 'impound') impoundFields.classList.add('visible');
+      else if (sub === 'ticket') ticketFields.classList.add('visible');
+    });
+
+    function formatBadge(raw) {
+      return `CS-${raw.padStart(2,'0').slice(0,2)}`;
+    }
+
+    // Helper to format datetime for Discord
+    function formatDateTime(datetimeString) {
+      if (!datetimeString) return 'Not specified';
+      const date = new Date(datetimeString);
+      return date.toLocaleString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric',
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+      });
+    }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       responseDiv.textContent = '';
       responseDiv.className = 'response-message';
 
-      const type = actionType.value;
-      if (!type) {
-        responseDiv.textContent = '❌ Select Parking Action or City Action.';
+      const mainType = actionType.value;
+      if (!mainType) {
+        responseDiv.textContent = '❌ SELECT ACTION TYPE';
         responseDiv.classList.add('response-error');
         return;
       }
 
-      // common
-      const officerName = document.getElementById('officerName').value.trim();
-      let badgeRaw = document.getElementById('badgeNumber').value.trim();
-      const badgeFull = badgeRaw ? `CS-${badgeRaw.padStart(2,'0').slice(0,2)}` : 'CS-??';
-
-      if (!officerName || !badgeRaw) {
-        responseDiv.textContent = '❌ Officer name and badge number required.';
+      const operative = document.getElementById('operativeName').value.trim();
+      const badgeRaw = document.getElementById('badgeNumber').value.trim();
+      if (!operative || !badgeRaw) {
+        responseDiv.textContent = '❌ OPERATIVE & BADGE REQUIRED';
         responseDiv.classList.add('response-error');
         return;
       }
+      const badgeFull = formatBadge(badgeRaw);
 
-      // building embed fields (simple lines, no inline limits)
       let fields = [];
+      let targetWebhook = '';
+      let reportTitle = '';
 
-      // base report code
-      fields.push({ name: '📋 Report Code', value: reportCodeInput.value, inline: false });
+      // Add report code as first field (inline false = full width)
+      fields.push({ name: '📋 **REPORT CODE**', value: reportCodeInput.value, inline: false });
 
-      if (type === 'parking') {
-        const dt = document.getElementById('parkingTimestamp').value;
-        const loc = document.getElementById('parkingLocation').value.trim();
-        const guid = document.getElementById('parkingGuideline').value.trim();
-        const vehicle = document.getElementById('parkingVehicle').value.trim();
-        const photo = document.getElementById('parkingPhoto').value.trim();
-
-        if (!dt || !loc || !guid || !vehicle || !photo) {
-          responseDiv.textContent = '❌ Please fill all parking fields.';
+      if (mainType === 'parking') {
+        const sub = parkingSubtype.value;
+        if (!sub) {
+          responseDiv.textContent = '❌ SELECT IMPOUND OR TICKET';
           responseDiv.classList.add('response-error');
           return;
         }
 
-        fields.push({ name: '🕒 Date & Time', value: dt.replace('T', ' · ') || 'N/A', inline: false });
-        fields.push({ name: '📍 Location', value: loc, inline: false });
-        fields.push({ name: '📏 Guideline', value: guid, inline: false });
-        fields.push({ name: '🚙 Vehicle Description', value: vehicle, inline: false });
-        fields.push({ name: '📸 Photographic Evidence', value: photo, inline: false }); // full URL
-      } 
-      else { // city
-        const dt = document.getElementById('cityTimestamp').value;
-        const loc = document.getElementById('cityLocation').value.trim();
-        let actionTaken = document.getElementById('cityActionTaken').value;
-        const details = document.getElementById('cityDetails').value.trim();
-        const reason = document.getElementById('cityReason').value.trim();
+        // Set title based on subtype
+        reportTitle = sub === 'impound' ? '🚨 **VEHICLE IMPOUND REPORT**' : '📄 **VEHICLE TICKET REPORT**';
 
-        if (!dt || !loc || !actionTaken || !details || !reason) {
-          responseDiv.textContent = '❌ Fill all city fields (action, details, reason).';
+        let dt, loc, guide, vehicle, evidence, details;
+        if (sub === 'impound') {
+          dt = document.getElementById('parkingImpoundDatetime').value;
+          loc = document.getElementById('parkingImpoundLocation').value.trim();
+          guide = document.getElementById('parkingImpoundGuideline').value;
+          vehicle = document.getElementById('parkingImpoundVehicle').value.trim();
+          evidence = document.getElementById('parkingImpoundEvidence').value.trim();
+          details = document.getElementById('parkingImpoundDetails').value.trim();
+        } else {
+          dt = document.getElementById('parkingTicketDatetime').value;
+          loc = document.getElementById('parkingTicketLocation').value.trim();
+          guide = document.getElementById('parkingTicketGuideline').value;
+          vehicle = document.getElementById('parkingTicketVehicle').value.trim();
+          evidence = document.getElementById('parkingTicketEvidence').value.trim();
+          details = document.getElementById('parkingTicketDetails').value.trim();
+        }
+
+        if (!dt || !loc || !guide || !vehicle || !evidence || !details) {
+          responseDiv.textContent = '❌ FILL ALL PARKING FIELDS';
           responseDiv.classList.add('response-error');
           return;
         }
 
-        // handle "Other" text
-        if (actionTaken === 'Other') {
-          const otherText = document.getElementById('cityOtherReason').value.trim();
-          if (!otherText) {
-            responseDiv.textContent = '❌ Please specify "Other" action.';
-            responseDiv.classList.add('response-error');
-            return;
-          }
-          actionTaken = `Other: ${otherText}`;
+        // All fields with inline: false for single column
+        fields.push({ name: '📅 **DATE & TIME**', value: formatDateTime(dt), inline: false });
+        fields.push({ name: '📍 **LOCATION**', value: loc, inline: false });
+        fields.push({ name: '⚖️ **GUIDELINE**', value: guide, inline: false });
+        fields.push({ name: '🚗 **VEHICLE DESCRIPTION**', value: vehicle, inline: false });
+        fields.push({ name: '📸 **EVIDENCE**', value: evidence || 'No evidence provided', inline: false });
+        fields.push({ name: '📝 **FURTHER DETAILS**', value: details || 'No additional details', inline: false });
+
+        targetWebhook = WEBHOOK_PARKING;
+      }
+      else if (mainType === 'publicworks') {
+        reportTitle = '🛠️ **PUBLIC WORKS REPORT**';
+        
+        const dt = document.getElementById('publicworksDatetime').value;
+        const loc = document.getElementById('publicworksLocation').value.trim();
+        const details = document.getElementById('publicworksDetails').value.trim();
+        const evidence = document.getElementById('publicworksEvidence').value.trim();
+
+        if (!dt || !loc || !details || !evidence) {
+          responseDiv.textContent = '❌ FILL ALL PUBLIC WORKS FIELDS';
+          responseDiv.classList.add('response-error');
+          return;
         }
 
-        fields.push({ name: '🕒 Date & Time', value: dt.replace('T', ' · ') || 'N/A', inline: false });
-        fields.push({ name: '📍 Location', value: loc, inline: false });
-        fields.push({ name: '🔨 Action Taken', value: actionTaken, inline: false });
-        fields.push({ name: '📝 Details of Action', value: details, inline: false });
-        fields.push({ name: '❓ Reason for Action', value: reason, inline: false });
+        fields.push({ name: '📅 **DATE & TIME**', value: formatDateTime(dt), inline: false });
+        fields.push({ name: '📍 **LOCATION**', value: loc, inline: false });
+        fields.push({ name: '🔨 **ACTION DETAILS**', value: details, inline: false });
+        fields.push({ name: '📸 **EVIDENCE**', value: evidence || 'No evidence provided', inline: false });
+
+        targetWebhook = WEBHOOK_PUBLICWORKS;
+      }
+      else if (mainType === 'departmental') {
+        reportTitle = '📋 **DEPARTMENTAL ACTION REPORT**';
+        
+        const dt = document.getElementById('departmentalDatetime').value;
+        const details = document.getElementById('departmentalDetails').value.trim();
+
+        if (!dt || !details) {
+          responseDiv.textContent = '❌ FILL DATE/TIME AND DETAILS';
+          responseDiv.classList.add('response-error');
+          return;
+        }
+
+        fields.push({ name: '📅 **DATE & TIME**', value: formatDateTime(dt), inline: false });
+        fields.push({ name: '📝 **ACTION DETAILS**', value: details, inline: false });
+
+        targetWebhook = WEBHOOK_DEPARTMENTAL;
       }
 
-      // common officer and badge (IP removed)
-      fields.push({ name: '👮 Officer Name', value: officerName, inline: false });
-      fields.push({ name: '🪪 Badge Number', value: badgeFull, inline: false });
-      // NO IP FIELD
+      // Add operative and badge to all reports
+      fields.push({ name: '👮 **OPERATIVE**', value: operative, inline: false });
+      fields.push({ name: '🪪 **BADGE NUMBER**', value: badgeFull, inline: false });
 
-      // Discord embed
       const embed = {
-        title: 'LSCS · Action Report',
-        color: 0xf6861f, // orange
+        title: reportTitle || 'LSCS ACTION REPORT',
+        color: 0xf39c12,
         fields: fields,
-        footer: { text: 'Los Santos City Services · Reporting' },
+        footer: { text: '🏛️ Los Santos City Services · MDC v.3' },
         timestamp: new Date().toISOString()
       };
 
-      const webhookURL = 'https://discord.com/api/webhooks/1475979734377693307/2xtdfsR9wPRwNbCc4a8SPVqsnr4Bsc0B2W-ITDN6-k4XAjQb4mSGfXLXkM7Y7EgqT9f0';
-
       try {
-        const res = await fetch(webhookURL, {
+        const res = await fetch(targetWebhook, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: null, embeds: [embed] })
+          body: JSON.stringify({ embeds: [embed] })
         });
 
         if (res.ok) {
-          responseDiv.textContent = '✅ Action report filed.';
+          responseDiv.textContent = '✅ **REPORT TRANSMITTED SUCCESSFULLY!**';
           responseDiv.classList.add('response-success');
-
-          // reset form but keep new random code
           form.reset();
-          setNewCode();           // fresh LSCS-XXXX
-          setDefaultDatetime();   // set both timestamps to now
-          card.classList.remove('show-parking', 'show-city'); // hide dynamic sections
-          otherContainer.classList.remove('active'); // hide other
+          setNewCode();
+          setDefaultDatetimes();
+          parkingBlock.classList.remove('visible');
+          publicworksBlock.classList.remove('visible');
+          departmentalBlock.classList.remove('visible');
+          impoundFields.classList.remove('visible');
+          ticketFields.classList.remove('visible');
+          actionType.value = '';
         } else {
           throw new Error(`HTTP ${res.status}`);
         }
       } catch (err) {
-        responseDiv.textContent = '❌ Discord webhook error.';
+        responseDiv.textContent = '❌ **TRANSMISSION ERROR - CHECK CONNECTION**';
         responseDiv.classList.add('response-error');
         console.error(err);
       }
