@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LSCS · Onboarding Portal | City Operative Handbook</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px; /* Ensures anchor scrolls with offset for sticky header */
+    }
+
+    body {
+      background: #eef2f7;
+      font-family: 'Inter', sans-serif;
+      color: #1e2f3e;
+      line-height: 1.5;
+    }
+
+    /* Header - Fixed for better UX */
+    .lscs-header {
+      background: #0a1c2a;
+      border-bottom: 4px solid #e6b422;
+      padding: 16px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-icon {
+      font-size: 1.8rem;
+      color: #e6b422;
+    }
+
+    .logo-text h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .logo-text p {
+      font-size: 0.65rem;
+      color: #9ab3c9;
+    }
+
+    .badge-official {
+      background: #2c4c6c;
+      padding: 5px 14px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #e6b422;
+    }
+
+    /* WIKI LAYOUT: SIDEBAR + CONTENT */
+    .wiki-layout {
+      display: flex;
+      max-width: 1400px;
+      margin: 28px auto;
+      padding: 0 24px;
+      gap: 32px;
+      min-height: calc(100vh - 100px);
+    }
+
+    /* LEFT SIDEBAR NAVIGATION */
+    .wiki-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      padding: 24px 0;
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
+    }
+
+    .sidebar-section {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      color: #6c86a0;
+      padding: 0 20px 8px 20px;
+      border-bottom: 1px solid #e9eff4;
+      margin-bottom: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      margin: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #3a5a78;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .nav-item i {
+      width: 24px;
+      color: #8aaec0;
+      font-size: 1rem;
+    }
+
+    .nav-item:hover {
+      background: #f0f4fa;
+      color: #0a2f44;
+    }
+
+    .nav-item.active {
+      background: #fef7e0;
+      color: #e6b422;
+      border-left: 3px solid #e6b422;
+      border-radius: 12px 8px 8px 12px;
+    }
+
+    .nav-item.active i {
+      color: #e6b422;
+    }
+
+    /* MAIN CONTENT AREA */
+    .wiki-content {
+      flex: 1;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      padding: 36px 40px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* PAGE STYLES */
+    .page {
+      display: none;
+    }
+
+    .page.active-page {
+      display: block;
+    }
+
+    .page-header {
+      border-left: 5px solid #e6b422;
+      padding-left: 20px;
+      margin-bottom: 28px;
+    }
+
+    .page-header h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0a2f44;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .page-header p {
+      color: #5f7d9c;
+      margin-top: 6px;
+    }
+
+    /* anchor link styling */
+    .anchor-link {
+      color: #8aaec0;
+      font-size: 0.75rem;
+      margin-left: 12px;
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.1s;
+    }
+    .anchor-link:hover {
+      opacity: 1;
+      color: #e6b422;
+    }
+
+    .subsection {
+      margin: 32px 0 24px;
+    }
+
+    .subsection h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1e4a6e;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subsection h3 i {
+      color: #e6b422;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .info-card {
+      background: #f9fbfd;
+      border: 1px solid #e2e9f0;
+      border-radius: 16px;
+      padding: 20px;
+      transition: 0.1s;
+    }
+
+    .info-card i {
+      font-size: 1.6rem;
+      color: #e6b422;
+      margin-bottom: 12px;
+    }
+
+    .info-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .info-card p, .info-card ul {
+      font-size: 0.85rem;
+      color: #3b5c7a;
+    }
+
+    .info-card ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    .rule-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .rule-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid #e9eff4;
+      display: flex;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .rule-list li i {
+      color: #e6b422;
+      margin-top: 3px;
+      width: 22px;
+    }
+
+    .roster-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    .roster-table th, .roster-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e2e9f0;
+    }
+
+    .roster-table th {
+      background: #f0f4fa;
+      font-weight: 600;
+      color: #1e4a6e;
+    }
+
+    .command-block {
+      background: #1e2f3c;
+      color: #eef4ff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      margin: 8px 0;
+    }
+
+    .badge-rank {
+      display: inline-block;
+      background: #e6b42220;
+      color: #b57c1c;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .contract-box {
+      background: #fef7e0;
+      border: 1px solid #f3d9a0;
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .sign-btn {
+      background: #0a2f44;
+      color: white;
+      border: none;
+      padding: 14px 36px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.1s;
+      margin-top: 16px;
+    }
+
+    .sign-btn:hover {
+      background: #e6b422;
+      color: #0a2f44;
+    }
+
+    .sign-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .webhook-status {
+      margin-top: 12px;
+      font-size: 0.75rem;
+    }
+
+    footer {
+      background: #0a1c2a;
+      color: #8aaec0;
+      text-align: center;
+      padding: 20px;
+      margin-top: 20px;
+      font-size: 0.75rem;
+    }
+
+    /* Scroll offset helper for hash navigation */
+    .scroll-target {
+      scroll-margin-top: 100px;
+    }
+
+    @media (max-width: 860px) {
+      .wiki-layout { flex-direction: column; }
+      .wiki-sidebar { width: 100%; position: relative; top: 0; max-height: none; }
+      .wiki-content { padding: 24px; }
+      html { scroll-padding-top: 80px; }
+      .lscs-header { padding: 12px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="lscs-header">
+  <div class="header-container">
+    <div class="logo-area">
+      <i class="fas fa-city logo-icon"></i>
+      <div class="logo-text">
+        <h1>Los Santos City Services </h1>
+        <p>City Operative Handbook & Induction Portal</p>
+      </div>
+    </div>
+    <div class="badge-official">
+      <i class="fas fa-shield-alt"></i> Official Handbook
+    </div>
+  </div>
+</header>
+
+<div class="wiki-layout">
+  <!-- LEFT SIDEBAR NAVIGATION -->
+  <div class="wiki-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title"><i class="fas fa-info-circle"></i> START HERE</div>
+      <div class="nav-item" data-page="welcome"><i class="fas fa-hand-wave"></i> Welcome & Overview</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title"><i class="fas fa-gavel"></i> CORE INFORMATION</div>
+      <div class="nav-item" data-page="rules"><i class="fas fa-scale-balanced"></i> Internal Rules</div>
+      <div class="nav-item" data-page="ranks"><i class="fas fa-chart-line"></i> Ranks & Roster</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title"><i class="fas fa-user-hard-hat"></i> UNDERSTANDING THE ROLE</div>
+      <div class="nav-item" data-page="whatis"><i class="fas fa-question-circle"></i> What Is A City Operative?</div>
+      <div class="nav-item" data-page="commands"><i class="fas fa-terminal"></i> In-Game Commands</div>
+      <div class="nav-item" data-page="resources"><i class="fas fa-city"></i> Properties & Vehicles</div>
+      <div class="nav-item" data-page="uniform"><i class="fas fa-shirt"></i> Uniform & Equipment</div>
+      <div class="nav-item" data-page="mdt"><i class="fas fa-laptop-code"></i> MDT System</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title"><i class="fas fa-clipboard-list"></i> CITY OPERATIVE DUTIES</div>
+      <div class="nav-item" data-page="parking"><i class="fas fa-parking"></i> Parking Enforcement</div>
+      <div class="nav-item" data-page="publicworks"><i class="fas fa-brush"></i> Public Works</div>
+      <div class="nav-item" data-page="impound"><i class="fas fa-truck-ramp-box"></i> Impound Procedures</div>
+      <div class="nav-item" data-page="ticket"><i class="fas fa-ticket-alt"></i> Citation Guidelines</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title"><i class="fas fa-handshake"></i> EXTERNAL COORDINATION</div>
+      <div class="nav-item" data-page="external"><i class="fas fa-ambulance"></i> LSPD / FD / Other Agencies</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title"><i class="fas fa-file-signature"></i> FINAL STEP</div>
+      <div class="nav-item" data-page="contract"><i class="fas fa-file-contract"></i> Employment Contract</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT - All Pages with anchor links -->
+<div class="wiki-content">
+    <!-- PAGE: WELCOME & OVERVIEW -->
+    <div id="welcome" class="page active-page">
+      <div class="page-header">
+        <h2><i class="fas fa-hand-wave"></i> Welcome to Los Santos City Services <a href="#welcome" class="anchor-link" id="anchor-welcome">#</a></h2>
+        <p>Your journey as a City Operative begins here.</p>
+      </div>
+      <p>Los Santos City Services is the government department responsible for Parking Enforcement and Public Works. This includes ticketing & impounding of vehicles in breach of violations, street maintenance and much more. As a City Operative, you represent the department with professionalism, integrity and dedicated to public service.</p>
+      
+      <div class="card-grid" style="margin-top: 28px;">
+        <div class="info-card"><i class="fas fa-bullhorn"></i><h4>Mission Statement</h4><p>To maintain order, safety, and functionality across Los Santos through dedicated service and community partnership.</p></div>
+        <div class="info-card"><i class="fas fa-eye"></i><h4>Core Objective</h4><p>As a department, our core objective is simple. To deliver a safe, clean city for the people that live in it. Whether it be through removing illegally parked cars, or street cleaning.</p></div>
+        <div class="info-card"><i class="fas fa-flag-checkered"></i><h4>Your Impact</h4><p>You make a difference. Whether it be cleaning a street, removing a vehicle, or repairing a street light, you improve Los Santos for our citizens and visitors.</p></div>
+      </div>
+      
+      <!-- Additional content section - continue writing below -->
+      <div class="additional-content" style="margin-top: 32px;">
+        <p>This document forms the official handbook for City Operatives. Here, you can find information relating to every area of the department, including your role as a City Operative and what we have available in order for you to complete your job. If you are reading this handbook as a new operative to the department, you will find the Official Contact on the last page, which needs to be signed and submitted in full.</p>
+        <!-- PASTE YOUR CONTINUED CONTENT HERE -->
+        
+      </div>
+    </div>
+
+<!-- PAGE: INTERNAL RULES -->
+<div id="rules" class="page">
+  <div class="page-header">
+    <h2><i class="fas fa-scale-balanced"></i> Internal Rules & Requirements <a href="#rules" class="anchor-link">#</a></h2>
+    <p>Standards of conduct for all personnel.</p>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-gavel"></i> Departmental Rules</h3>
+    <ul class="rule-list">
+      <li><i class="fas fa-tshirt"></i> <strong>Uniform:</strong> All operatives must wear full uniform while on duty. This relates to the uniforms offered in your lockers.</li>
+      <li><i class="fas fa-car"></i> <strong>Vehicles:</strong> No use of personal vehicles while on duty. No speeding or dangerous driving in work vehicles.</li>
+      <li><i class="fas fa-smoking-ban"></i> <strong>Conduct:</strong> No smoking while in uniform. No transporting of individuals outside of the department using faction vehicles.</li>
+      <li><i class="fas fa-door-open"></i> <strong>Facility Security:</strong> Ensure the gates on our sites are closed after use.</li>
+      <li><i class="fas fa-heart-broken"></i> <strong>Personal Conduct:</strong> No inter-personnel relationships of any kind.</li>
+      <li><i class="fas fa-shield-alt"></i> <strong>Confidentiality:</strong> No sharing of departmental information or data with ANY third parties.</li>
+    </ul>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-star-of-life"></i> Expectations</h3>
+    <ul class="rule-list">
+      <li><i class="fas fa-user-tie"></i> <strong>Professionalism:</strong> Always conduct yourself with respect toward citizens and fellow operatives. Represent with dignity.</li>
+      <li><i class="fas fa-hand-peace"></i> <strong>Integrity:</strong> Honesty and ethical behavior are non-negotiable. Uphold the values of the department in every action.</li>
+      <li><i class="fas fa-chart-line"></i> <strong>Activity:</strong> Maintain regular attendance and active participation in departmental duties. Log hours via MDT Clock In/Out.</li>
+      <li><i class="fas fa-sitemap"></i> <strong>Chain of Command:</strong> Follow rank structure; escalate issues through proper channels. Respect seniority and protocol.</li>
+      <li><i class="fas fa-tools"></i> <strong>Equipment Care:</strong> Department vehicles and tools must be maintained and returned in good condition. Report any damage.</li>
+      <li><i class="fas fa-laptop-code"></i> <strong>MDT Usage:</strong> Mobile Data Terminal is for official use only — no unauthorized activity. All reports must be accurate.</li>
+      <li><i class="fas fa-file-alt"></i> <strong>Reports:</strong> All enforcement actions, impounds, and public works tasks require detailed, factual MDT reports.</li>
+    </ul>
+  </div>
+</div>
+
+    <!-- PAGE: RANKS & ROSTER -->
+    <div id="ranks" class="page">
+      <div class="page-header">
+        <h2><i class="fas fa-chart-line"></i> LSCS Ranks & Roster <a href="#ranks" class="anchor-link">#</a></h2>
+        <p>Promotion path and responsibilities.</p>
+      </div>
+      <table class="roster-table">
+        <thead><tr><th>Rank</th><th>Insignia</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Director</strong></td><td><span class="badge-rank">CS01</span></td><td>Barry Martin</td></tr>
+          <tr><td><strong>City Operative II</strong></td><td><span class="badge-rank">CS03</span></td><td>Katherine Graves</td></tr>
+          <tr><td><strong>City Operative I</strong></td><td><span class="badge-rank">CS02</span></td><td>Raphael Russel</td></tr>
+          <tr><td><strong>City Operative I</strong></td><td><span class="badge-rank">CS04</span></td><td>James Bradley</td></tr>
+          <tr><td><strong>City Operative I</strong></td><td><span class="badge-rank">CS05</span></td><td>Anthony Polito</td></tr>
+        </tbody>
+      </table>
+      <p><i class="fas fa-users"></i> <em>This roster is subject to change regularly.</em></p>
+    </div>
+
+    <!-- PAGE: WHAT IS A CITY OPERATIVE -->
+    <div id="whatis" class="page">
+      <div class="page-header">
+        <h2><i class="fas fa-user-hard-hat"></i> What Is A City Operative? <a href="#whatis" class="anchor-link">#</a></h2>
+        <p>Role definition and responsibilities.</p>
+      </div>
+      <p>A City Operative is a uniformed civilian employee responsible for maintaining public infrastructure, enforcing parking regulations, and supporting emergency services. Operatives work independently or in teams to ensure Los Santos remains safe, clean, and functional.</p>
+      <div class="card-grid"><div class="info-card"><i class="fas fa-chalkboard-user"></i><h4>Key Responsibilities</h4><ul><li>Parking enforcement & citations</li><li>Vehicle impound authorization</li><li>Public works & maintenance</li><li>Incident documentation</li><li>Inter-agency coordination</li></ul></div></div>
+      <p>In your role as a City Operative, you are responsible for the sectors Los Santos City Services offer. Whether it be removing vehicles parked in violation, or cleaning streets as and when requested. As a government department, you represent the Los Santos Government and should work accordingly, with pride.</p>
+      <div class="additional-content" style="margin-top: 15px;">
+        <p>As a City Operative, you work as part of a wider team in order to meet both our mission statement and requirements. This is done through attention to detail, sound judgement, professional communication and conflict management.</p>
+        <!-- PASTE YOUR CONTINUED CONTENT HERE -->
+        
+      </div>
+    </div>
+
+    <!-- PAGE: COMMANDS -->
+    <div id="commands" class="page">
+      <div class="page-header">
+        <h2><i class="fas fa-terminal"></i> In-Game Commands <a href="#commands" class="anchor-link">#</a></h2>
+        <p>Essential commands for daily operations.</p>
+      </div>
+      <div class="command-block">/duty - To go on/off duty at the department headquarters.</div>
+      <div class="command-block">/uniform - To select one of the available, approved uniform choices at the department headquarters.</div>
+      <div class="command-block">/equipment - To equip tools that assist you within your role at the department headquarters.</div>
+      <div class="command-block">/buytoys - To buy accessories such as the orange vest, hardhats and more at the department headquarters.</div>
+      <div class="command-block">/mytoys - To put on/off your purchased accessories, used anywhere.</div>
+      <div class="command-block">/r [MESSAGE] - To use the department radio (With a purchased radio handset)</div>
+      <div class="command-block">/f [MESSAGE] - To use the faction channel (OOC)</div>
+      <div class="command-block">/dep [MESSAGE] - To speak with other agencies such as LSPD & LSFD via the radio.</div>
+      <div class="command-block">/enter - To enter a building.</div>
+      <div class="command-block">/exit - To leave a building.</div>
+      <div class="command-block">/door - To open/close a door.</div>
+      <div class="command-block">/gate - To open/close a gate.</div>
+      <div class="command-block">/lock - To lock/unlock a vehicle.</div>
+      <div class="command-block">/engine - To turn on/off an engine.</div>
+      <div class="command-block">/lights - To turn on/off vehicle lights.</div>
+      <div class="command-block">/window [ID] - To open/close a window on a vehicle. "1" is drivers window.</div>
+      <div class="command-block">/panic - To alert LSCS, LSPD, LSFD and SABI of an emergency which requires every possible unit.</div>
+      <div class="command-block">/impound [VEHICLE ID] - To impound a vehicle at the impound lot on Azalea Street.</div>
+      <div class="command-block">/dl - To show/hide vehicle information when collecting evidence.</div>
+      <div class="command-block">/pmc - To access the Parking Management Console to check car license plates.</div>
+      <div class="command-block">/vticket [VEHICLE ID] [PRICE] [VIOLATION ID] - To issue a ticket to a vehicle. See Parking Enforcement Guidelines.</div>
+      <div class="command-block">/loadbike [VEHICLE ID] - To load a bike into the boxville for impounding.</div>
+      <div class="command-block">/unloadbike [VEHICLE ID] - To unload a bike from the boxville for impounding.</div>
+      <div class="command-block">/checkbike - To check if a bike is currently loaded into the boxville.</div>
+      <div class="command-block">/breakincar - To force entry into a vehicle. Must be due to valid reason.</div>
+      <div class="command-block">/stwipe - To remove graffiti.</div>
+
+      <p><small>Commands are subject to change.</small></p>
+    </div>
+
+<!-- PAGE: PROPERTIES & VEHICLES -->
+<div id="resources" class="page">
+  <div class="page-header">
+    <h2><i class="fas fa-city"></i> Properties & Vehicles <a href="#resources" class="anchor-link">#</a></h2>
+    <p>Facilities and fleet information.</p>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-map-marker-alt"></i> Locations</h3>
+    <div class="card-grid">
+      <div class="info-card"><i class="fas fa-industry"></i><h4>Public Works Yard</h4><p>Dalerose Avenue, Idlewood<br><small>Maintenance and operations base</small></p></div>
+      <div class="info-card"><i class="fas fa-parking"></i><h4>Impound Yard</h4><p>Azalea Street, Commerce<br><small>Vehicle storage and impound facility</small></p></div>
+      <div class="info-card"><i class="fas fa-landmark"></i><h4>Director's Office</h4><p>City Hall, Pershing Square<br><small>Administrative headquarters</small></p></div>
+      <div class="info-card"><i class="fas fa-shield-alt"></i><h4>LSCS Headquarters</h4><p>Cedar Street, East Los Santos<br><small>Main departmental HQ & Parking Enforcement</small></p></div>
+    </div>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-truck"></i> Fleet Vehicles</h3>
+    <div class="card-grid">
+      <div class="info-card"><i class="fas fa-truck"></i><h4>Tow Truck</h4><p>Vehicle recovery and impound transport</p></div>
+      <div class="info-card"><i class="fas fa-broom"></i><h4>Sweeper</h4><p>Street cleaning and debris removal</p></div>
+      <div class="info-card"><i class="fas fa-truck-moving"></i><h4>Yosemite</h4><p>Utility transport and general duties</p></div>
+      <div class="info-card"><i class="fas fa-hard-hat"></i><h4>Cement Mixer</h4><p>Infrastructure and road repairs</p></div>
+      <div class="info-card"><i class="fas fa-box"></i><h4>Boxville</h4><p>Cargo and equipment transport</p></div>
+    </div>
+    <p><i class="fas fa-info-circle"></i> <strong>Note:</strong> Always inspect your vehicle before shift. Report any damage or mechanical issues immediately. No use of personal vehicles while on duty.</p>
+  </div>
+</div>
+
+<!-- PAGE: UNIFORM -->
+<div id="uniform" class="page">
+  <div class="page-header">
+    <h2><i class="fas fa-shirt"></i> Uniform & Equipment <a href="#uniform" class="anchor-link">#</a></h2>
+    <p>Standard attire and gear for City Operatives.</p>
+  </div>
+  
+  <!-- Full Width Image -->
+  <div style="margin-bottom: 28px;">
+    <img src="https://i.ibb.co/MDcGfJyb/gta-sa-2-Soo-TFYg-LS.png" alt="LSCS Uniform Reference" style="width: 100%; border-radius: 16px; border: 1px solid #e2e9f0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <p style="font-size: 0.75rem; color: #6c86a0; margin-top: 8px; text-align: center;"><i class="fas fa-camera"></i> Standard LSCS Operational Attire</p>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-tshirt"></i> Standard Uniform</h3>
+    <ul class="rule-list">
+      <li><i class="fas fa-vest"></i> <strong>High-Visibility Vest:</strong> Mandatory for all field operations, especially during traffic enforcement and public works.</li>
+      <li><i class="fas fa-shirt"></i> <strong>LSCS Polo Shirt:</strong> Department-branded shirt with agency insignia.</li>
+      <li><i class="fas fa-shirt"></i> <strong>Duty Belt:</strong> Utility belt for carrying essential equipment.</li>
+      <li><i class="fas fa-id-card"></i> <strong>Badge:</strong> Official LSCS identification badge, must be visible at all times.</li>
+      <li><i class="fas fa-microphone-alt"></i> <strong>Radio:</strong> For departmental communication and coordination.</li>
+      <li><i class="fas fa-shoe-prints"></i> <strong>Work Boots:</strong> Durable footwear suitable for field work.</li>
+      <li><i class="fas fa-hard-hat"></i> <strong>Hard Hat:</strong> Required for Public Works operations and construction sites.</li>
+    </ul>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-toolbox"></i> Issued Equipment</h3>
+    <div class="card-grid">
+      <div class="info-card"><i class="fas fa-clipboard-list"></i><h4>MDT Device</h4><p>Mobile Data Terminal for reports, citations, and communication</p></div>
+      <div class="info-card"><i class="fas fa-ticket-alt"></i><h4>Citation Book</h4><p>Physical ticket book for parking violations (backup)</p></div>
+      <div class="info-card"><i class="fas fa-camera"></i><h4>Body Camera</h4><p>For evidence documentation during enforcement actions</p></div>
+      <div class="info-card"><i class="fas fa-key"></i><h4>Vehicle Keys</h4><p>Assigned department vehicle keys (return after shift)</p></div>
+    </div>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-clipboard-check"></i> Uniform Regulations</h3>
+    <ul class="rule-list">
+      <li><i class="fas fa-check-circle"></i> Full uniform must be worn during all active duty shifts.</li>
+      <li><i class="fas fa-check-circle"></i> All accessories must be worn correctly and in their designated positions.</li>
+      <li><i class="fas fa-check-circle"></i> No smoking while in uniform.</li>
+      <li><i class="fas fa-check-circle"></i> Uniform must be clean, pressed, and in good condition.</li>
+      <li><i class="fas fa-check-circle"></i> Badge must be clearly visible at chest level.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PAGE: MDT SYSTEM -->
+<div id="mdt" class="page">
+  <div class="page-header">
+    <h2><i class="fas fa-laptop-code"></i> MDT System <a href="#mdt" class="anchor-link">#</a></h2>
+    <p>Mobile Data Terminal operations.</p>
+  </div>
+  
+  <p>Your primary tool for reports, clock-in/out, and communication. All actions are logged and transmitted to department records.</p>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-globe"></i> Access</h3>
+    <div class="command-block" style="background: #0a2f44; text-align: center; font-size: 1.1rem; margin: 16px 0;">
+      <i class="fas fa-external-link-alt"></i> <strong>bazmartin.github.io</strong>
+    </div>
+    <p>Access the MDT system via any web browser. Bookmark the link for quick access during your shifts.</p>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-sign-in-alt"></i> Login Procedure</h3>
+    <ul class="rule-list">
+      <li><i class="fas fa-user"></i> <strong>Operative Name:</strong> Enter your full name as registered with the department.</li>
+      <li><i class="fas fa-id-card"></i> <strong>Badge Number:</strong> Your unique LSCS badge number (e.g., CS01, CS02).</li>
+      <li><i class="fas fa-check-circle"></i> After successful login, your name and badge will auto-fill all future reports.</li>
+    </ul>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-clipboard-list"></i> Reporting Guidelines</h3>
+    <div class="card-grid">
+      <div class="info-card"><i class="fas fa-file-alt"></i><h4>Complete Every Action</h4><p>Every ticket, impound, public works task, and departmental action requires a corresponding MDT report.</p></div>
+      <div class="info-card"><i class="fas fa-check-double"></i><h4>Accuracy is Critical</h4><p>Reports must be factual, detailed, and submitted in real-time. Double-check all information before transmitting.</p></div>
+      <div class="info-card"><i class="fas fa-camera"></i><h4>Evidence Required</h4><p>Always attach clear image evidence (screenshots, photos) to support your reports. No exceptions.</p></div>
+      <div class="info-card"><i class="fas fa-clock"></i><h4>Real-Time Submission</h4><p>Reports should be submitted immediately after completing the action, not at the end of shift.</p></div>
+    </div>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-hourglass-half"></i> Duty Logging</h3>
+    <ul class="rule-list">
+      <li><i class="fas fa-play-circle"></i> <strong>Clock In:</strong> Select "Duty Log" tab and click "Clock In" at the start of your shift.</li>
+      <li><i class="fas fa-stop-circle"></i> <strong>Clock Out:</strong> Select "Duty Log" tab and click "Clock Out" at the end of your shift.</li>
+      <li><i class="fas fa-chart-line"></i> <strong>Attendance Tracking:</strong> All clock-in/out events are logged and recorded for attendance monitoring.</li>
+      <li><i class="fas fa-exclamation-triangle"></i> <strong>Missed Logs:</strong> Failure to clock in/out may result in unreported absences being flagged for review.</li>
+    </ul>
+  </div>
+  
+  <div class="info-card" style="background: #fef2e0; border-color: #e6b422; margin-top: 16px;">
+    <i class="fas fa-info-circle"></i>
+    <h4>Pro Tip</h4>
+    <p>Bookmark the MDT link on your device. Log in at the start of every shift and keep the tab open for quick report submissions throughout your duty.</p>
+  </div>
+</div>
+
+<!-- PAGE: PARKING ENFORCEMENT -->
+<div id="parking" class="page">
+  <div class="page-header">
+    <h2><i class="fas fa-parking"></i> Parking Enforcement <a href="#parking" class="anchor-link">#</a></h2>
+    <p>Citation and patrol procedures.</p>
+  </div>
+  
+  <p>Parking Enforcement ensures traffic flow and safety. Operatives patrol zones, issue citations, and authorize impounds based on LSCS guidelines.</p>
+  
+  <!-- Violation Tables -->
+  <div class="subsection">
+    <h3><i class="fas fa-chart-simple"></i> Violation Guidelines</h3>
+    
+    <h4 style="margin: 20px 0 10px 0; color: #2c5a74;">Minor Violations</h4>
+    <table class="roster-table">
+      <thead><tr><th>Code</th><th>Violation</th><th>Fine</th><th>Tow</th></tr></thead>
+      <tbody>
+        <tr><td>P-101</td><td>Expired Parking Meter</td><td>$150</td><td>No</td></tr>
+        <tr><td>P-102</td><td>Overtime in Time-Limited Zone</td><td>$200</td><td>No</td></tr>
+        <tr><td>P-103</td><td>Parking Within 5ft of Driveway</td><td>$200</td><td>No</td></tr>
+        <tr><td>P-104</td><td>Double Parking</td><td>$250</td><td>No</td></tr>
+        <tr><td>P-105</td><td>Parking Facing Wrong Direction</td><td>$250</td><td>No</td></tr>
+        <tr><td>P-106</td><td>Blocking Sidewalk</td><td>$300</td><td>No</td></tr>
+        <tr><td>P-107</td><td>Parking Over Line</td><td>$200</td><td>No</td></tr>
+        <tr><td>P-108</td><td>Parking in No-Parking Zone</td><td>$300</td><td>No</td></tr>
+      </tbody>
+    </table>
+    
+    <h4 style="margin: 20px 0 10px 0; color: #2c5a74;">Moderate Violations</h4>
+    <table class="roster-table">
+      <thead><tr><th>Code</th><th>Violation</th><th>Fine</th><th>Tow</th></tr></thead>
+      <tbody>
+        <tr><td>P-201</td><td>Blocking Fire Hydrant</td><td>$500</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-202</td><td>Blocking Emergency Access</td><td>$600</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-203</td><td>Parking in Bus Stop</td><td>$450</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-204</td><td>Unauthorized Loading Zone Parking</td><td>$400</td><td>No</td></tr>
+        <tr><td>P-205</td><td>Disabled Bay (No Permit)</td><td>$750</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-206</td><td>Government Restricted Zone</td><td>$600</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-207</td><td>Abandoned Vehicle</td><td>$700</td><td>Immediate Tow</td></tr>
+      </tbody>
+    </table>
+    
+    <h4 style="margin: 20px 0 10px 0; color: #2c5a74;">Major Violations</h4>
+    <table class="roster-table">
+      <thead><tr><th>Code</th><th>Violation</th><th>Fine</th><th>Tow</th></tr></thead>
+      <tbody>
+        <tr><td>P-301</td><td>Obstructing Traffic</td><td>$900</td><td>Immediate Tow</td></tr>
+        <tr><td>P-302</td><td>Parking on Railroad Crossing</td><td>$1,200</td><td>Immediate Tow</td></tr>
+        <tr><td>P-303</td><td>Emergency Response Area</td><td>$1,000</td><td>Immediate Tow</td></tr>
+        <tr><td>P-304</td><td>Repeat Offender (3+ Unpaid)</td><td>$1,500</td><td>Immediate Tow</td></tr>
+        <tr><td>P-305</td><td>Vehicle Deemed Hazardous</td><td>$1,000</td><td>Immediate Tow</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Impound Protocol -->
+  <div class="subsection">
+    <h3><i class="fas fa-truck-ramp-box"></i> LSCS - Impounding</h3>
+    <p>As a City Operative, you are required to complete shifts for the Parking Enforcement Division. Part of this work includes the impounding of vehicles that fail to meet our guidelines.</p>
+    <p>In order to complete the impounding of a vehicle in a safe manner, you must follow the below protocol:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-search"></i> Identify a vehicle that fails to meet our guidelines.</li>
+      <li><i class="fas fa-id-card"></i> Check the vehicle license plate using <strong>PMC</strong>.</li>
+      <li><i class="fas fa-camera"></i> Use <strong>/dl</strong> and take a clear screenshot of the vehicle offending.</li>
+      <li><i class="fas fa-truck"></i> Hook the vehicle with a tow truck.</li>
+      <li><i class="fas fa-map-marker-alt"></i> Transport the vehicle back to the <strong>Impound Yard on Azalea Street</strong>.</li>
+      <li><i class="fas fa-parking"></i> Set the vehicle down in a center parking bay.</li>
+      <li><i class="fas fa-gavel"></i> <strong>/impound</strong> the vehicle</li>
+      <li><i class="fas fa-file-alt"></i> Complete an Action Report using the <strong>Impound Report</strong> option, under parking enforcement.</li>
+    </ul>
+  </div>
+  
+  <!-- Ticketing Protocol -->
+  <div class="subsection">
+    <h3><i class="fas fa-ticket-alt"></i> LSCS - Ticketing</h3>
+    <p>As a City Operative, you are required to complete shifts for the Parking Enforcement Division. Part of this work includes the ticketing of vehicles that fail to meet our guidelines.</p>
+    <p>In order to complete the ticketing of a vehicle in a safe manner, you must follow the below protocol:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-search"></i> Identify a vehicle that doesn't meet the parking guidelines.</li>
+      <li><i class="fas fa-chart-line"></i> Check the vehicle on <strong>/pmc</strong> for previous tickets on the same incident, repeat offending.</li>
+      <li><i class="fas fa-check-circle"></i> Providing the vehicle hasn't been ticketed for the same issue, or the vehicle isn't a repeat offender, proceed with ticketing the vehicle.</li>
+      <li><i class="fas fa-street-view"></i> Stand near the vehicle, and use <strong>/vticket</strong>.</li>
+      <li><i class="fas fa-pen"></i> Complete the details as the command requires.</li>
+      <li><i class="fas fa-receipt"></i> Issue the ticket.</li>
+      <li><i class="fas fa-camera"></i> Take a screenshot of the vehicle using <strong>/dl</strong></li>
+      <li><i class="fas fa-file-alt"></i> Complete an action report for a <strong>Vehicle Ticket</strong>.</li>
+    </ul>
+    <div class="info-card" style="background: #fef2e0; border-color: #e6b422; margin-top: 16px;">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h4>Important</h4>
+      <p>Use of <strong>/vticket</strong> and <strong>/impound</strong> are monitored, and reports are regularly audited. Ensure all tickets and impounds are legitimate and properly documented.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: PUBLIC WORKS -->
+<div id="publicworks" class="page">
+  <div class="page-header">
+    <h2><i class="fas fa-brush"></i> Public Works <a href="#publicworks" class="anchor-link">#</a></h2>
+    <p>Maintenance & infrastructure.</p>
+  </div>
+  
+  <p>Public Works handles maintenance, cleanup, and infrastructure support. Each task requires a unique <strong>4-digit Task Reference Number</strong>.</p>
+  
+  <div class="card-grid">
+    <div class="info-card"><i class="fas fa-trash-alt"></i><h4>Street Cleaning</h4><p>Sweeping, debris removal, graffiti abatement.</p></div>
+    <div class="info-card"><i class="fas fa-traffic-light"></i><h4>Signage & Repair</h4><p>Replace damaged signs, report hazards.</p></div>
+    <div class="info-card"><i class="fas fa-map-marked-alt"></i><h4>Traffic Management</h4><p>Traffic control, cone placement, diversion setup.</p></div>
+    <div class="info-card"><i class="fas fa-lightbulb"></i><h4>Street Light Repairs</h4><p>Faulty light identification and replacement.</p></div>
+    <div class="info-card"><i class="fas fa-traffic-light"></i><h4>Traffic Light Repairs</h4><p>Signal maintenance and fault resolution.</p></div>
+  </div>
+  
+  <!-- Road Sweeping Protocol -->
+  <div class="subsection">
+    <h3><i class="fas fa-broom"></i> LSCS - Road Sweeping</h3>
+    <p>As a City Operative, you are required to complete shifts for the Public Works Division. This includes Road Sweeping.</p>
+    <p>In order to conduct Road Sweeping in a safe manner, you must follow the below protocol:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-truck"></i> Prepare a Road Sweeper from the <strong>Idlewood Depot</strong>.</li>
+      <li><i class="fas fa-clipboard-list"></i> Conduct a walkaround safety check.</li>
+      <li><i class="fas fa-route"></i> Pre-plan your overall route to include high-traffic areas.</li>
+      <li><i class="fas fa-road"></i> Leave the depot and join the road.</li>
+      <li><i class="fas fa-road"></i> Stay to the side of the road against the sidewalk, to ensure the road is clean.</li>
+      <li><i class="fas fa-tachometer-alt"></i> Drive at less than <strong>25 miles per hour</strong>.</li>
+      <li><i class="fas fa-check-double"></i> Complete your route in full, ideally both sides.</li>
+      <li><i class="fas fa-file-alt"></i> Complete an Action Report under <strong>Public Works</strong>.</li>
+    </ul>
+  </div>
+  
+  <!-- Traffic Management Protocol -->
+  <div class="subsection">
+    <h3><i class="fas fa-map-marked-alt"></i> LSCS - Traffic Management</h3>
+    <p>Traffic Management operations ensure safe passage through construction zones, events, or accident scenes.</p>
+    <p>In order to conduct Traffic Management in a safe manner, you must follow the below protocol:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-clipboard-list"></i> Assess the area requiring traffic management.</li>
+      <li><i class="fas fa-sign"></i> Deploy traffic cones and barriers to create a safe work zone.</li>
+      <li><i class="fas fa-sign"></i> Place appropriate warning signs (road work, lane closure, etc.).</li>
+      <li><i class="fas fa-vest"></i> Wear full high-visibility uniform and safety gear.</li>
+      <li><i class="fas fa-hand-peace"></i> Direct traffic using hand signals or flags when necessary.</li>
+      <li><i class="fas fa-microphone-alt"></i> Coordinate with team members via radio for safe flow.</li>
+      <li><i class="fas fa-camera"></i> Document the setup with clear photographic evidence.</li>
+      <li><i class="fas fa-file-alt"></i> Complete an Action Report under <strong>Public Works</strong> with the <strong>4-digit Task Reference Number</strong>.</li>
+    </ul>
+  </div>
+  
+  <!-- Street Light Repairs Protocol -->
+  <div class="subsection">
+    <h3><i class="fas fa-lightbulb"></i> LSCS - Street Light Repairs</h3>
+    <p>Maintaining street lighting ensures public safety and visibility throughout Los Santos.</p>
+    <p>In order to conduct Street Light Repairs in a safe manner, you must follow the below protocol:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-map-marker-alt"></i> Identify faulty street lights during patrol or via citizen reports.</li>
+      <li><i class="fas fa-clipboard-list"></i> Record the location (street name, nearest intersection, pole number if available).</li>
+      <li><i class="fas fa-truck"></i> Prepare the appropriate vehicle with repair equipment (Cherry Picker or Utility Truck).</li>
+      <li><i class="fas fa-sign"></i> Set up traffic cones and warning signs around the work area.</li>
+      <li><i class="fas fa-wrench"></i> Inspect the light (bulb, wiring, electrical components).</li>
+      <li><i class="fas fa-sync-alt"></i> Replace faulty bulbs or components as needed.</li>
+      <li><i class="fas fa-check-circle"></i> Test the light to ensure functionality.</li>
+      <li><i class="fas fa-camera"></i> Document before and after photos of the repair.</li>
+      <li><i class="fas fa-file-alt"></i> Complete an Action Report under <strong>Public Works</strong> with the <strong>4-digit Task Reference Number</strong>.</li>
+    </ul>
+  </div>
+  
+  <!-- Traffic Light Repairs Protocol -->
+  <div class="subsection">
+    <h3><i class="fas fa-traffic-light"></i> LSCS - Traffic Light Repairs</h3>
+    <p>Traffic signal maintenance is critical for road safety and traffic flow.</p>
+    <p>In order to conduct Traffic Light Repairs in a safe manner, you must follow the below protocol:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-exclamation-triangle"></i> Identify faulty traffic lights (stuck red, flashing, non-operational, incorrect timing).</li>
+      <li><i class="fas fa-clipboard-list"></i> Record the intersection location and nature of the fault.</li>
+      <li><i class="fas fa-truck"></i> Deploy appropriate vehicle with traffic signal repair equipment.</li>
+      <li><i class="fas fa-cone"></i> Set up comprehensive traffic management around the intersection.</li>
+      <li><i class="fas fa-hand-peace"></i> If required, coordinate with team members for manual traffic direction.</li>
+      <li><i class="fas fa-microchip"></i> Access the signal control cabinet and diagnose the issue.</li>
+      <li><i class="fas fa-wrench"></i> Perform necessary repairs (timing adjustment, bulb replacement, wiring fix).</li>
+      <li><i class="fas fa-sync-alt"></i> Test the signal through all phases to ensure proper operation.</li>
+      <li><i class="fas fa-camera"></i> Document the repair with before and after evidence.</li>
+      <li><i class="fas fa-file-alt"></i> Complete an Action Report under <strong>Public Works</strong> with the <strong>4-digit Task Reference Number</strong>.</li>
+    </ul>
+  </div>
+  
+  <div class="info-card" style="background: #fef2e0; border-color: #e6b422; margin-top: 16px;">
+    <i class="fas fa-info-circle"></i>
+    <h4>Important Note</h4>
+    <p>All Public Works tasks require a <strong>4-digit Task Reference Number</strong>. This number should be recorded in your Action Report for tracking and auditing purposes. Always ensure your reports include clear before and after evidence.</p>
+  </div>
+</div>
+
+<!-- PAGE: IMPOUND PROCEDURES -->
+<div id="impound" class="page">
+  <div class="page-header">
+    <h2><i class="fas fa-truck-ramp-box"></i> Impound Procedures <a href="#impound" class="anchor-link">#</a></h2>
+    <p>Vehicle seizure protocol.</p>
+  </div>
+  
+  <p>Abandoned vehicles, repeat offenders, or vehicles blocking emergency access require immediate impound action. Impound orders require photo evidence and guideline selection.</p>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-clipboard-list"></i> Impound Protocol</h3>
+    <p>As a City Operative, you are required to complete shifts for the Parking Enforcement Division. Part of this work includes the impounding of vehicles that fail to meet our guidelines.</p>
+    <p>In order to complete the impounding of a vehicle in a safe manner, you must follow the below protocol:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-search"></i> <strong>Identify:</strong> Identify a vehicle that fails to meet our guidelines (abandoned, blocking access, repeat offender, etc.).</li>
+      <li><i class="fas fa-id-card"></i> <strong>Check License Plate:</strong> Check the vehicle license plate using <strong>PMC</strong>.</li>
+      <li><i class="fas fa-camera"></i> <strong>Document the Offense:</strong> Use <strong>/dl</strong> and take a clear screenshot of the vehicle offending.</li>
+      <li><i class="fas fa-truck"></i> <strong>Hook the Vehicle:</strong> Hook the vehicle with a tow truck.</li>
+      <li><i class="fas fa-map-marker-alt"></i> <strong>Transport:</strong> Transport the vehicle back to the <strong>Impound Yard on Azalea Street, Commerce</strong>.</li>
+      <li><i class="fas fa-parking"></i> <strong>Position the Vehicle:</strong> Set the vehicle down in a center parking bay within the impound yard.</li>
+      <li><i class="fas fa-gavel"></i> <strong>Issue Impound:</strong> Use <strong>/impound</strong> to officially impound the vehicle.</li>
+      <li><i class="fas fa-file-alt"></i> <strong>Complete Report:</strong> Complete an Action Report using the <strong>Vehicle Impound</strong> option, under parking enforcement.</li>
+    </ul>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-gavel"></i> Impound Guidelines</h3>
+    <p>Vehicles may be impounded for the following violations:</p>
+    <table class="roster-table">
+      <thead> 
+        <th>Code</th>
+        <th>Violation</th>
+        <th>Fine</th>
+        <th>Tow Status</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>P-201</td><td>Blocking Fire Hydrant</td><td>$500</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-202</td><td>Blocking Emergency Access</td><td>$600</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-203</td><td>Parking in Bus Stop</td><td>$450</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-205</td><td>Disabled Bay (No Permit)</td><td>$750</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-206</td><td>Government Restricted Zone</td><td>$600</td><td>Discretionary Tow</td></tr>
+        <tr><td>P-207</td><td>Abandoned Vehicle</td><td>$700</td><td>Immediate Tow</td></tr>
+        <tr><td>P-301</td><td>Obstructing Traffic</td><td>$900</td><td>Immediate Tow</td></tr>
+        <tr><td>P-302</td><td>Parking on Railroad Crossing</td><td>$1,200</td><td>Immediate Tow</td></tr>
+        <tr><td>P-303</td><td>Emergency Response Area</td><td>$1,000</td><td>Immediate Tow</td></tr>
+        <tr><td>P-304</td><td>Repeat Offender (3+ Unpaid)</td><td>$1,500</td><td>Immediate Tow</td></tr>
+        <tr><td>P-305</td><td>Vehicle Deemed Hazardous</td><td>$1,000</td><td>Immediate Tow</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-exclamation-triangle"></i> Important Notes</h3>
+    <ul class="rule-list">
+      <li><i class="fas fa-building"></i> <strong>Faction Vehicles:</strong> Always check PMC first.</li>
+      <li><i class="fas fa-camera"></i> <strong>Evidence Required:</strong> Every impound must have clear photo evidence using /dl showing the violation.</li>
+      <li><i class="fas fa-file-alt"></i> <strong>Report Accuracy:</strong> Complete the MDT Action Report immediately after impounding, while details are fresh.</li>
+      <li><i class="fas fa-clock"></i> <strong>Timely Processing:</strong> Vehicles should be transported and impounded without unnecessary delay.</li>
+    </ul>
+  </div>
+  
+  <div class="info-card" style="background: #fef2e0; border-color: #e6b422; margin-top: 16px;">
+    <i class="fas fa-info-circle"></i>
+    <h4>Impound Yard Location</h4>
+    <p><strong>Azalea Street, Commerce</strong> — The impound yard is the designated facility for all vehicle storage. Ensure vehicles are parked in center bays to allow space for other impounds.</p>
+  </div>
+</div>
+
+<!-- PAGE: CITATION GUIDELINES -->
+<div id="ticket" class="page">
+  <div class="page-header">
+    <h2><i class="fas fa-ticket-alt"></i> Citation Guidelines <a href="#ticket" class="anchor-link">#</a></h2>
+    <p>Violation codes and fines.</p>
+  </div>
+  
+  <p>Full violation list available in MDT. Always include vehicle description, location, and photographic evidence.</p>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-clipboard-list"></i> Ticketing Protocol</h3>
+    <p>As a City Operative, you are required to complete shifts for the Parking Enforcement Division. Part of this work includes the ticketing of vehicles that fail to meet our guidelines.</p>
+    <p>In order to complete the ticketing of a vehicle in a safe manner, you must follow the below protocol:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-search"></i> <strong>Identify the Vehicle:</strong> Identify a vehicle that doesn't meet the parking guidelines.</li>
+      <li><i class="fas fa-chart-line"></i> <strong>Check Previous Tickets:</strong> Check the vehicle on <strong>/pmc</strong> for previous tickets on the same incident, repeat offending.</li>
+      <li><i class="fas fa-check-circle"></i> <strong>Proceed with Ticketing:</strong> Providing the vehicle hasn't been ticketed for the same issue, or the vehicle isn't a repeat offender, proceed with ticketing the vehicle.</li>
+      <li><i class="fas fa-street-view"></i> <strong>Position Yourself:</strong> Stand near the vehicle, and use <strong>/vticket</strong>.</li>
+      <li><i class="fas fa-pen"></i> <strong>Complete the Ticket:</strong> Complete the details as the command requires.</li>
+      <li><i class="fas fa-receipt"></i> <strong>Issue the Ticket:</strong> Issue the ticket to the vehicle.</li>
+      <li><i class="fas fa-camera"></i> <strong>Document Evidence:</strong> Take a screenshot of the vehicle using <strong>/dl</strong> showing the violation.</li>
+      <li><i class="fas fa-file-alt"></i> <strong>Complete Report:</strong> Complete an action report for a <strong>Vehicle Ticket</strong>.</li>
+    </ul>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-chart-simple"></i> Violation Guidelines</h3>
+    
+    <h4 style="margin: 20px 0 10px 0; color: #2c5a74;">Minor Violations</h4>
+    <table class="roster-table">
+      <thead> 
+        <th>Code</th>
+        <th>Violation</th>
+        <th>Fine</th>
+       </thead>
+      <tbody>
+        <tr><td>P-101</td><td>Expired Parking Meter</td><td>$150</td></tr>
+        <tr><td>P-102</td><td>Overtime in Time-Limited Zone</td><td>$200</td></tr>
+        <tr><td>P-103</td><td>Parking Within 5ft of Driveway</td><td>$200</td></tr>
+        <tr><td>P-104</td><td>Double Parking</td><td>$250</td></tr>
+        <tr><td>P-105</td><td>Parking Facing Wrong Direction</td><td>$250</td></tr>
+        <tr><td>P-106</td><td>Blocking Sidewalk</td><td>$300</td></tr>
+        <tr><td>P-107</td><td>Parking Over Line</td><td>$200</td></tr>
+        <tr><td>P-108</td><td>Parking in No-Parking Zone</td><td>$300</td></tr>
+      </tbody>
+     </table>
+    
+    <h4 style="margin: 20px 0 10px 0; color: #2c5a74;">Moderate Violations</h4>
+    <table class="roster-table">
+      <thead> 
+        <th>Code</th>
+        <th>Violation</th>
+        <th>Fine</th>
+       </thead>
+      <tbody>
+        <tr><td>P-201</td><td>Blocking Fire Hydrant</td><td>$500</td></tr>
+        <tr><td>P-202</td><td>Blocking Emergency Access</td><td>$600</td></tr>
+        <tr><td>P-203</td><td>Parking in Bus Stop</td><td>$450</td></tr>
+        <tr><td>P-204</td><td>Unauthorized Loading Zone Parking</td><td>$400</td></tr>
+        <tr><td>P-205</td><td>Disabled Bay (No Permit)</td><td>$750</td></tr>
+        <tr><td>P-206</td><td>Government Restricted Zone</td><td>$600</td></tr>
+        <tr><td>P-207</td><td>Abandoned Vehicle</td><td>$700</td></tr>
+      </tbody>
+    </table>
+    
+    <h4 style="margin: 20px 0 10px 0; color: #2c5a74;">Major Violations</h4>
+    <table class="roster-table">
+      <thead> 
+        <th>Code</th>
+        <th>Violation</th>
+        <th>Fine</th>
+       </thead>
+      <tbody>
+        <tr><td>P-301</td><td>Obstructing Traffic</td><td>$900</td></tr>
+        <tr><td>P-302</td><td>Parking on Railroad Crossing</td><td>$1,200</td></tr>
+        <tr><td>P-303</td><td>Emergency Response Area</td><td>$1,000</td></tr>
+        <tr><td>P-304</td><td>Repeat Offender (3+ Unpaid)</td><td>$1,500</td></tr>
+        <tr><td>P-305</td><td>Vehicle Deemed Hazardous</td><td>$1,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-clipboard-check"></i> Important Reminders</h3>
+    <ul class="rule-list">
+      <li><i class="fas fa-camera"></i> <strong>Evidence Required:</strong> Always take a clear screenshot using <strong>/dl</strong> showing the vehicle and the violation.</li>
+      <li><i class="fas fa-chart-line"></i> <strong>Check Repeat Offenders:</strong> Use <strong>/pmc</strong> to check if the vehicle has previous unpaid tickets on the same incident.</li>
+      <li><i class="fas fa-file-alt"></i> <strong>Complete Reports:</strong> Every ticket must be followed by an MDT Action Report with accurate details.</li>
+      <li><i class="fas fa-gavel"></i> <strong>Appropriate Fines:</strong> Select the correct violation code that matches the offense — do not overcharge or undercharge.</li>
+    </ul>
+  </div>
+  
+  <div class="info-card" style="background: #fef2e0; border-color: #e6b422; margin-top: 16px;">
+    <i class="fas fa-exclamation-triangle"></i>
+    <h4>Audit Notice</h4>
+    <p>Use of <strong>/vticket</strong> is monitored, and reports are regularly audited. Ensure all tickets are legitimate, properly documented, and submitted through MDT with supporting evidence.</p>
+  </div>
+</div>
+
+<!-- PAGE: EXTERNAL COORDINATION -->
+<div id="external" class="page">
+  <div class="page-header">
+    <h2><i class="fas fa-handshake"></i> LSPD / FD / Other Agencies <a href="#external" class="anchor-link">#</a></h2>
+    <p>Inter-departmental coordination.</p>
+  </div>
+  
+  <p>LSCS works closely with other government agencies to support city operations. When responding to requests from LSPD, LSFD, or other departments, proper protocol ensures safety and effective collaboration.</p>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-radio"></i> Request Types</h3>
+    <div class="card-grid">
+      <div class="info-card"><i class="fas fa-car-crash"></i><h4>Vehicle Removal</h4><p>Removing vehicles from crime scenes, accidents, or blocked areas.</p></div>
+      <div class="info-card"><i class="fas fa-broom"></i><h4>Scene Cleanup</h4><p>Clearing debris, hazards, or spillages after incidents.</p></div>
+      <div class="info-card"><i class="fas fa-traffic-light"></i><h4>Traffic Management</h4><p>Assisting with road closures, diversions, and traffic control.</p></div>
+      <div class="info-card"><i class="fas fa-hard-hat"></i><h4>Infrastructure Support</h4><p>Repairing damaged street furniture, barriers, or utilities.</p></div>
+    </div>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-clipboard-list"></i> Response Protocol</h3>
+    <p>When responding to an external agency request, follow these procedures to ensure safety and professionalism:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-tasks"></i> <strong>Acknowledge the Request:</strong> Confirm receipt of the request via radio or MDT. Note the requesting officer's name, agency, and location.</li>
+      <li><i class="fas fa-id-card"></i> <strong>Obtain Officer Details:</strong> Record the requesting officer's full name, badge number, and agency. This must be included in your MDT report.</li>
+      <li><i class="fas fa-vest"></i> <strong>Full Uniform Required:</strong> Wear full LSCS uniform with high-visibility vest. Identify yourself clearly upon arrival.</li>
+      <li><i class="fas fa-shield-alt"></i> <strong>Scene Assessment:</strong> Upon arrival, assess the scene. Identify potential hazards, active police activity, and the safest approach.</li>
+      <li><i class="fas fa-person-walking-arrow-right"></i> <strong>Check In With Command:</strong> Report to the senior officer on scene. Introduce yourself and confirm what assistance is required.</li>
+      <li><i class="fas fa-camera"></i> <strong>Document Everything:</strong> Take clear photographs of the scene, the work area, and the completed task. Use <strong>/dl</strong> for evidence.</li>
+      <li><i class="fas fa-traffic-light"></i> <strong>Secure Your Workspace:</strong> Use cones, barriers, or flares as needed to create a safe work zone. Never work inside an active crime scene without authorization.</li>
+      <li><i class="fas fa-eye"></i> <strong>Remain Aware:</strong> Stay alert to ongoing police activity. Do not interfere with investigations. If instructed to wait, comply and remain at a safe distance.</li>
+      <li><i class="fas fa-truck"></i> <strong>Complete the Task:</strong> Perform the requested service efficiently and safely. Communicate progress to the on-scene commander.</li>
+      <li><i class="fas fa-file-alt"></i> <strong>Submit MDT Report:</strong> Complete an External Request report via the MDT. Include requesting officer details, location, service provided, and evidence images.</li>
+    </ul>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-shield-haltered"></i> Scene Safety Guidelines</h3>
+    <ul class="rule-list">
+      <li><i class="fas fa-ban"></i> <strong>Stay Clear of Active Crime Scenes:</strong> Do not enter cordoned areas unless explicitly authorized by a police supervisor.</li>
+      <li><i class="fas fa-microphone-alt"></i> <strong>Maintain Radio Contact:</strong> Stay on the designated frequency and monitor for updates or changes to the situation.</li>
+      <li><i class="fas fa-eye"></i> <strong>Remain Visible:</strong> Wear high-visibility gear. Make your presence known to officers to avoid being mistaken for a threat.</li>
+      <li><i class="fas fa-arrow-left"></i> <strong>Know Your Exit:</strong> Always be aware of the safest exit route in case the situation escalates.</li>
+      <li><i class="fas fa-clock"></i> <strong>Wait for Clearance:</strong> If instructed to wait before entering or beginning work, do not proceed until given explicit clearance.</li>
+      <li><i class="fas fa-hand-peace"></i> <strong>Follow Instructions:</strong> Officers on scene have authority over safety. Follow their directions without question.</li>
+      <li><i class="fas fa-tools"></i> <strong>Secure Equipment:</strong> Ensure all tools and vehicles are safely positioned away from traffic and active incident zones.</li>
+    </ul>
+  </div>
+  
+  <div class="subsection">
+    <h3><i class="fas fa-file-signature"></i> MDT Reporting Requirements</h3>
+    <p>All external agency responses must be documented through the <strong>External Request</strong> tab in MDT. Include the following:</p>
+    <ul class="rule-list">
+      <li><i class="fas fa-hashtag"></i> <strong>Report Code:</strong> Auto-generated unique identifier (RQ prefix).</li>
+      <li><i class="fas fa-calendar"></i> <strong>Date & Time:</strong> When the request was received and completed.</li>
+      <li><i class="fas fa-building"></i> <strong>Requesting Department:</strong> LSPD, LSFD, LSGOV, BI, or Other.</li>
+      <li><i class="fas fa-id-card"></i> <strong>Requesting Officer:</strong> Full name, badge number, and agency.</li>
+      <li><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> Exact address or intersection of the incident.</li>
+      <li><i class="fas fa-clipboard-list"></i> <strong>Service Requested:</strong> Detailed description of the assistance provided.</li>
+      <li><i class="fas fa-camera"></i> <strong>Evidence:</strong> Clear images showing before, during, and after the work.</li>
+      <li><i class="fas fa-user-tie"></i> <strong>LSCS Operative:</strong> Your name and badge number.</li>
+    </ul>
+  </div>
+  
+  <div class="info-card" style="background: #fef2e0; border-color: #e6b422; margin-top: 16px;">
+    <i class="fas fa-handshake"></i>
+    <h4>Professional Conduct</h4>
+    <p>When working alongside other agencies, you represent LSCS. Maintain professionalism, respect scene authority, and coordinate effectively. Positive inter-agency relationships are essential for a safe and functional city.</p>
+  </div>
+</div>
+
+    <!-- PAGE: CONTRACT (with Webhook) -->
+    <div id="contract" class="page">
+      <div class="page-header">
+        <h2><i class="fas fa-file-signature"></i> LSCS Employment Contract <a href="#contract" class="anchor-link">#</a></h2>
+        <p>Final step: acknowledge and sign.</p>
+      </div>
+      <div class="contract-box">
+        <i class="fas fa-file-contract" style="font-size: 2.5rem; color: #e6b422;"></i>
+        <h3 style="margin: 16px 0;">City Operative Agreement</h3>
+        <p>By confirming below, I acknowledge that I have read and understood the LSCS Onboarding Handbook, including Internal Rules, Operational Procedures, and the Code of Conduct. I agree to serve the citizens of Los Santos with integrity and professionalism.</p>
+        <div class="contract-check"><label style="display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0;"><input type="checkbox" id="contractCheckbox"> <span><strong>I confirm completion of onboarding and agree to the terms.</strong></span></label></div>
+        <div id="signaturePreview" style="background: #f9f1e0; padding: 12px; border-radius: 12px; margin: 12px 0; border: 1px dashed #e6b422;"><i class="fas fa-pen"></i> Signature: <span id="signatureName">_________________</span><br><i class="fas fa-calendar"></i> Date: <span id="signatureDate"></span></div>
+        <input type="text" id="operativeNameInput" placeholder="Your Full Name" style="width: 80%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px;">
+        <input type="text" id="badgeInput" placeholder="Badge Number (##)" maxlength="2" style="width: 80%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px;">
+        <button id="confirmContractBtn" class="sign-btn"><i class="fas fa-check-double"></i> SIGN & COMPLETE ONBOARDING</button>
+        <div id="webhookStatus" class="webhook-status"></div>
+        <p id="contractMessage" style="margin-top: 12px; font-size: 0.8rem;"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer><i class="fas fa-city"></i> Los Santos City Services — Official Onboarding Portal v3.2 · All information is internal use only.</footer>
+
+<script>
+  // WEBHOOK URL
+  const CONTRACT_WEBHOOK = 'https://discord.com/api/webhooks/1486417376902910122/j_VezWrdUQu4pacN5sRXBl4NccXO_ia7Quju49D0QNZEOWhhtjOLA6vBJWgKooMq-Slc';
+
+  // HASH-BASED ROUTING with improved scroll positioning
+  const navItems = document.querySelectorAll('.nav-item');
+  const pages = document.querySelectorAll('.page');
+  const header = document.querySelector('.lscs-header');
+  const headerHeight = header ? header.offsetHeight : 90;
+
+  function scrollToTopOfContent() {
+    // Scroll the main content area to the top, accounting for sticky header
+    const contentArea = document.querySelector('.wiki-content');
+    if (contentArea) {
+      const elementPosition = contentArea.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerHeight - 8;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  function activatePage(pageId, updateHash = true, shouldScroll = true) {
+    // Hide all pages, show selected
+    pages.forEach(page => page.classList.remove('active-page'));
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) targetPage.classList.add('active-page');
+    
+    // Update active nav item
+    navItems.forEach(item => item.classList.remove('active'));
+    const activeNav = Array.from(navItems).find(item => item.dataset.page === pageId);
+    if (activeNav) activeNav.classList.add('active');
+    
+    // Update URL hash without triggering scroll behavior
+    if (updateHash && pageId && window.location.hash !== `#${pageId}`) {
+      history.pushState(null, null, `#${pageId}`);
+    }
+    
+    // Scroll to top of content so header remains visible
+    if (shouldScroll) {
+      setTimeout(scrollToTopOfContent, 10);
+    }
+  }
+
+  // Handle hash change (direct linking)
+  function handleHashChange() {
+    let hash = window.location.hash.slice(1); // remove #
+    if (!hash || hash === '') {
+      hash = 'welcome';
+    }
+    // check if page exists
+    const pageExists = document.getElementById(hash);
+    if (pageExists) {
+      activatePage(hash, false, true);
+    } else {
+      activatePage('welcome', false, true);
+    }
+  }
+
+  // Click handlers for nav items
+  navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const pageId = item.dataset.page;
+      if (pageId) {
+        activatePage(pageId, true, true);
+      }
+    });
+  });
+
+  // Listen to hash changes
+  window.addEventListener('hashchange', handleHashChange);
+  
+  // Initial load: check hash or default to welcome
+  if (window.location.hash && window.location.hash.length > 1) {
+    handleHashChange();
+  } else {
+    activatePage('welcome', true, false);
+    // Initial scroll adjustment
+    setTimeout(scrollToTopOfContent, 50);
+  }
+
+  // CONTRACT SIGNATURE LOGIC
+  let operativeName = "", badgeNumber = "";
+  const savedOp = localStorage.getItem('lscs_operative');
+  if (savedOp) {
+    try { const data = JSON.parse(savedOp); operativeName = data.name || ""; badgeNumber = data.badgeRaw || ""; } catch(e) {}
+  }
+
+  const signatureSpan = document.getElementById('signatureName');
+  const dateSpan = document.getElementById('signatureDate');
+  const nameInput = document.getElementById('operativeNameInput');
+  const badgeInput = document.getElementById('badgeInput');
+  const signBtn = document.getElementById('confirmContractBtn');
+  const contractCheckbox = document.getElementById('contractCheckbox');
+  const contractMsg = document.getElementById('contractMessage');
+  const webhookStatus = document.getElementById('webhookStatus');
+
+  function updateSignature() {
+    let name = nameInput?.value.trim().toUpperCase() || operativeName;
+    let badge = badgeInput?.value.trim() || badgeNumber;
+    if (name && badge) signatureSpan.innerText = `${name} (CS-${badge.padStart(2,'0')})`;
+    else if (name) signatureSpan.innerText = `${name} (Badge pending)`;
+    else signatureSpan.innerText = "_________________";
+    dateSpan.innerText = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+  if (nameInput) nameInput.addEventListener('input', updateSignature);
+  if (badgeInput) badgeInput.addEventListener('input', updateSignature);
+  if (operativeName && nameInput) nameInput.value = operativeName;
+  if (badgeNumber && badgeInput) badgeInput.value = badgeNumber;
+  updateSignature();
+
+  async function sendContractWebhook(operative, badge, timestamp) {
+    const embed = {
+      title: "📋 NEW OPERATIVE ONBOARDING",
+      color: 0xe6b422,
+      fields: [
+        { name: "👮 Operative Name", value: operative, inline: true },
+        { name: "🪪 Badge Number", value: `CS-${badge.padStart(2, '0')}`, inline: true },
+        { name: "📝 Action", value: "Signed Employment Contract", inline: false },
+        { name: "✅ Status", value: "Onboarding Complete", inline: true },
+        { name: "📅 Signed On", value: timestamp, inline: true }
+      ],
+      footer: { text: "Los Santos City Services • HR Division" },
+      timestamp: new Date().toISOString()
+    };
+    try {
+      const res = await fetch(CONTRACT_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ embeds: [embed] }) });
+      return res.ok;
+    } catch { return false; }
+  }
+
+  signBtn?.addEventListener('click', async () => {
+    if (!contractCheckbox.checked) {
+      contractMsg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please accept the contract terms.';
+      contractMsg.style.color = '#c7254e';
+      return;
+    }
+    let finalName = (nameInput?.value.trim().toUpperCase() || operativeName);
+    let finalBadge = (badgeInput?.value.trim() || badgeNumber);
+    if (!finalName || !finalBadge) {
+      contractMsg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Enter your name and badge number.';
+      contractMsg.style.color = '#c7254e';
+      return;
+    }
+    signBtn.disabled = true;
+    signBtn.innerText = 'PROCESSING...';
+    const timestamp = new Date().toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    webhookStatus.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending confirmation...';
+    const sent = await sendContractWebhook(finalName, finalBadge, timestamp);
+    if (sent) webhookStatus.innerHTML = '<i class="fas fa-check-circle"></i> ✓ Confirmation sent to HR.';
+    else webhookStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> ⚠️ HR notification failed, but local record saved.';
+    localStorage.setItem('lscs_onboarding_complete', JSON.stringify({ operative: finalName, badge: finalBadge, completed: true }));
+    localStorage.setItem('lscs_operative', JSON.stringify({ name: finalName, badgeRaw: finalBadge }));
+    contractMsg.innerHTML = '<i class="fas fa-check-circle"></i> ✅ CONTRACT SIGNED! Welcome to LSCS.';
+    contractMsg.style.color = '#2b7a3e';
+    signBtn.innerText = 'ONBOARDING COMPLETE';
+  });
+
+  // Pre-check if already completed
+  if (localStorage.getItem('lscs_onboarding_complete')) {
+    if (signBtn) { signBtn.disabled = true; signBtn.innerText = 'ALREADY SIGNED'; }
+    if (contractMsg) contractMsg.innerHTML = '<i class="fas fa-check-circle"></i> Onboarding already completed.';
+  }
+</script>
+</body>
+</html>
