@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SOLS Parking Report Tool · BazMartin</title>
+    <!-- Google Fonts + Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== GLOBAL VARIABLES (DARK MODE DEFAULT) ========== */
+        :root {
+            --bg-gradient-start: #0B0E17;
+            --bg-gradient-end: #05070C;
+            --card-bg: rgba(12, 18, 28, 0.75);
+            --text-primary: #EFF3FC;
+            --text-secondary: #B2C7EF;
+            --text-muted: #8FA0C0;
+            --nav-bg: rgba(15, 20, 30, 0.6);
+            --nav-border: rgba(72, 187, 255, 0.2);
+            --link-color: #CDE5FF;
+            --link-hover: #5DB0FF;
+            --footer-border: rgba(72, 110, 160, 0.3);
+            --footer-text: #4F6188;
+            --toggle-bg: #2d3748;
+            --toggle-knob: #fbbf24;
+            --content-bg: transparent;
+            --hr-color: rgba(72, 120, 200, 0.25);
+            --input-bg: rgba(0,0,0,0.45);
+            --input-border: rgba(72, 150, 255, 0.35);
+            --input-focus: #7ab3ff;
+            --badge-pill: rgba(72, 150, 255, 0.18);
+            --code-bg: #0A0F18;
+            --shadow-color: rgba(0,0,0,0.5);
+            --violation-hover: #0F172A;
+            --label-color: #A0B8E0;
+            --card-border: rgba(72, 150, 255, 0.2);
+            --preview-text: #CAD6F0;
+        }
+
+        /* ========== LIGHT MODE OVERRIDES ========== */
+        body.light-mode {
+            --bg-gradient-start: #f0f4fe;
+            --bg-gradient-end: #e2e9fa;
+            --text-primary: #0a1c3a;
+            --text-secondary: #1e2f4b;
+            --text-muted: #2c3e5c;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --nav-border: rgba(25, 85, 200, 0.25);
+            --link-color: #0f3b7a;
+            --link-hover: #1d4ed8;
+            --footer-border: rgba(70, 110, 160, 0.35);
+            --footer-text: #2c4c7a;
+            --toggle-bg: #cbd5e1;
+            --toggle-knob: #1e293b;
+            --hr-color: rgba(25, 85, 170, 0.3);
+            --input-bg: #ffffff;
+            --input-border: #b9ccee;
+            --input-focus: #1e40af;
+            --badge-pill: #e6edfc;
+            --code-bg: #f8fafc;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --violation-hover: #eef3ff;
+            --label-color: #1f3a64;
+            --card-border: rgba(59, 130, 246, 0.3);
+            --preview-text: #1e2f4b;
+			--card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem 4rem;
+            transition: background 0.25s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* header row: navigation + theme toggle */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid var(--nav-border);
+        }
+
+        .nav-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+            text-shadow: 0 0 4px rgba(93, 176, 255, 0.2);
+        }
+
+        /* theme toggle switch */
+        .toggle-track {
+            position: relative;
+            width: 64px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .toggle-track .knob {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            background: var(--toggle-knob);
+        }
+        body.light-mode .toggle-track .knob {
+            transform: translateX(34px);
+            background: #facc15;
+        }
+        .toggle-track .sun-moon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 0.9rem;
+            color: #fff9e0;
+        }
+        body.light-mode .toggle-track .sun-moon {
+            color: #2c3e50;
+        }
+
+        /* Tool Layout: form + preview grid */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin: 1.5rem 0 2rem;
+        }
+        @media (max-width: 780px) {
+            .tool-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .form-card, .preview-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            border: 1px solid var(--card-border);
+            padding: 1.5rem 1.8rem;
+            box-shadow: 0 12px 28px var(--shadow-color);
+            transition: all 0.2s;
+        }
+
+        .form-card h2, .preview-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-left: 4px solid var(--link-hover);
+            padding-left: 12px;
+            color: var(--text-primary);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--label-color);
+            margin-bottom: 0.35rem;
+        }
+        input, select, textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 16px;
+            padding: 0.7rem 1rem;
+            font-family: 'Inter', monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            transition: 0.2s;
+        }
+        body.light-mode input, body.light-mode select, body.light-mode textarea {
+            color: #0a1c3a;
+            background: #ffffff;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 2px rgba(93, 176, 255, 0.3);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        /* violation row style */
+        .violation-selector {
+            background: var(--badge-pill);
+            border-radius: 20px;
+            padding: 0.75rem;
+            margin-top: 0.2rem;
+        }
+        .violation-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        select#violationCode {
+            flex: 2;
+        }
+        .violation-fee {
+            background: rgba(0,0,0,0.2);
+            border-radius: 40px;
+            padding: 0.45rem 1rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            color: var(--text-primary);
+        }
+        body.light-mode .violation-fee {
+            background: #e2e8f0;
+            color: #0f2b5c;
+        }
+        .action-group {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            margin-top: 0.3rem;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .radio-option input {
+            width: auto;
+            margin: 0;
+        }
+        .generate-btn {
+            background: var(--link-hover);
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            margin-top: 1rem;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .generate-btn:hover {
+            filter: brightness(1.05);
+            transform: scale(0.98);
+        }
+        .bbcode-output {
+            background: var(--code-bg);
+            border-radius: 20px;
+            padding: 1rem;
+            font-family: 'Menlo', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 320px;
+            overflow-y: auto;
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+        }
+        body.light-mode .bbcode-output {
+            color: #0b2b44;
+            background: #fcfdff;
+        }
+        .copy-btn {
+            background: var(--toggle-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-weight: 500;
+            margin-top: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .copy-btn:hover {
+            background: var(--link-hover);
+            color: white;
+        }
+        .preview-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.2px;
+        }
+        .bbcode-preview {
+            background: var(--code-bg);
+            border-radius: 20px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        hr {
+            margin: 1rem 0;
+            border: none;
+            height: 1px;
+            background: var(--hr-color);
+        }
+        .footer-note {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 1.8rem;
+        }
+        .info-badge {
+            font-size: 0.7rem;
+            background: var(--badge-pill);
+            display: inline-block;
+            border-radius: 40px;
+            padding: 0.2rem 0.7rem;
+            margin-left: 0.5rem;
+        }
+        .tow-indicator {
+            font-size: 0.7rem;
+            font-weight: normal;
+        }
+        small {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+        #visualPreview {
+            background: var(--badge-pill);
+            border-radius: 18px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            border: 1px solid var(--input-border);
+            color: var(--preview-text);
+        }
+        #generatedTitle {
+            background: var(--code-bg);
+            border-radius: 16px;
+            padding: 0.75rem 1rem;
+            font-weight: 700;
+            border-left: 4px solid var(--link-hover);
+            margin-bottom: 1rem;
+            word-break: break-word;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        body.light-mode #generatedTitle {
+            background: #ffffffd9;
+        }
+        .radio-option input[type="radio"] {
+            accent-color: var(--link-hover);
+        }
+        @media (max-width: 550px) {
+            body { padding: 1rem; }
+            .form-card, .preview-card { padding: 1rem; }
+        }
+		
+		body.light-mode h1 {
+			background: none !important;
+			-webkit-background-clip: unset !important;
+			background-clip: unset !important;
+			color: #0a1c3a !important;
+			text-shadow: none !important;
+		}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="./index.html">🏠 Home</a>
+            <a href="https://discord.gg/vqpPaE5sku" target="_blank">💬 Discord</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <button class="toggle-track" id="themeToggleBtn" aria-label="Light/Dark mode">
+                <div class="knob"></div>
+                <div class="sun-moon"><span>☀️</span><span>🌙</span></div>
+            </button>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 0.5rem;">
+        <h1 style="font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #FFFFFF 0%, #A0C8FF 100%); background-clip: text; -webkit-background-clip: text; color: transparent; letter-spacing: -0.3px;">🚔 SOLS Parking Report Generator</h1>
+        <p style="color: var(--text-muted); margin-top: 4px;">Complete the fields → Generate BBCode → Copy & paste on forum</p>
+    </div>
+
+    <div class="tool-grid">
+        <!-- FORM SECTION -->
+        <div class="form-card">
+            <h2>📋 Report Details</h2>
+            <div class="input-group">
+                <label>👮 DEPUTY NAME</label>
+                <input type="text" id="deputyName" placeholder="e.g., Sarah Mitchell" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label>🆔 BADGE NUMBER</label>
+                <input type="text" id="badgeNumber" placeholder="e.g., #4821" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label>🚗 LICENSE PLATE</label>
+                <input type="text" id="licensePlate" placeholder="e.g., 82BAN439" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label>📟 VEHICLE DL (/dl info)</label>
+                <input type="text" id="vehicleDL" placeholder="Model: Sultan, Color: Black, etc." autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label>⚡ ACTION TAKEN</label>
+                <div class="action-group">
+                    <label class="radio-option"><input type="radio" name="actionTaken" value="Ticket" checked> Ticket</label>
+                    <label class="radio-option"><input type="radio" name="actionTaken" value="Impound"> Impound</label>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>📜 VIOLATION (PARKING CODE)</label>
+                <div class="violation-selector">
+                    <div class="violation-row">
+                        <select id="violationCode"></select>
+                        <div class="violation-fee" id="violationFeeDisplay">$0</div>
+                    </div>
+                    <div id="towWarning" style="font-size:0.7rem; margin-top: 6px; font-weight: 500; color: #ffaa55;"></div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>📎 EVIDENCE IMAGE URL (optional)</label>
+                <input type="text" id="evidenceUrl" placeholder="https://i.imgur.com/evidence.jpg" autocomplete="off">
+                <small>Paste direct image URL to embed in BBCode</small>
+            </div>
+            <button class="generate-btn" id="generateBtn">✨ Generate BBCode Report</button>
+        </div>
+
+        <!-- PREVIEW + BBCode SECTION -->
+        <div class="preview-card">
+            <h2>📰 Forum BBCode</h2>
+            <div class="preview-title">🎯 Generated Title (copy as thread title)</div>
+            <div id="generatedTitle">— Waiting for input —</div>
+            <div class="preview-title">📝 BBCode Content (click copy & paste on forum)</div>
+            <div class="bbcode-output" id="bbcodeOutput">Fill in the form and click Generate.</div>
+            <button class="copy-btn" id="copyBtn">📋 Copy BBCode to Clipboard</button>
+            <div id="copyFeedback" style="font-size:0.7rem; margin-top: 0.5rem; text-align:center; color: var(--text-muted);"></div>
+            <hr>
+            <div class="preview-title">🔍 Preview (styled reference)</div>
+            <div id="visualPreview"></div>
+        </div>
+    </div>
+    <div class="footer-note">
+        BazMartin · SOLS Parking Report Tool · Generates exact BBCode for LSSD/SOLS forums
+    </div>
+</div>
+
+<script>
+    // ---- Violation Database ----
+    const violationData = {
+        "P-101": { name: "Expired Parking Meter", fine: 150, tow: "No" },
+        "P-102": { name: "Overtime in Time-Limited Zone", fine: 200, tow: "No" },
+        "P-103": { name: "Parking Within 5ft of Driveway", fine: 200, tow: "No" },
+        "P-104": { name: "Double Parking", fine: 250, tow: "No" },
+        "P-105": { name: "Parking Facing Wrong Direction", fine: 250, tow: "No" },
+        "P-106": { name: "Blocking Sidewalk", fine: 300, tow: "No" },
+        "P-107": { name: "Parking Over Line", fine: 200, tow: "No" },
+        "P-108": { name: "Parking in No-Parking Zone", fine: 300, tow: "No" },
+        "P-201": { name: "Blocking Fire Hydrant", fine: 500, tow: "Discretionary Tow" },
+        "P-202": { name: "Blocking Emergency Access", fine: 600, tow: "Discretionary Tow" },
+        "P-203": { name: "Parking in Bus Stop", fine: 450, tow: "Discretionary Tow" },
+        "P-204": { name: "Unauthorized Loading Zone Parking", fine: 400, tow: "No" },
+        "P-205": { name: "Disabled Bay (No Permit)", fine: 750, tow: "Discretionary Tow" },
+        "P-206": { name: "Government Restricted Zone", fine: 600, tow: "Discretionary Tow" },
+        "P-207": { name: "Abandoned Vehicle", fine: 700, tow: "Immediate Tow" },
+        "P-301": { name: "Obstructing Traffic", fine: 900, tow: "Immediate Tow" },
+        "P-302": { name: "Parking on Railroad Crossing", fine: 1200, tow: "Immediate Tow" },
+        "P-303": { name: "Emergency Response Area", fine: 1000, tow: "Immediate Tow" },
+        "P-304": { name: "Repeat Offender (3+ Unpaid)", fine: 1500, tow: "Immediate Tow" },
+        "P-305": { name: "Vehicle Deemed Hazardous", fine: 1000, tow: "Immediate Tow" }
+    };
+
+    // Populate select dropdown
+    const violationSelect = document.getElementById("violationCode");
+    for (const [code, info] of Object.entries(violationData)) {
+        const option = document.createElement("option");
+        option.value = code;
+        option.textContent = `${code} - ${info.name} ($${info.fine})`;
+        violationSelect.appendChild(option);
+    }
+    function updateViolationDisplay() {
+        const selectedCode = violationSelect.value;
+        const info = violationData[selectedCode];
+        if (info) {
+            document.getElementById("violationFeeDisplay").innerHTML = `$${info.fine}`;
+            const towMsg = info.tow !== "No" ? `🚨 Tow: ${info.tow}` : "No Tow Required";
+            document.getElementById("towWarning").innerHTML = towMsg;
+        } else {
+            document.getElementById("violationFeeDisplay").innerHTML = "$0";
+            document.getElementById("towWarning").innerHTML = "";
+        }
+    }
+    violationSelect.addEventListener("change", updateViolationDisplay);
+    updateViolationDisplay();
+
+    // Helper: Generate BBCode + Title (exact format: "IMPOUND - 3MWE573 - P-101" or "TICKET - PLATE - CODE")
+    function generateReport() {
+        const deputy = document.getElementById("deputyName").value.trim() || "[Not Specified]";
+        const badge = document.getElementById("badgeNumber").value.trim() || "[N/A]";
+        let plateRaw = document.getElementById("licensePlate").value.trim();
+        const plate = plateRaw || "[Missing Plate]";
+        const dlInfo = document.getElementById("vehicleDL").value.trim() || "[No DL data]";
+        const actionRadios = document.querySelectorAll('input[name="actionTaken"]');
+        let action = "Ticket";
+        for (let r of actionRadios) if (r.checked) { action = r.value; break; }
+        
+        const violationCode = violationSelect.value;
+        const violationObj = violationData[violationCode] || { name: "Unknown", fine: 0, tow: "No" };
+        const violationText = `${violationCode} - ${violationObj.name} ($${violationObj.fine})`;
+        let evidenceUrl = document.getElementById("evidenceUrl").value.trim();
+        let evidenceBBCode = "";
+        if (evidenceUrl !== "") {
+            evidenceBBCode = `[img]${evidenceUrl}[/img]`;
+        } else {
+            evidenceBBCode = "[img][/img]";
+        }
+        
+        // Build BBCode according to required template
+        let bbCode = `[center][b]Traffic Service Detail — ${action} Record[/b][/center]\n\n[hr][/hr]\n\n`;
+        bbCode += `[b]DEPUTY NAME:[/b] ${deputy}\n`;
+        bbCode += `[b]BADGE NUMBER:[/b] ${badge}\n\n`;
+        bbCode += `[b]LICENSE PLATE:[/b] ${plate}\n`;
+        bbCode += `[b]VEHICLE DL (/dl):[/b] ${dlInfo}\n\n`;
+        bbCode += `[b]ACTION TAKEN:[/b] ${action}\n\n`;
+        bbCode += `[b]VIOLATION (PARKING CODE):[/b] ${violationText}\n\n`;
+        bbCode += `[b]EVIDENCE:[/b]\n${evidenceBBCode}\n\n`;
+        bbCode += `[hr][/hr]`;
+        
+        if (violationObj.tow !== "No") {
+            bbCode += `\n[i]Tow action: ${violationObj.tow} per SOLS parking codes.[/i]`;
+        }
+        
+        // ----- TITLE FORMAT: ACTION (UPPERCASE) - LICENSE PLATE - VIOLATION CODE -----
+        // Examples: "IMPOUND - 3MWE573 - P-101" or "TICKET - ABC123 - P-102"
+        let actionUpper = action.toUpperCase();
+        // Use actual license plate if provided, otherwise "[Missing Plate]"
+        const titlePlate = plateRaw ? plateRaw : "[Missing Plate]";
+        const titleViolationCode = violationCode;
+        // Final title follows exact spec: ACTION - PLATE - CODE (no extra deputy names)
+        const title = `${actionUpper} - ${titlePlate} - ${titleViolationCode}`;
+        
+        return { bbCode, title };
+    }
+    
+    function refreshPreview() {
+        const { bbCode, title } = generateReport();
+        document.getElementById("bbcodeOutput").innerText = bbCode;
+        document.getElementById("generatedTitle").innerHTML = title;
+        // visual preview - strip BBCode to readable but keep structure friendly
+        let previewText = bbCode
+            .replace(/\[center\]/g, '')
+            .replace(/\[\/center\]/g, '')
+            .replace(/\[b\]/g, '')
+            .replace(/\[\/b\]/g, '')
+            .replace(/\[hr\]/g, '──────────────────')
+            .replace(/\[\/hr\]/g, '')
+            .replace(/\[i\]/g, '')
+            .replace(/\[\/i\]/g, '')
+            .replace(/\[img\](.*?)\[\/img\]/g, (match, url) => url && url.length ? `📷 EVIDENCE: ${url}` : '📷 (No evidence provided)');
+        document.getElementById("visualPreview").innerHTML = previewText.replace(/\n/g, '<br>');
+    }
+    
+    document.getElementById("generateBtn").addEventListener("click", () => {
+        refreshPreview();
+    });
+    
+    const copyBtn = document.getElementById("copyBtn");
+    const copyFeedback = document.getElementById("copyFeedback");
+    copyBtn.addEventListener("click", async () => {
+        const bbcodeText = document.getElementById("bbcodeOutput").innerText;
+        if (!bbcodeText || bbcodeText === "Fill in the form and click Generate.") {
+            copyFeedback.textContent = "⚠️ Generate a report first!";
+            setTimeout(() => { copyFeedback.textContent = ""; }, 1800);
+            return;
+        }
+        try {
+            await navigator.clipboard.writeText(bbcodeText);
+            copyFeedback.textContent = "✅ BBCode copied to clipboard!";
+            setTimeout(() => { copyFeedback.textContent = ""; }, 2000);
+        } catch (err) {
+            copyFeedback.textContent = "⚠️ Manual copy, select text manually.";
+            setTimeout(() => { copyFeedback.textContent = ""; }, 2000);
+        }
+    });
+    
+    const inputIds = ["deputyName", "badgeNumber", "licensePlate", "vehicleDL", "evidenceUrl"];
+    inputIds.forEach(id => {
+        document.getElementById(id).addEventListener("input", () => refreshPreview());
+    });
+    document.querySelectorAll('input[name="actionTaken"]').forEach(radio => {
+        radio.addEventListener("change", () => refreshPreview());
+    });
+    violationSelect.addEventListener("change", () => refreshPreview());
+    
+    // Theme handling (synced as per main hub)
+    function initTheme() {
+        const stored = localStorage.getItem("bazmartin_theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let isDark = true;
+        if (stored === "light") isDark = false;
+        else if (stored === "dark") isDark = true;
+        else if (!prefersDark) isDark = false;
+        if (!isDark) document.body.classList.add("light-mode");
+        else document.body.classList.remove("light-mode");
+        updateToggleKnob(!isDark);
+    }
+    function updateToggleKnob(isLight) {
+        const track = document.querySelector(".toggle-track");
+        if (!track) return;
+        const knob = track.querySelector(".knob");
+        if (isLight) knob.style.transform = "translateX(34px)";
+        else knob.style.transform = "translateX(2px)";
+    }
+    function setTheme(lightMode) {
+        if (lightMode) {
+            document.body.classList.add("light-mode");
+            localStorage.setItem("bazmartin_theme", "light");
+            updateToggleKnob(true);
+        } else {
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("bazmartin_theme", "dark");
+            updateToggleKnob(false);
+        }
+    }
+    function toggleTheme() {
+        const isLight = document.body.classList.contains("light-mode");
+        setTheme(!isLight);
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+        refreshPreview();
+    });
+    window.addEventListener("load", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        updateToggleKnob(isLight);
+        refreshPreview();
+    });
+</script>
+</body>
+</html>
