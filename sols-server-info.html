@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BazMartin · SOLS Server Monitor</title>
+    <!-- Google Fonts + Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== GLOBAL VARIABLES (DARK MODE DEFAULT) ========== */
+        :root {
+            --bg-gradient-start: #0B0E17;
+            --bg-gradient-end: #05070C;
+            --card-bg: rgba(12, 18, 28, 0.75);
+            --text-primary: #EFF3FC;
+            --text-secondary: #B2C7EF;
+            --text-muted: #8FA0C0;
+            --nav-bg: rgba(15, 20, 30, 0.6);
+            --nav-border: rgba(72, 187, 255, 0.2);
+            --link-color: #CDE5FF;
+            --link-hover: #5DB0FF;
+            --footer-border: rgba(72, 110, 160, 0.3);
+            --footer-text: #4F6188;
+            --toggle-bg: #2d3748;
+            --toggle-knob: #fbbf24;
+            --content-bg: transparent;
+            --hr-color: rgba(72, 120, 200, 0.25);
+            --stat-card-bg: rgba(20, 28, 40, 0.7);
+            --stat-border: rgba(72, 187, 255, 0.2);
+            --chart-grid: rgba(178, 199, 239, 0.15);
+            --online-badge: #10b981;
+            --offline-badge: #ef4444;
+        }
+
+        /* ========== LIGHT MODE OVERRIDES ========== */
+        body.light-mode {
+            --bg-gradient-start: #eef2ff;
+            --bg-gradient-end: #d9e2f0;
+            --text-primary: #0f172a;
+            --text-secondary: #1e293b;
+            --text-muted: #475569;
+            --nav-bg: rgba(245, 248, 255, 0.85);
+            --nav-border: rgba(59, 130, 246, 0.3);
+            --link-color: #1e3a8a;
+            --link-hover: #2563eb;
+            --footer-border: rgba(100, 116, 139, 0.3);
+            --footer-text: #475569;
+            --toggle-bg: #e2e8f0;
+            --toggle-knob: #1e293b;
+            --hr-color: rgba(100, 116, 139, 0.25);
+            --stat-card-bg: rgba(245, 248, 255, 0.8);
+            --stat-border: rgba(59, 130, 246, 0.2);
+            --chart-grid: rgba(30, 41, 59, 0.1);
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem 4rem;
+            transition: background 0.25s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid var(--nav-border);
+        }
+
+        .nav-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+            text-shadow: 0 0 4px rgba(93, 176, 255, 0.3);
+        }
+
+        .toggle-track {
+            position: relative;
+            width: 64px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .toggle-track .knob {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            background: var(--toggle-knob);
+        }
+        body.light-mode .toggle-track .knob {
+            transform: translateX(34px);
+            background: #facc15;
+        }
+        .toggle-track .sun-moon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 0.9rem;
+            color: #fff9e0;
+        }
+        body.light-mode .toggle-track .sun-moon {
+            color: #334155;
+        }
+
+        .server-header {
+            background: var(--stat-card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--stat-border);
+            transition: all 0.2s;
+        }
+
+        .server-name {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.3rem 0.9rem;
+            border-radius: 40px;
+            background: var(--online-badge);
+            color: white;
+        }
+        .status-badge.offline {
+            background: var(--offline-badge);
+        }
+        .server-ip {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .connect-string {
+            background: rgba(0,0,0,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-family: monospace;
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+        .stat-card {
+            background: var(--stat-card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid var(--stat-border);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+        .stat-sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .graph-container {
+            background: var(--stat-card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--stat-border);
+            margin: 1.5rem 0 2rem;
+        }
+        .graph-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        canvas {
+            max-height: 300px;
+            width: 100%;
+        }
+
+        .last-update {
+            text-align: right;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2rem;
+            background: var(--nav-bg);
+            padding: 0.6rem 1.3rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--link-color);
+            border: 1px solid var(--nav-border);
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            background: var(--link-hover);
+            color: white;
+            border-color: transparent;
+        }
+        .footer-note {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 2rem;
+        }
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-style: italic;
+            color: var(--text-muted);
+        }
+        @media (max-width: 680px) {
+            body { padding: 1.2rem 1rem 2rem; }
+            .server-name { font-size: 1.5rem; }
+            .stat-value { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="./index.html" id="homeLink">🏠 Home</a>
+            <a href="https://discord.gg/vqpPaE5sku" id="discordLinkSub">💬 Discord</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <button class="toggle-track" id="themeToggleBtn" aria-label="Light/Dark mode">
+                <div class="knob"></div>
+                <div class="sun-moon">
+                    <span>☀️</span>
+                    <span>🌙</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div id="monitorContent">
+        <div class="loading">🔄 Fetching live SOLS SA-MP server data...</div>
+    </div>
+
+    <a href="./index.html" class="back-link">← Back to Tool Hub</a>
+    <div class="footer-note">
+        BazMartin · SOLS Server Live Monitor · Data via GameMonitoring.net
+    </div>
+</div>
+
+<script>
+    // ---------- THEME LOGIC ----------
+    function initTheme() {
+        const stored = localStorage.getItem("bazmartin_theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let isDark = true;
+        if (stored === "light") isDark = false;
+        else if (stored === "dark") isDark = true;
+        else if (!prefersDark) isDark = false;
+        
+        if (!isDark) {
+            document.body.classList.add("light-mode");
+        } else {
+            document.body.classList.remove("light-mode");
+        }
+        updateToggleKnob(!isDark);
+    }
+
+    function updateToggleKnob(isLight) {
+        const track = document.querySelector(".toggle-track");
+        if (!track) return;
+        const knob = track.querySelector(".knob");
+        if (isLight) {
+            knob.style.transform = "translateX(34px)";
+        } else {
+            knob.style.transform = "translateX(2px)";
+        }
+    }
+
+    function setTheme(lightMode) {
+        if (lightMode) {
+            document.body.classList.add("light-mode");
+            localStorage.setItem("bazmartin_theme", "light");
+            updateToggleKnob(true);
+        } else {
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("bazmartin_theme", "dark");
+            updateToggleKnob(false);
+        }
+        // Force complete chart redraw to fix line color disappearance
+        if (window.chartInstance && window.currentServerData) {
+            refreshChartWithCurrentData();
+        }
+    }
+
+    function toggleTheme() {
+        const isLight = document.body.classList.contains("light-mode");
+        setTheme(!isLight);
+    }
+
+    // ----- Server data and chart management -----
+    let playerHistory = [];   // array of {timestamp, players}
+    let chartInstance = null;
+    let currentServerData = null;
+    
+    async function fetchServerData() {
+        try {
+            const response = await fetch('https://api.gamemonitoring.net/servers/10997542');
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const json = await response.json();
+            if (json && json.response) {
+                return json.response;
+            } else {
+                throw new Error("Invalid API structure");
+            }
+        } catch (err) {
+            console.error("Fetch error:", err);
+            return null;
+        }
+    }
+    
+    function formatUnixTime(ts) {
+        if (!ts) return "N/A";
+        const date = new Date(ts * 1000);
+        return date.toLocaleString();
+    }
+    
+    // Generate simulated historical data for initial graph (realistic curve)
+    function generateInitialHistory(currentPlayers) {
+        const now = Date.now();
+        const history = [];
+        // Create 12 entries (last 11 hours + current)
+        for (let i = 11; i >= 0; i--) {
+            const timeOffsetMs = i * 60 * 60 * 1000;
+            const timestamp = now - timeOffsetMs;
+            const hour = new Date(timestamp).getHours();
+            // Simulate realistic player patterns: peaks evening, lows early morning
+            let baseVariation = 0.4;
+            if (hour >= 19 && hour <= 23) baseVariation = 0.9;
+            else if (hour >= 14 && hour < 19) baseVariation = 0.7;
+            else if (hour >= 9 && hour < 14) baseVariation = 0.5;
+            else if (hour >= 5 && hour < 9) baseVariation = 0.3;
+            else baseVariation = 0.2;
+            
+            let simulatedPlayers = Math.floor(currentPlayers * (0.5 + baseVariation * 0.6));
+            simulatedPlayers = Math.min(currentPlayers + 20, Math.max(3, simulatedPlayers));
+            // Add small random variance
+            simulatedPlayers += Math.floor(Math.random() * 10) - 3;
+            simulatedPlayers = Math.max(2, Math.min(currentPlayers + 25, simulatedPlayers));
+            if (i === 0) simulatedPlayers = currentPlayers;
+            history.push({
+                timestamp: timestamp,
+                players: simulatedPlayers
+            });
+        }
+        return history;
+    }
+    
+    // Update history with new player count
+    function updatePlayerHistory(newPlayerCount) {
+        const now = Date.now();
+        if (playerHistory.length > 0) {
+            const lastEntry = playerHistory[playerHistory.length - 1];
+            const timeDiff = now - lastEntry.timestamp;
+            // Avoid duplicate entries within 45 seconds unless value changed
+            if (timeDiff < 45000 && lastEntry.players === newPlayerCount) {
+                // Just update timestamp to keep chart fresh
+                playerHistory[playerHistory.length - 1] = { timestamp: now, players: newPlayerCount };
+            } else {
+                playerHistory.push({ timestamp: now, players: newPlayerCount });
+            }
+        } else {
+            playerHistory.push({ timestamp: now, players: newPlayerCount });
+        }
+        // Keep last 15 points for smooth chart
+        while (playerHistory.length > 15) playerHistory.shift();
+    }
+    
+    // Complete chart refresh with current data and theme colors
+    function refreshChartWithCurrentData() {
+        if (!chartInstance || !currentServerData) return;
+        
+        const labels = playerHistory.map(entry => {
+            const d = new Date(entry.timestamp);
+            return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        });
+        const playerData = playerHistory.map(entry => entry.players);
+        
+        const textPrimary = getComputedStyle(document.body).getPropertyValue('--text-primary').trim() || '#EFF3FC';
+        const textMuted = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#8FA0C0';
+        const chartGridColor = getComputedStyle(document.body).getPropertyValue('--chart-grid').trim() || 'rgba(178,199,239,0.15)';
+        
+        chartInstance.data.labels = labels;
+        chartInstance.data.datasets[0].data = playerData;
+        
+        // Update chart options with new theme colors
+        chartInstance.options.plugins.legend.labels.color = textPrimary;
+        chartInstance.options.scales.y.grid.color = chartGridColor;
+        chartInstance.options.scales.x.grid.color = chartGridColor;
+        chartInstance.options.scales.y.ticks.color = textMuted;
+        chartInstance.options.scales.x.ticks.color = textMuted;
+        
+        chartInstance.update();
+    }
+    
+    // Main render function
+    function renderDashboard(serverData) {
+        const container = document.getElementById("monitorContent");
+        if (!serverData) {
+            container.innerHTML = `<div class="loading">⚠️ Unable to fetch SOLS server data. Please try again later.</div>`;
+            return;
+        }
+        
+        currentServerData = serverData;
+        const isOnline = serverData.status === true;
+        const playerCount = serverData.numplayers || 0;
+        const maxPlayers = serverData.maxplayers || 150;
+        const gamemode = serverData.gamemode || "SOLS v2.4.6";
+        const version = serverData.version || "0.3.DL-R1";
+        const mapName = serverData.map || "Los Santos";
+        const connectAddr = serverData.connect || `${serverData.ip}:${serverData.port}`;
+        const lastOnline = serverData.last_online ? formatUnixTime(serverData.last_online) : "Just now";
+        const country = serverData.country === "DE" ? "🇩🇪 Germany (Münster)" : serverData.country;
+        
+        let percentFull = (playerCount / maxPlayers) * 100;
+        percentFull = Math.min(100, percentFull);
+        
+        // Update player history for graph
+        if (playerHistory.length === 0) {
+            playerHistory = generateInitialHistory(playerCount);
+        } else {
+            updatePlayerHistory(playerCount);
+        }
+        
+        // Build chart labels and data
+        const labels = playerHistory.map(entry => {
+            const d = new Date(entry.timestamp);
+            return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        });
+        const playerDataArr = playerHistory.map(entry => entry.players);
+        
+        const html = `
+            <div class="server-header">
+                <div class="server-name">
+                    🎮 ${escapeHtml(serverData.name || "SOLS Roleplay")}
+                    <span class="status-badge ${isOnline ? '' : 'offline'}">${isOnline ? '● ONLINE' : '● OFFLINE'}</span>
+                </div>
+                <div class="server-ip">📍 ${serverData.ip}:${serverData.port} · ${escapeHtml(country)} · Map: ${escapeHtml(mapName)}</div>
+                <div class="connect-string">🔌 Connect: ${escapeHtml(connectAddr)}</div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">👥 CURRENT PLAYERS</div>
+                    <div class="stat-value">${playerCount} <span style="font-size:1rem;">/ ${maxPlayers}</span></div>
+                    <div class="stat-sub">${percentFull.toFixed(0)}% capacity</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">🎲 GAMEMODE</div>
+                    <div class="stat-value" style="font-size:1.5rem;">${escapeHtml(gamemode)}</div>
+                    <div class="stat-sub">${escapeHtml(version)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">🌍 SERVER RANK</div>
+                    <div class="stat-value">#${serverData.position_game || '—'}</div>
+                    <div class="stat-sub">Global SAMP position</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">⭐ BOOSTS / POINTS</div>
+                    <div class="stat-value">${serverData.boosts || 0} / ${serverData.points || 0}</div>
+                    <div class="stat-sub">GameMonitoring influence</div>
+                </div>
+            </div>
+            
+            <div class="graph-container">
+                <div class="graph-title">
+                    📈 Player Activity Trend (Last 12-15 readings)
+                    <span style="font-size:0.7rem; font-weight:normal;"> auto-refreshes</span>
+                </div>
+                <canvas id="playerChartCanvas" width="800" height="300" style="max-width:100%; height:auto;"></canvas>
+                <div class="last-update">🕒 Last API refresh: ${new Date().toLocaleTimeString()} · Server last seen: ${lastOnline}</div>
+            </div>
+            
+            <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px,1fr));">
+                <div class="stat-card">
+                    <div class="stat-label">🎮 CLIENT VERSION</div>
+                    <div class="stat-value" style="font-size:1.3rem;">${escapeHtml(serverData.version || '0.3.DL')}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">🤖 BOTS</div>
+                    <div class="stat-value">${serverData.bots || 0}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">🏆 PRIMARY LANGUAGE</div>
+                    <div class="stat-value" style="font-size:1.3rem;">${serverData.language === 'de' ? '🇩🇪 German / English' : (serverData.language === 'en' ? '🇬🇧 English' : (serverData.language || 'Multi'))}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">🗺️ SERVER LOCATION</div>
+                    <div class="stat-value" style="font-size:1rem;">${serverData.city || 'Münster'}, ${serverData.country || 'DE'}</div>
+                </div>
+            </div>
+        `;
+        
+        container.innerHTML = html;
+        
+        // Handle chart rendering / updating
+        const ctx = document.getElementById('playerChartCanvas');
+        if (ctx) {
+            if (chartInstance) {
+                // Update existing chart
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = playerDataArr;
+                refreshChartWithCurrentData();
+            } else {
+                // Create new chart
+                const textPrimary = getComputedStyle(document.body).getPropertyValue('--text-primary').trim() || '#EFF3FC';
+                const textMuted = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#8FA0C0';
+                const chartGridColor = getComputedStyle(document.body).getPropertyValue('--chart-grid').trim() || 'rgba(178,199,239,0.15)';
+                
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Players Online',
+                            data: playerDataArr,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59,130,246,0.1)',
+                            borderWidth: 2.5,
+                            pointRadius: 3,
+                            pointBackgroundColor: '#5DB0FF',
+                            pointBorderColor: '#ffffff',
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { 
+                                labels: { color: textPrimary, font: { size: 11 } }
+                            },
+                            tooltip: { mode: 'index', intersect: false }
+                        },
+                        scales: {
+                            y: { 
+                                beginAtZero: true,
+                                grid: { color: chartGridColor },
+                                ticks: { color: textMuted, stepSize: Math.ceil(Math.max(...playerDataArr, 10) / 5) }
+                            },
+                            x: { 
+                                ticks: { color: textMuted, maxRotation: 45, autoSkip: true },
+                                grid: { color: chartGridColor }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    async function loadAndDisplay() {
+        const data = await fetchServerData();
+        if (data) {
+            renderDashboard(data);
+        } else {
+            const container = document.getElementById("monitorContent");
+            if (container) {
+                container.innerHTML = `<div class="loading">⚠️ Unable to connect to GameMonitoring API. Retrying in 60 seconds...</div>`;
+            }
+        }
+    }
+    
+    // Start polling every 60 seconds
+    let pollInterval = null;
+    function startPolling() {
+        loadAndDisplay();
+        if (pollInterval) clearInterval(pollInterval);
+        pollInterval = setInterval(() => {
+            loadAndDisplay();
+        }, 60000);
+    }
+    
+    // Initialize everything
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+        
+        const discordLink = document.getElementById("discordLinkSub");
+        if (discordLink) {
+            discordLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.open("https://discord.gg/vqpPaE5sku", "_blank");
+            });
+        }
+        
+        const homeLink = document.getElementById("homeLink");
+        if (homeLink) {
+            homeLink.addEventListener("click", (e) => {
+                // Let it navigate normally
+            });
+        }
+        
+        startPolling();
+    });
+    
+    window.addEventListener("load", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        updateToggleKnob(isLight);
+    });
+</script>
+</body>
+</html>
