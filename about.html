@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BazMartin · About</title>
+    <!-- Google Fonts + Inter (consistent with main hub) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== GLOBAL VARIABLES (DARK MODE DEFAULT) ========== */
+        :root {
+            --bg-gradient-start: #0B0E17;
+            --bg-gradient-end: #05070C;
+            --card-bg: rgba(12, 18, 28, 0.75);
+            --text-primary: #EFF3FC;
+            --text-secondary: #B2C7EF;
+            --text-muted: #8FA0C0;
+            --nav-bg: rgba(15, 20, 30, 0.6);
+            --nav-border: rgba(72, 187, 255, 0.2);
+            --link-color: #CDE5FF;
+            --link-hover: #5DB0FF;
+            --footer-border: rgba(72, 110, 160, 0.3);
+            --footer-text: #4F6188;
+            --toggle-bg: #2d3748;
+            --toggle-knob: #fbbf24;
+            --content-bg: transparent;
+            --hr-color: rgba(72, 120, 200, 0.25);
+        }
+
+        /* ========== LIGHT MODE OVERRIDES ========== */
+        body.light-mode {
+            --bg-gradient-start: #eef2ff;
+            --bg-gradient-end: #d9e2f0;
+            --text-primary: #0f172a;
+            --text-secondary: #1e293b;
+            --text-muted: #475569;
+            --nav-bg: rgba(245, 248, 255, 0.85);
+            --nav-border: rgba(59, 130, 246, 0.3);
+            --link-color: #1e3a8a;
+            --link-hover: #2563eb;
+            --footer-border: rgba(100, 116, 139, 0.3);
+            --footer-text: #475569;
+            --toggle-bg: #e2e8f0;
+            --toggle-knob: #1e293b;
+            --hr-color: rgba(100, 116, 139, 0.25);
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem 4rem;
+            transition: background 0.25s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+        }
+
+        /* header row: navigation + theme toggle (identical to index) */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid var(--nav-border);
+        }
+
+        .nav-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+            text-shadow: 0 0 4px rgba(93, 176, 255, 0.3);
+        }
+
+        /* theme toggle switch (uniform with main page) */
+        .toggle-track {
+            position: relative;
+            width: 64px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .toggle-track .knob {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            background: var(--toggle-knob);
+        }
+        body.light-mode .toggle-track .knob {
+            transform: translateX(34px);
+            background: #facc15;
+        }
+        .toggle-track .sun-moon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 0.9rem;
+            color: #fff9e0;
+        }
+        body.light-mode .toggle-track .sun-moon {
+            color: #334155;
+        }
+
+        /* --- simple content block: left aligned H1 + paragraphs --- */
+        .content-section {
+            background: transparent;
+            margin: 1.5rem 0 2rem 0;
+        }
+
+        .content-section h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(135deg, #FFFFFF 0%, #A0C8FF 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        body.light-mode .content-section h1 {
+            background: linear-gradient(135deg, #0f2b5c, #2563eb);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .content-section p {
+            font-size: 1.08rem;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            margin-bottom: 1.4rem;
+        }
+
+        .content-section h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .content-section hr {
+            margin: 2rem 0;
+            border: none;
+            height: 1px;
+            background: var(--hr-color);
+        }
+
+        /* subtle back link (optional) */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2rem;
+            background: var(--nav-bg);
+            padding: 0.6rem 1.3rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--link-color);
+            border: 1px solid var(--nav-border);
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--link-hover);
+            color: white;
+            border-color: transparent;
+        }
+
+        .footer-note {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 680px) {
+            body {
+                padding: 1.2rem 1rem 2rem;
+            }
+            .content-section h1 {
+                font-size: 2.2rem;
+            }
+            .content-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- uniform header: navigation + theme toggle (consistent with index) -->
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="./index.html" id="homeLink">🏠 Home</a>
+            <a href="https://discord.gg/vqpPaE5sku" id="discordLinkSub">💬 Discord</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <button class="toggle-track" id="themeToggleBtn" aria-label="Light/Dark mode">
+                <div class="knob"></div>
+                <div class="sun-moon">
+                    <span>☀️</span>
+                    <span>🌙</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- SIMPLE CONTENT BLOCK: left-aligned H1 + paragraph (template ready) -->
+    <div class="content-section">
+        <h1>About BazMartin</h1>
+        <p>
+		I'm BazMartin, also known as Barry. I'm an experienced roleplayer within SAMP and MTA Communities, alongside being a member of the Switch Modding Community. This is my hub of resources and tools that I have created, to make life easier for folks across SAMP/MTA and Switch Modding.
+        </p>
+        <p>
+		Regular updates happen here, with things getting improved and tweaked. All of the code is available publically via Github, and can be used for your own projects. Happy to help via Discord with code I've produced too.
+        </p>
+        
+        <h2>📌 Why this hub exists</h2>
+        <p>
+		I often have ideas to either help myself, or people in the communities listed. Instead of local hosting things to improve my own experience, might as well publically share them, providing a quicker way of doing things, or an alternative solution to others too.
+        </p>
+
+        <hr>
+
+        <!-- optional back link to index, keeps navigation fluid -->
+        <a href="./index.html" class="back-link">← Back to Tool Hub</a>
+    </div>
+
+    <div class="footer-note">
+        BazMartin · Tools, Resources & Code
+    </div>
+</div>
+
+<script>
+    // ---------- IDENTICAL THEME LOGIC (syncs with index & localStorage) ----------
+    function initTheme() {
+        const stored = localStorage.getItem("bazmartin_theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let isDark = true;
+        if (stored === "light") isDark = false;
+        else if (stored === "dark") isDark = true;
+        else if (!prefersDark) isDark = false;
+        
+        if (!isDark) {
+            document.body.classList.add("light-mode");
+        } else {
+            document.body.classList.remove("light-mode");
+        }
+        updateToggleKnob(!isDark);
+    }
+
+    function updateToggleKnob(isLight) {
+        const track = document.querySelector(".toggle-track");
+        if (!track) return;
+        const knob = track.querySelector(".knob");
+        if (isLight) {
+            knob.style.transform = "translateX(34px)";
+        } else {
+            knob.style.transform = "translateX(2px)";
+        }
+    }
+
+    function setTheme(lightMode) {
+        if (lightMode) {
+            document.body.classList.add("light-mode");
+            localStorage.setItem("bazmartin_theme", "light");
+            updateToggleKnob(true);
+        } else {
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("bazmartin_theme", "dark");
+            updateToggleKnob(false);
+        }
+    }
+
+    function toggleTheme() {
+        const isLight = document.body.classList.contains("light-mode");
+        setTheme(!isLight);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+        
+        // Discord placeholder link (replace with real invite later)
+        const discordBtn = document.getElementById("discordLinkSub");
+        if (discordBtn) {
+            discordBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.open("https://discord.gg/vqpPaE5sku", "_blank");
+            });
+        }
+    });
+    
+    window.addEventListener("load", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        updateToggleKnob(isLight);
+    });
+</script>
+</body>
+</html>
