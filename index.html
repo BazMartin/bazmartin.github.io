@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BazMartin · Tools & Resources</title>
+    <!-- Google Fonts + simple reset -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== GLOBAL VARIABLES (DEFAULT DARK) ========== */
+        :root {
+            --bg-gradient-start: #0B0E17;
+            --bg-gradient-end: #05070C;
+            --card-bg: rgba(12, 18, 28, 0.75);
+            --card-border: rgba(72, 120, 200, 0.25);
+            --card-hover-bg: rgba(18, 26, 40, 0.85);
+            --text-primary: #EFF3FC;
+            --text-secondary: #B2C7EF;
+            --text-muted: #8FA0C0;
+            --nav-bg: rgba(15, 20, 30, 0.6);
+            --nav-border: rgba(72, 187, 255, 0.2);
+            --link-color: #CDE5FF;
+            --link-hover: #5DB0FF;
+            --search-bg: rgba(18, 24, 36, 0.85);
+            --search-border: rgba(64, 128, 255, 0.3);
+            --search-focus-border: #3E8EFF;
+            --badge-bg: rgba(57, 114, 209, 0.2);
+            --badge-text: #7EB2FF;
+            --card-link-bg: rgba(60, 120, 220, 0.18);
+            --card-link-hover: #2C6EE8;
+            --footer-border: rgba(72, 110, 160, 0.3);
+            --footer-text: #4F6188;
+            --toggle-bg: #2d3748;
+            --toggle-knob: #fbbf24;
+            --toggle-icon: #facc15;
+            --no-results-bg: rgba(0, 0, 0, 0.3);
+        }
+
+        /* ========== LIGHT MODE OVERRIDES ========== */
+        body.light-mode {
+            --bg-gradient-start: #eef2ff;
+            --bg-gradient-end: #d9e2f0;
+            --card-bg: rgba(245, 248, 255, 0.9);
+            --card-border: rgba(100, 140, 200, 0.4);
+            --card-hover-bg: rgba(255, 255, 255, 0.98);
+            --text-primary: #0f172a;
+            --text-secondary: #1e293b;
+            --text-muted: #475569;
+            --nav-bg: rgba(245, 248, 255, 0.85);
+            --nav-border: rgba(59, 130, 246, 0.3);
+            --link-color: #1e3a8a;
+            --link-hover: #2563eb;
+            --search-bg: rgba(255, 255, 255, 0.95);
+            --search-border: rgba(59, 130, 246, 0.5);
+            --search-focus-border: #3b82f6;
+            --badge-bg: rgba(37, 99, 235, 0.15);
+            --badge-text: #1e40af;
+            --card-link-bg: rgba(37, 99, 235, 0.1);
+            --card-link-hover: #2563eb;
+            --footer-border: rgba(100, 116, 139, 0.3);
+            --footer-text: #475569;
+            --toggle-bg: #e2e8f0;
+            --toggle-knob: #1e293b;
+            --toggle-icon: #f59e0b;
+            --no-results-bg: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem 4rem;
+            transition: background 0.25s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* --- header / top row with toggle + nav --- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid var(--nav-border);
+        }
+
+        .nav-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+            text-shadow: 0 0 4px rgba(93, 176, 255, 0.3);
+        }
+
+        /* toggle switch - modern */
+        .theme-toggle {
+            background: var(--toggle-bg);
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0.3rem;
+            cursor: pointer;
+            border: none;
+            width: 64px;
+            justify-content: space-between;
+            transition: 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .toggle-icons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 8px;
+            font-size: 0.9rem;
+        }
+        .toggle-icons span {
+            transition: transform 0.2s;
+        }
+        .toggle-knob {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: var(--toggle-knob);
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+            top: 2px;
+            left: 2px;
+        }
+        .toggle-track {
+            position: relative;
+            width: 64px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .toggle-track .knob {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            background: var(--toggle-knob);
+        }
+        body.light-mode .toggle-track .knob {
+            transform: translateX(34px);
+            background: #facc15;
+        }
+        .toggle-track .sun-moon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 0.9rem;
+            color: #fff9e0;
+        }
+        body.light-mode .toggle-track .sun-moon {
+            color: #334155;
+        }
+
+        /* main title */
+        .hero-title {
+            text-align: center;
+            margin: 0.2rem 0 0.8rem 0;
+        }
+
+        .hero-title h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFFFFF 0%, #A0C8FF 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-mode .hero-title h1 {
+            background: linear-gradient(135deg, #0f2b5c, #2563eb);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-sub {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: -0.4rem;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            font-size: 1rem;
+        }
+
+        /* search section */
+        .search-wrapper {
+            max-width: 580px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .search-field {
+            width: 100%;
+            background: var(--search-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--search-border);
+            border-radius: 80px;
+            padding: 0.9rem 1.8rem;
+            font-size: 1rem;
+            font-family: 'Inter', monospace;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.25s;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-field:focus {
+            border-color: var(--search-focus-border);
+            box-shadow: 0 0 0 3px rgba(62, 142, 255, 0.2), 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-field::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        /* card grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1rem;
+        }
+
+        /* card styling */
+        .tool-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.6rem 1.6rem 1.8rem;
+            transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.2s;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(80, 150, 255, 0.6);
+            box-shadow: 0 25px 40px -12px rgba(0, 80, 255, 0.25);
+            background: var(--card-hover-bg);
+        }
+
+        .card-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: var(--badge-bg);
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            width: fit-content;
+            color: var(--badge-text);
+            margin-bottom: 1rem;
+            border: 0.5px solid rgba(85, 160, 255, 0.4);
+        }
+
+        .tool-card h3 {
+            font-size: 1.65rem;
+            font-weight: 600;
+            margin-bottom: 0.65rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(120deg, var(--text-primary), var(--link-color));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        body.light-mode .tool-card h3 {
+            background: linear-gradient(120deg, #0f172a, #2563eb);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .tool-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.45;
+            margin: 0.5rem 0 1.2rem 0;
+            flex-grow: 1;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-link-bg);
+            padding: 0.55rem 1.2rem;
+            border-radius: 40px;
+            width: fit-content;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--link-color);
+            border: 1px solid rgba(90, 160, 255, 0.3);
+            transition: all 0.2s;
+            margin-top: 0.25rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .card-link:hover {
+            background: var(--card-link-hover);
+            color: white;
+            border-color: #4C8EFF;
+            box-shadow: 0 4px 12px rgba(44, 110, 232, 0.3);
+        }
+
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 3rem;
+            background: var(--no-results-bg);
+            border-radius: 2rem;
+            backdrop-filter: blur(4px);
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-note {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 680px) {
+            body {
+                padding: 1.2rem 1rem 2rem;
+            }
+            .hero-title h1 {
+                font-size: 2.5rem;
+            }
+            .top-bar {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .nav-links {
+                gap: 1rem;
+                padding: 0.4rem 1.2rem;
+            }
+            .tool-card h3 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- header row: navigation and theme toggle -->
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="./about.html" id="aboutLink" aria-label="About page">📄 About</a>
+            <a href="https://discord.gg/vqpPaE5sku" id="discordLink" aria-label="Discord community">💬 Discord</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <button class="toggle-track" id="themeToggleBtn" aria-label="Light/Dark mode">
+                <div class="knob"></div>
+                <div class="sun-moon">
+                    <span>☀️</span>
+                    <span>🌙</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- brand centre -->
+    <div class="hero-title">
+        <h1>BazMartin</h1>
+    </div>
+    <div class="hero-sub">
+        Tools · Resources · Code
+    </div>
+
+    <!-- search input -->
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" class="search-field" placeholder="🔍 Search tools by name, description, or tag ..." autocomplete="off">
+    </div>
+
+    <!-- dynamic cards grid -->
+    <div id="cardsContainer" class="cards-grid"></div>
+    <div class="footer-note">
+        ⚙️ BazMartin · Tools, Resources & Code
+    </div>
+</div>
+
+<script>
+    // ---------- TOOLS DATABASE ----------
+    // Each resource now has a customizable "badge" field. 
+    // You can set any text you want for each pill (e.g., "Tool", "Resource", "Guide", "API", "Plugin", etc.)
+    const toolsCatalog = [
+        {
+            id: "sols_parking",
+            title: "SOLS Parking Reports",
+            description: "Generate parking reports to post on the LSSD Forums with ease.",
+            link: ".sols-parking.html",
+            tags: ["roleplay", "SOLS", "SAMP"],
+            badge: "⚒️ Tool"
+        }
+    ];
+
+    // Helper: escapeHtml
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // render cards based on search, dynamically showing each resource's unique badge
+    function renderCards(searchTerm = "") {
+        const container = document.getElementById("cardsContainer");
+        if (!container) return;
+        const term = searchTerm.trim().toLowerCase();
+        let filtered = [...toolsCatalog];
+        if (term !== "") {
+            filtered = toolsCatalog.filter(tool => {
+                const titleMatch = tool.title.toLowerCase().includes(term);
+                const descMatch = tool.description.toLowerCase().includes(term);
+                const tagMatch = tool.tags.some(tag => tag.toLowerCase().includes(term));
+                // Also search in the badge text if needed? It's nice for filtering, but optional.
+                const badgeMatch = tool.badge ? tool.badge.toLowerCase().includes(term) : false;
+                return titleMatch || descMatch || tagMatch || badgeMatch;
+            });
+        }
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="no-results">✨ No matching tools found — try "SAMP", "Switch", "MTA"... ✨</div>`;
+            return;
+        }
+        let cardsHtml = "";
+        for (const tool of filtered) {
+            // Use the custom badge if provided, otherwise fallback to default "TOOL" for backwards compatibility.
+            const badgeText = tool.badge ? tool.badge : "TOOL";
+            cardsHtml += `
+                <div class="tool-card" data-id="${tool.id}">
+                    <div class="card-badge">${escapeHtml(badgeText)}</div>
+                    <h3>${escapeHtml(tool.title)}</h3>
+                    <div class="tool-description">${escapeHtml(tool.description)}</div>
+                    <a href="${escapeHtml(tool.link)}" class="card-link" target="_self">
+                        Launch Tool → ⚡
+                    </a>
+                </div>
+            `;
+        }
+        container.innerHTML = cardsHtml;
+    }
+
+    // light/dark mode logic (persist to localStorage)
+    function initTheme() {
+        const stored = localStorage.getItem("bazmartin_theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let isDark = true;
+        if (stored === "light") isDark = false;
+        else if (stored === "dark") isDark = true;
+        else if (!prefersDark) isDark = false;
+        
+        if (!isDark) {
+            document.body.classList.add("light-mode");
+        } else {
+            document.body.classList.remove("light-mode");
+        }
+        updateToggleKnob(!isDark);
+    }
+
+    function updateToggleKnob(isLight) {
+        const track = document.querySelector(".toggle-track");
+        if (!track) return;
+        const knob = track.querySelector(".knob");
+        if (isLight) {
+            knob.style.transform = "translateX(34px)";
+        } else {
+            knob.style.transform = "translateX(2px)";
+        }
+    }
+
+    function setTheme(lightMode) {
+        if (lightMode) {
+            document.body.classList.add("light-mode");
+            localStorage.setItem("bazmartin_theme", "light");
+            updateToggleKnob(true);
+        } else {
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("bazmartin_theme", "dark");
+            updateToggleKnob(false);
+        }
+    }
+
+    function toggleTheme() {
+        const isLight = document.body.classList.contains("light-mode");
+        setTheme(!isLight);
+    }
+
+    // event listeners after DOM ready
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        renderCards("");
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) {
+            searchInput.addEventListener("input", (e) => renderCards(e.target.value));
+        }
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", toggleTheme);
+        }
+        
+        // about & discord links (placeholder targets)
+        const aboutLink = document.getElementById("aboutLink");
+        const discordLink = document.getElementById("discordLink");
+        if (aboutLink) {
+            aboutLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.location.href = "./about.html";
+            });
+        }
+        if (discordLink) {
+            discordLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.open("https://discord.gg/vqpPaE5sku", "_blank");
+            });
+        }
+    });
+    // fallback knob sync on load if needed
+    window.addEventListener("load", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        updateToggleKnob(isLight);
+    });
+</script>
+</body>
+</html>
