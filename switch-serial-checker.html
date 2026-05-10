@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Switch Serial Checker · V1 Patches · BazMartin</title>
+    <!-- Google Fonts: Inter for consistency -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== GLOBAL VARIABLES ========== */
+        :root {
+            --bg-gradient-start: #0B0E17;
+            --bg-gradient-end: #05070C;
+            --card-bg: rgba(12, 18, 28, 0.75);
+            --text-primary: #EFF3FC;
+            --text-secondary: #B2C7EF;
+            --text-muted: #8FA0C0;
+            --nav-bg: rgba(15, 20, 30, 0.6);
+            --nav-border: rgba(72, 187, 255, 0.2);
+            --link-color: #CDE5FF;
+            --link-hover: #5DB0FF;
+            --footer-border: rgba(72, 110, 160, 0.3);
+            --footer-text: #4F6188;
+            --toggle-bg: #2d3748;
+            --toggle-knob: #fbbf24;
+            --hr-color: rgba(72, 120, 200, 0.25);
+            --input-bg: rgba(20, 28, 40, 0.7);
+            --border-light: rgba(100, 150, 220, 0.3);
+            --success-bg: rgba(34, 197, 94, 0.12);
+            --warning-bg: rgba(234, 179, 8, 0.12);
+            --danger-bg: rgba(239, 68, 68, 0.12);
+            --info-bg: rgba(59, 130, 246, 0.12);
+            --card-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        body.light-mode {
+            --bg-gradient-start: #eef2ff;
+            --bg-gradient-end: #d9e2f0;
+            --text-primary: #0f172a;
+            --text-secondary: #1e293b;
+            --text-muted: #475569;
+            --nav-bg: rgba(245, 248, 255, 0.85);
+            --nav-border: rgba(59, 130, 246, 0.3);
+            --link-color: #1e3a8a;
+            --link-hover: #2563eb;
+            --footer-border: rgba(100, 116, 139, 0.3);
+            --footer-text: #475569;
+            --toggle-bg: #e2e8f0;
+            --toggle-knob: #1e293b;
+            --hr-color: rgba(100, 116, 139, 0.25);
+            --input-bg: rgba(255, 255, 255, 0.8);
+            --border-light: rgba(59, 130, 246, 0.4);
+            --card-bg: rgba(255, 255, 255, 0.7);
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem 4rem;
+            transition: background 0.25s ease, color 0.2s ease;
+        }
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        /* header & nav identical to template */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid var(--nav-border);
+        }
+        .nav-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-links a:hover {
+            color: var(--link-hover);
+            text-shadow: 0 0 4px rgba(93, 176, 255, 0.3);
+        }
+        .toggle-track {
+            position: relative;
+            width: 64px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .toggle-track .knob {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            background: var(--toggle-knob);
+        }
+        body.light-mode .toggle-track .knob {
+            transform: translateX(34px);
+            background: #facc15;
+        }
+        .toggle-track .sun-moon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 0.9rem;
+            color: #fff9e0;
+        }
+        body.light-mode .toggle-track .sun-moon {
+            color: #334155;
+        }
+        /* checker main card */
+        .checker-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 2rem 2rem 2.2rem;
+            border: 1px solid var(--nav-border);
+            box-shadow: var(--card-shadow);
+            margin: 1rem 0 2rem;
+        }
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFFFFF 0%, #A0C8FF 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        body.light-mode h1 {
+            background: linear-gradient(135deg, #0f2b5c, #2563eb);
+            background-clip: text;
+        }
+        .subhead {
+            color: var(--text-muted);
+            margin-bottom: 1.8rem;
+            font-size: 0.95rem;
+            border-left: 3px solid var(--link-hover);
+            padding-left: 12px;
+        }
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+        .serial-input {
+            flex: 3;
+            background: var(--input-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 60px;
+            padding: 0.9rem 1.5rem;
+            font-size: 1rem;
+            font-family: 'Inter', monospace;
+            font-weight: 500;
+            color: var(--text-primary);
+            outline: none;
+            transition: 0.2s;
+        }
+        .serial-input:focus {
+            border-color: var(--link-hover);
+            box-shadow: 0 0 0 2px rgba(93, 176, 255, 0.3);
+        }
+        .check-btn {
+            background: var(--link-hover);
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #0a0e1a;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .check-btn:hover {
+            background: #3b82f6;
+            transform: scale(0.97);
+            color: white;
+        }
+        .result-box {
+            margin-top: 1.8rem;
+            padding: 1.4rem 1.8rem;
+            border-radius: 1.5rem;
+            background: rgba(0,0,0,0.2);
+            border-left: 6px solid;
+            transition: 0.2s;
+        }
+        .result-status {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .result-detail {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(0,0,0,0.3);
+        }
+        .helper-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+        .example {
+            font-family: monospace;
+            background: var(--nav-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 10px;
+        }
+        hr {
+            margin: 1.8rem 0;
+            border: none;
+            height: 1px;
+            background: var(--hr-color);
+        }
+        .info-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1rem 0;
+            justify-content: space-between;
+        }
+        .footnote {
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--footer-text);
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 2rem;
+            margin-top: 2rem;
+        }
+        @media (max-width: 680px) {
+            .checker-card { padding: 1.5rem; }
+            h1 { font-size: 1.8rem; }
+            .result-status { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="./index.html" id="homeLink">🏠 Home</a>
+            <a href="https://discord.gg/vqpPaE5sku" id="discordLinkSub">💬 Discord</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <button class="toggle-track" id="themeToggleBtn" aria-label="Light/Dark mode">
+                <div class="knob"></div>
+                <div class="sun-moon">
+                    <span>☀️</span>
+                    <span>🌙</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div class="checker-card">
+        <h1>🔍 V1 Switch Serial Checker</h1>
+        <div class="subhead">RCM exploit status · Unpatched / Potentially patched / Patched (based on serial prefix + range)</div>
+        
+        <div class="input-group">
+            <input type="text" id="serialInput" class="serial-input" placeholder="Enter serial number (e.g., XAW10025678912, XAJ40052000000)" autocomplete="off">
+            <button id="checkBtn" class="check-btn">🔎 Check serial</button>
+        </div>
+        
+        <div id="resultContainer" class="result-box" style="display: none;">
+            <div class="result-status" id="resultStatus"></div>
+            <div class="result-detail" id="resultDetail"></div>
+        </div>
+        
+        <div class="helper-text">
+            💡 <strong>How it works:</strong> Supports prefixes: XAW1, XAW4, XAW7, XAJ1, XAJ4, XAJ7, XKW1, XKJ1, XJW1, XWW1.<br>
+            ✅ <strong>Unpatched</strong> = 100% hackable via RCM | ⚠️ <strong>Potentially patched</strong> = possible but unlikely | ❌ <strong>Patched</strong> = unhackable via RCM.<br>
+            📌 Format: 4-letter prefix + 11 digits (total 14-15 characters). Example: <span class="example">XAW10074000000</span> (boundary)
+        </div>
+    </div>
+
+    <!-- quick reference table (optional) -->
+    <div style="background: var(--card-bg); border-radius: 1.5rem; padding: 1rem 1.5rem; border: 1px solid var(--nav-border);">
+        <details>
+            <summary style="font-weight: 600; cursor: pointer; color: var(--link-color);">📖 Serial range reference (V1 only)</summary>
+            <div style="margin-top: 1rem; font-size: 0.8rem; overflow-x: auto;">
+                <table style="width:100%; border-collapse: collapse; text-align: left;">
+                    <thead><tr style="border-bottom: 1px solid var(--hr-color);"><th>Prefix</th><th>Unpatched (low → high)</th><th>Potentially patched</th><th>Patched (from)</th></tr></thead>
+                    <tbody>
+                        <tr><td>XAW1</td><td>XAW10000000000 – XAW10074000000</td><td>XAW10074000000 – XAW10120000000</td><td>XAW10120000000 ↑</td></tr>
+                        <tr><td>XAW4</td><td>XAW40000000000 – XAW40011000000</td><td>XAW40011000000 – XAW40012000000</td><td>XAW40012000000 ↑</td></tr>
+                        <tr><td>XAW7</td><td>XAW70000000000 – XAW70017800000</td><td>XAW70017800000 – XAW70030000000</td><td>XAW70030000000 ↑</td></tr>
+                        <tr><td>XAJ1</td><td>XAJ10000000000 – XAJ10020000000</td><td>XAJ10020000000 – XAJ10030000000</td><td>XAJ10030000000 ↑</td></tr>
+                        <tr><td>XAJ4</td><td>XAJ40000000000 – XAJ40046000000</td><td>XAJ40046000000 – XAJ40060000000</td><td>XAJ40060000000 ↑</td></tr>
+                        <tr><td>XAJ7</td><td>XAJ70000000000 – XAJ70040000000</td><td>XAJ70040000000 – XAJ70050000000</td><td>XAJ70050000000 ↑</td></tr>
+                        <tr><td>XKW1</td><td>—</td><td>—</td><td>XKW10000000000 ↑</td></tr>
+                        <tr><td>XKJ1</td><td>—</td><td>—</td><td>XKJ10000000000 ↑</td></tr>
+                        <tr><td>XJW1</td><td>—</td><td>—</td><td>XJW01000000000 ↑</td></tr>
+                        <tr><td>XWW1</td><td>—</td><td>—</td><td>XWW01000000000 ↑</td></tr>
+                    </tbody>
+                </table>
+                <div class="helper-text" style="margin-top: 8px;">⚠️ Patched units are not vulnerable to Fusée Gelée. "Potentially patched" means some units may be patched, others borderline.</div>
+            </div>
+        </details>
+    </div>
+
+    <div class="footer-note">
+        BazMartin · Switch RCM Checker v1 · Data based on public hardware revision database
+    </div>
+</div>
+
+<script>
+    // ---------- THEME LOGIC (exactly as original template) ----------
+    function initTheme() {
+        const stored = localStorage.getItem("bazmartin_theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let isDark = true;
+        if (stored === "light") isDark = false;
+        else if (stored === "dark") isDark = true;
+        else if (!prefersDark) isDark = false;
+        
+        if (!isDark) document.body.classList.add("light-mode");
+        else document.body.classList.remove("light-mode");
+        updateToggleKnob(!isDark);
+    }
+    function updateToggleKnob(isLight) {
+        const track = document.querySelector(".toggle-track");
+        if (!track) return;
+        const knob = track.querySelector(".knob");
+        if (isLight) knob.style.transform = "translateX(34px)";
+        else knob.style.transform = "translateX(2px)";
+    }
+    function setTheme(lightMode) {
+        if (lightMode) {
+            document.body.classList.add("light-mode");
+            localStorage.setItem("bazmartin_theme", "light");
+            updateToggleKnob(true);
+        } else {
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("bazmartin_theme", "dark");
+            updateToggleKnob(false);
+        }
+    }
+    function toggleTheme() {
+        const isLight = document.body.classList.contains("light-mode");
+        setTheme(!isLight);
+    }
+    
+    // ---------- SERIAL CHECKER LOGIC (V1 ranges) ----------
+    // parse serial and extract prefix + numeric suffix
+    function parseSerial(raw) {
+        let cleaned = raw.trim().toUpperCase().replace(/\s/g, '');
+        // typical serial pattern: 4 letters + 11–13 digits? but nintendo serials have 4 letters prefix + numbers (total length varies)
+        // we match known prefixes: XAW1, XAW4, XAW7, XAJ1, XAJ4, XAJ7, XKW1, XKJ1, XJW1, XWW1
+        const prefixRegex = /^(XAW[147]|XAJ[147]|XKW1|XKJ1|XJW1|XWW1)(\d+)$/i;
+        const match = cleaned.match(prefixRegex);
+        if (!match) return null;
+        const prefix = match[1].toUpperCase();
+        let numStr = match[2];
+        // pad numeric part to at least 11 digits to compare ranges? but ranges were given with 11-digit suffix (like 00000000000)
+        // we need to treat the serial suffix as integer for comparison. We'll compare whole number part while considering length.
+        // to be safe: Use BigInt or integer parsing if number within safe range ( up to 14 digits )
+        let numericValue;
+        try {
+            numericValue = BigInt(numStr);
+        } catch(e) { return null; }
+        return { prefix, numericValue, rawSerial: cleaned };
+    }
+    
+    // define ranges using BigInt boundaries
+    const rangeDB = {
+        // XAW1
+        XAW1: { unpatchedMax: 10074000000n, potStart: 10074000000n, potEnd: 10120000000n, patchedMin: 10120000000n },
+        // XAW4
+        XAW4: { unpatchedMax: 40011000000n, potStart: 40011000000n, potEnd: 40012000000n, patchedMin: 40012000000n },
+        // XAW7
+        XAW7: { unpatchedMax: 70017800000n, potStart: 70017800000n, potEnd: 70030000000n, patchedMin: 70030000000n },
+        // XAJ1
+        XAJ1: { unpatchedMax: 10020000000n, potStart: 10020000000n, potEnd: 10030000000n, patchedMin: 10030000000n },
+        // XAJ4
+        XAJ4: { unpatchedMax: 40046000000n, potStart: 40046000000n, potEnd: 40060000000n, patchedMin: 40060000000n },
+        // XAJ7
+        XAJ7: { unpatchedMax: 70040000000n, potStart: 70040000000n, potEnd: 70050000000n, patchedMin: 70050000000n },
+        // XKW1 : fully patched
+        XKW1: { patchedOnly: true, patchedMin: 10000000000n },
+        XKJ1: { patchedOnly: true, patchedMin: 10000000000n },
+        XJW1: { patchedOnly: true, patchedMin: 1000000000n },   // XJW01000000000 .. note 10 digits? Actually XJW01000000000 = 1 000 000 000? handle as 1000000000n
+        XWW1: { patchedOnly: true, patchedMin: 1000000000n }
+    };
+    
+    function evaluateSerial(prefix, num) {
+        const info = rangeDB[prefix];
+        if (!info) return { status: "UNKNOWN", message: "Prefix not recognized or unsupported model.", color: "gray" };
+        
+        // fully patched series (no unpatched)
+        if (info.patchedOnly) {
+            if (num >= info.patchedMin) return { status: "PATCHED", message: "This console is patched (RCM exploit fixed). Not hackable via Fusée Gelée.", color: "danger", emoji: "🔴" };
+            else return { status: "PATCHED", message: "Serial falls into known patched region (no unpatched variants). Unhackable via RCM.", color: "danger", emoji: "🔴" };
+        }
+        
+        // For XAW1, XAW4, XAW7, XAJ1, XAJ4, XAJ7
+        const unpatchedMax = info.unpatchedMax;
+        const potStart = info.potStart;
+        const potEnd = info.potEnd;
+        const patchedMin = info.patchedMin;
+        
+        if (num <= unpatchedMax) {
+            return { status: "UNPATCHED", message: "✅ This Switch is unpatched — 100% vulnerable to RCM exploit. You can hack it using TegraRCM / payload injectors.", color: "success", emoji: "🟢" };
+        } 
+        else if (num >= potStart && num < potEnd) {
+            return { status: "POTENTIALLY PATCHED", message: "⚠️ This console falls into the 'potentially patched' range. Some units may be patched, others might still work. You need to test using RCM payload (try injecting Hekate). Likely patched but not guaranteed.", color: "warning", emoji: "🟡" };
+        }
+        else if (num >= patchedMin) {
+            return { status: "PATCHED", message: "❌ This console is patched — RCM exploit is fixed. No known software method for unpatched hack. (hardware mod required if needed).", color: "danger", emoji: "🔴" };
+        }
+        else {
+            // fallback for boundaries between potEnd and patchedMin?
+            if (num >= potEnd && num < patchedMin && potEnd !== patchedMin) {
+                return { status: "PATCHED", message: "Serial is in patched region (beyond potential range). Unhackable via RCM.", color: "danger", emoji: "🔴" };
+            }
+            return { status: "UNCERTAIN", message: "Serial/number doesn't match typical ranges. Double-check or test manually.", color: "gray", emoji: "❓" };
+        }
+    }
+    
+    function displayResult(serialObj) {
+        const container = document.getElementById("resultContainer");
+        const statusDiv = document.getElementById("resultStatus");
+        const detailDiv = document.getElementById("resultDetail");
+        
+        if (!serialObj) {
+            statusDiv.innerHTML = "❓ Invalid Serial Format";
+            detailDiv.innerHTML = "Make sure serial starts with one of: XAW1, XAW4, XAW7, XAJ1, XAJ4, XAJ7, XKW1, XKJ1, XJW1, XWW1 followed by digits (e.g., XAW10012345678).";
+            container.style.display = "block";
+            container.style.borderLeftColor = "#6b7280";
+            return;
+        }
+        
+        const { prefix, numericValue, rawSerial } = serialObj;
+        const evaluation = evaluateSerial(prefix, numericValue);
+        
+        let statusText = `${evaluation.emoji} ${evaluation.status}`;
+        let detailHtml = `<strong>Serial: ${rawSerial}</strong><br>${evaluation.message}`;
+        if (evaluation.status === "POTENTIALLY PATCHED") {
+            detailHtml += `<br><span style="font-size:0.85rem;">🔧 Recommended: Try loading a payload (RCM) to be certain.</span>`;
+        } else if (evaluation.status === "UNPATCHED") {
+            detailHtml += `<br><span style="font-size:0.85rem;">💾 Perfect candidate for custom firmware (Atmosphère, ReiNX, etc.).</span>`;
+        } else if (evaluation.status === "PATCHED") {
+            detailHtml += `<br><span style="font-size:0.85rem;">🔒 Not vulnerable to CVE-2018-6242 (Fusée Gelée).</span>`;
+        }
+        
+        statusDiv.innerHTML = statusText;
+        detailDiv.innerHTML = detailHtml;
+        container.style.display = "block";
+        
+        // adjust border color based on status
+        if (evaluation.status === "UNPATCHED") container.style.borderLeftColor = "#22c55e";
+        else if (evaluation.status === "POTENTIALLY PATCHED") container.style.borderLeftColor = "#eab308";
+        else if (evaluation.status === "PATCHED") container.style.borderLeftColor = "#ef4444";
+        else container.style.borderLeftColor = "#6b7280";
+    }
+    
+    function checkSerialFromInput() {
+        const inputEl = document.getElementById("serialInput");
+        const rawValue = inputEl.value;
+        if (!rawValue.trim()) {
+            const container = document.getElementById("resultContainer");
+            const statusDiv = document.getElementById("resultStatus");
+            const detailDiv = document.getElementById("resultDetail");
+            statusDiv.innerHTML = "⚠️ No serial entered";
+            detailDiv.innerHTML = "Please enter a Nintendo Switch serial number (e.g., XAW10074000000).";
+            container.style.display = "block";
+            container.style.borderLeftColor = "#f97316";
+            return;
+        }
+        const parsed = parseSerial(rawValue);
+        if (!parsed) {
+            const container = document.getElementById("resultContainer");
+            const statusDiv = document.getElementById("resultStatus");
+            const detailDiv = document.getElementById("resultDetail");
+            statusDiv.innerHTML = "❌ Invalid serial format";
+            detailDiv.innerHTML = "Valid prefixes: XAW1, XAW4, XAW7, XAJ1, XAJ4, XAJ7, XKW1, XKJ1, XJW1, XWW1, followed by digits (total length ~14-15 characters). Example: XAJ40052000000";
+            container.style.display = "block";
+            container.style.borderLeftColor = "#ef4444";
+            return;
+        }
+        displayResult(parsed);
+    }
+    
+    // additional input handling: allow enter key
+    function onEnter(e) {
+        if (e.key === "Enter") checkSerialFromInput();
+    }
+    
+    // Manual boundary test helper: also show example boundaries for demonstration
+    function demoExample(serialExample) {
+        const inputField = document.getElementById("serialInput");
+        inputField.value = serialExample;
+        checkSerialFromInput();
+    }
+    
+    // ---------- DOM ready init ----------
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+        const checkBtn = document.getElementById("checkBtn");
+        if (checkBtn) checkBtn.addEventListener("click", checkSerialFromInput);
+        const serialInput = document.getElementById("serialInput");
+        if (serialInput) serialInput.addEventListener("keypress", onEnter);
+        
+        // discord link handling
+        const discordBtn = document.getElementById("discordLinkSub");
+        if (discordBtn) {
+            discordBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.open("https://discord.gg/vqpPaE5sku", "_blank");
+            });
+        }
+        const homeLink = document.getElementById("homeLink");
+        if (homeLink) {
+            homeLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.location.href = "./index.html";
+            });
+        }
+        
+        // optional: set a placeholder example to avoid confusion
+        serialInput.placeholder = "e.g., XAW10025678912, XAJ40059000000, XKW10012345678";
+        // display nothing at start
+        const resultContainer = document.getElementById("resultContainer");
+        if (resultContainer) resultContainer.style.display = "none";
+    });
+    
+    window.addEventListener("load", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        updateToggleKnob(isLight);
+    });
+</script>
+</body>
+</html>
