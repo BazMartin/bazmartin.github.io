@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SOLS Daily Evaluation Report · FTO Reply Tool | BazMartin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-gradient-start: #0B0E17;
+            --bg-gradient-end: #05070C;
+            --card-bg: rgba(12, 18, 28, 0.82);
+            --text-primary: #EFF3FC;
+            --text-secondary: #B2C7EF;
+            --text-muted: #8FA0C0;
+            --nav-bg: rgba(15, 20, 30, 0.6);
+            --nav-border: rgba(72, 187, 255, 0.2);
+            --link-color: #CDE5FF;
+            --link-hover: #5DB0FF;
+            --footer-border: rgba(72, 110, 160, 0.3);
+            --footer-text: #4F6188;
+            --toggle-bg: #2d3748;
+            --toggle-knob: #fbbf24;
+            --hr-color: rgba(72, 120, 200, 0.25);
+            --input-bg: rgba(0,0,0,0.45);
+            --input-border: rgba(72, 150, 255, 0.45);
+            --input-focus: #7ab3ff;
+            --badge-pill: rgba(72, 150, 255, 0.18);
+            --code-bg: #0A0F18;
+            --shadow-color: rgba(0,0,0,0.5);
+            --label-color: #A0B8E0;
+            --card-border: rgba(72, 150, 255, 0.25);
+            --preview-text: #CAD6F0;
+            --table-header-bg: rgba(0, 0, 0, 0.35);
+        }
+
+        body.light-mode {
+            --bg-gradient-start: #f0f4fe;
+            --bg-gradient-end: #e2e9fa;
+            --text-primary: #0a1c3a;
+            --text-secondary: #1e2f4b;
+            --text-muted: #2c3e5c;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --nav-border: rgba(25, 85, 200, 0.25);
+            --link-color: #0f3b7a;
+            --link-hover: #1d4ed8;
+            --footer-border: rgba(70, 110, 160, 0.35);
+            --footer-text: #2c4c7a;
+            --toggle-bg: #cbd5e1;
+            --toggle-knob: #1e293b;
+            --hr-color: rgba(25, 85, 170, 0.3);
+            --input-bg: #ffffff;
+            --input-border: #b9ccee;
+            --input-focus: #1e40af;
+            --badge-pill: #e6edfc;
+            --code-bg: #f8fafc;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --label-color: #1f3a64;
+            --card-border: rgba(59, 130, 246, 0.4);
+            --preview-text: #1e2f4b;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --table-header-bg: #eef2ff;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem 4rem;
+            transition: background 0.25s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid var(--nav-border);
+        }
+
+        .nav-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+        }
+
+        .toggle-track {
+            position: relative;
+            width: 64px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .toggle-track .knob {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            left: 2px;
+            transition: transform 0.2s ease;
+            background: var(--toggle-knob);
+        }
+
+        body.light-mode .toggle-track .knob {
+            transform: translateX(34px);
+            background: #facc15;
+        }
+
+        .toggle-track .sun-moon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 0.9rem;
+            color: #fff9e0;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin: 1.5rem 0 2rem;
+        }
+
+        @media (max-width: 850px) {
+            .tool-grid {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+        }
+
+        .form-card, .preview-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            border: 1px solid var(--card-border);
+            padding: 1.5rem 1.8rem;
+            box-shadow: 0 12px 28px var(--shadow-color);
+        }
+
+        .form-card h2, .preview-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            border-left: 4px solid var(--link-hover);
+            padding-left: 12px;
+            color: var(--text-primary);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--label-color);
+            margin-bottom: 0.3rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 16px;
+            padding: 0.7rem 1rem;
+            font-family: 'Inter', monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            transition: 0.2s;
+        }
+
+        body.light-mode input, body.light-mode select, body.light-mode textarea {
+            color: #0a1c3a;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 2px rgba(93, 176, 255, 0.3);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .rating-select {
+            font-weight: 600;
+            background: var(--badge-pill);
+        }
+
+        .generate-btn {
+            background: var(--link-hover);
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 0.8rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            margin-top: 0.8rem;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .generate-btn:hover {
+            filter: brightness(1.05);
+            transform: scale(0.98);
+        }
+
+        .bbcode-output {
+            background: var(--code-bg);
+            border-radius: 20px;
+            padding: 1rem;
+            font-family: 'Menlo', 'Fira Code', monospace;
+            font-size: 0.75rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 480px;
+            overflow-y: auto;
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+        }
+
+        .copy-btn {
+            background: var(--toggle-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-weight: 500;
+            margin-top: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--link-hover);
+            color: white;
+        }
+
+        .preview-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: var(--text-secondary);
+        }
+
+        #visualPreview {
+            background: var(--badge-pill);
+            border-radius: 18px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            border: 1px solid var(--input-border);
+            color: var(--preview-text);
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        hr {
+            margin: 1rem 0;
+            border: none;
+            height: 1px;
+            background: var(--hr-color);
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 1.8rem;
+        }
+
+        .inline-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .two-col {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .two-col .input-group {
+            flex: 1;
+        }
+
+        body.light-mode h1 {
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            color: #0a1c3a !important;
+            text-shadow: none;
+        }
+
+        .info-message {
+            background: rgba(93, 176, 255, 0.12);
+            border-left: 3px solid var(--link-hover);
+            padding: 0.6rem 1rem;
+            border-radius: 14px;
+            margin-bottom: 1.2rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="./index.html">🏠 Home</a>
+            <a href="https://discord.gg/vqpPaE5sku" target="_blank">💬 Discord</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <button class="toggle-track" id="themeToggleBtn" aria-label="Light/Dark mode">
+                <div class="knob"></div>
+                <div class="sun-moon"><span>☀️</span><span>🌙</span></div>
+            </button>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 0.5rem;">
+        <h1 style="font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #FFFFFF 0%, #A0C8FF 100%); background-clip: text; -webkit-background-clip: text; color: transparent;">📋 Daily Evaluation Report · FTO Reply</h1>
+        <p style="color: var(--text-muted); margin-top: 4px;">Generate BBCode for a reply post — copy & paste directly into trainee's phase thread.</p>
+    </div>
+
+    <div class="tool-grid">
+        <!-- FORM PANEL -->
+        <div class="form-card">
+            <h2>📝 Evaluation Details</h2>
+            <div class="info-message">
+                💡 Use this form to generate a complete Daily Observation Report. Copy the BBCode output and reply to the trainee's existing post — no thread title needed.
+            </div>
+            <div class="two-col">
+                <div class="input-group">
+                    <label>📅 REPORT DATE</label>
+                    <input type="date" id="reportDate" value="2026-05-10">
+                </div>
+                <div class="input-group">
+                    <label>⏰ REPORT TIME</label>
+                    <input type="text" id="reportTime" placeholder="e.g., 21:45" value="21:45">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>🔢 PHASE NO.</label>
+                <input type="text" id="phaseNo" placeholder="Phase 1 / 2 / 3" value="Phase 1">
+            </div>
+            <div class="two-col">
+                <div class="input-group">
+                    <label>👤 TRAINEE NAME</label>
+                    <input type="text" id="traineeName" placeholder="John Doe">
+                </div>
+                <div class="input-group">
+                    <label>🆔 TRAINEE BADGE</label>
+                    <input type="text" id="traineeBadge" placeholder="#1234">
+                </div>
+            </div>
+            <div class="two-col">
+                <div class="input-group">
+                    <label>⭐ FTO NAME</label>
+                    <input type="text" id="ftoName" placeholder="Sarah Mitchell">
+                </div>
+                <div class="input-group">
+                    <label>⭐ FTO BADGE</label>
+                    <input type="text" id="ftoBadge" placeholder="#4821">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>📊 OVERALL RATING (GRADING SYSTEM)</label>
+                <select id="overallRating" class="rating-select">
+                    <option value="S — Superior">S — Superior (Outstanding, exceeds expectations)</option>
+                    <option value="C — Competent" selected>C — Competent (Standard for independent duty)</option>
+                    <option value="N/I — Needs Improvement">N/I — Needs Improvement (Further training required)</option>
+                </select>
+                <div class="inline-hint">S / C / N/I — based on SOLS grading matrix</div>
+            </div>
+            <div class="input-group">
+                <label>⏱️ PATROL NARRATIVE (timeline)</label>
+                <textarea id="patrolNarrative" placeholder="HH:MM — START OF PATROL UNDER XRAY-12&#10;HH:MM — TRAFFIC STOP&#10;HH:MM — RESPONDED TO CALL&#10;HH:MM — END OF PATROL" rows="4">HH:MM — START OF PATROL UNDER CAR-21 CALLSIGN
+HH:MM — TRAFFIC STOP ON A BLACK SEDAN FOR EXPIRED REGISTRATION
+HH:MM — PATROL OF DOWNTOWN AREA
+HH:MM — END OF PATROL</textarea>
+                <div class="inline-hint">Use HH:MM format. Each event on new line.</div>
+            </div>
+            <div class="input-group">
+                <label>📋 REPORT NARRATIVE (FTO observations)</label>
+                <textarea id="reportNarrative" placeholder="Describe trainee conduct, performance, decision making, communication, etc." rows="4">Deputy Trainee displayed competent handling of traffic stops, radio etiquette was professional. Needs improvement on high-stress scenario de-escalation. Overall conduct was satisfactory and showed willingness to learn.</textarea>
+            </div>
+            <button class="generate-btn" id="generateBtn">📄 Generate BBCode for Reply</button>
+        </div>
+
+        <!-- PREVIEW + BBCode PANEL -->
+        <div class="preview-card">
+            <h2>📰 BBCode (ready to reply)</h2>
+            <div class="preview-title">📋 Copy the full BBCode below & paste into forum reply</div>
+            <div class="bbcode-output" id="bbcodeOutput">Fill in the form and click Generate.</div>
+            <button class="copy-btn" id="copyBtn">📋 Copy BBCode to Clipboard</button>
+            <div id="copyFeedback" style="font-size:0.7rem; margin-top: 0.5rem; text-align:center; color: var(--text-muted);"></div>
+            <hr>
+            <div class="preview-title">🔍 Live Preview (styled, BBCode stripped)</div>
+            <div id="visualPreview"></div>
+        </div>
+    </div>
+    <div class="footer-note">
+        BazMartin · SOLS Daily Evaluation Report · Generates exact BBCode for LSSD/SOLS forums — paste as a reply.
+    </div>
+</div>
+
+<script>
+    // Generate fully compliant Daily Observation Report BBCode 
+    function generateDailyEvalBBCode() {
+        // get values
+        const reportDate = document.getElementById("reportDate").value || "2026-05-10";
+        const reportTime = document.getElementById("reportTime").value.trim() || "00:00";
+        const phaseNo = document.getElementById("phaseNo").value.trim() || "Phase 1";
+        const traineeName = document.getElementById("traineeName").value.trim() || "[Trainee Name]";
+        const traineeBadge = document.getElementById("traineeBadge").value.trim() || "[Badge]";
+        const ftoName = document.getElementById("ftoName").value.trim() || "[FTO Name]";
+        const ftoBadge = document.getElementById("ftoBadge").value.trim() || "[Badge]";
+        let overallRatingRaw = document.getElementById("overallRating").value;
+        let patrolNarrativeRaw = document.getElementById("patrolNarrative").value.trim() || "No patrol timeline provided.";
+        let reportNarrativeRaw = document.getElementById("reportNarrative").value.trim() || "No evaluation notes provided.";
+
+        // Build the exact BBCode structure based on the template (preserving original formatting)
+        let bbcode = `[b](([/b] You are obligated to forward this to the trainee's Private Message after each Phase patrol and correctly file it in their file. [b]))[/b]\n[br][/br]\n`;
+        bbcode += `[departmentmanual][divboxheader=black][center]DAILY OBSERVATION REPORT[/center][/divboxheader][divboxcontent=white]\n`;
+        bbcode += `[table]\n[tr]\n[th=black]REPORT DATE[/th]\n[th=black]REPORT TIME[/th]\n[th=black]PHASE NO.[/th]\n[/tr]\n`;
+        bbcode += `[tr]\n[td]${escapeBBCode(reportDate)}[/td]\n[td]${escapeBBCode(reportTime)}[/td]\n[td]${escapeBBCode(phaseNo)}[/td]\n[/tr]\n[/table]\n`;
+        bbcode += `[br][/br]\n`;
+        bbcode += `[table]\n[tr]\n[th=black]TRAINEE NAME[/th]\n[th=black]BADGE NUMBER[/th]\n[th=black]FTO NAME[/th]\n[th=black]BADGE NUMBER[/th]\n[/tr]\n`;
+        bbcode += `[tr]\n[td]${escapeBBCode(traineeName)}[/td]\n[td]${escapeBBCode(traineeBadge)}[/td]\n[td]${escapeBBCode(ftoName)}[/td]\n[td]${escapeBBCode(ftoBadge)}[/td]\n[/tr]\n[/table]\n`;
+        bbcode += `[br][/br]\n`;
+        bbcode += `[divbox=white]\n[center][b]GRADING SYSTEM[/b][/center]\n[hr]\n`;
+        bbcode += `[b]S — Superior[/b] — Outstanding performance. Attributed only if the trainee exceeds expectations.\n`;
+        bbcode += `[b]C — Competent[/b] — Minimum required to be considered at standard for independent patrol duty.\n`;
+        bbcode += `[b]N/I — Needs Improvement[/b] — Denotes a specific area requiring further focused training.\n[/divbox]\n`;
+        bbcode += `[br][/br]\n`;
+        bbcode += `[table]\n[tr]\n[th=black][center]GENERAL EVALUATION[/center][/th]\n[th=black][center]RATING[/center][/th]\n[/tr]\n`;
+        bbcode += `[tr]\n[td]OVERALL TRAINEE PERFORMANCE[/td]\n[td][center]${escapeBBCode(overallRatingRaw)}[/center][/td]\n[/tr]\n[/table]\n`;
+        bbcode += `[br][/br]\n`;
+        bbcode += `[divbox=white]\n[center][b]PATROL NARRATIVE[/b][/center]\n[hr]\n${escapeBBCode(patrolNarrativeRaw)}\n[/divbox]\n`;
+        bbcode += `[br][/br]\n`;
+        bbcode += `[divbox=white]\n[center][b]REPORT NARRATIVE[/b][/center]\n[hr]\n${escapeBBCode(reportNarrativeRaw)}\n[/divbox]\n`;
+        bbcode += `[/divboxcontent][/departmentmanual]`;
+        
+        return bbcode;
+    }
+
+    function escapeBBCode(str) {
+        // We keep raw text to preserve intentional formatting but escape nothing that could break tables.
+        // For safety we just return the string as is - users won't input malicious BBCode intentionally.
+        // However we convert any potential stray [table] etc but that's fine. Keep clean.
+        return str;
+    }
+
+    function refreshAll() {
+        const bbCodeContent = generateDailyEvalBBCode();
+        document.getElementById("bbcodeOutput").innerText = bbCodeContent;
+        
+        // Build visual preview: strip BBCode tags for readability but keep structure clearly.
+        let previewRaw = bbCodeContent;
+        let previewText = previewRaw
+            .replace(/\[b\]\(\(/g, '')
+            .replace(/\)\)\[\/b\]/g, '')
+            .replace(/\[departmentmanual\]/g, '')
+            .replace(/\[\/departmentmanual\]/g, '')
+            .replace(/\[divboxheader=black\]/g, '')
+            .replace(/\[\/divboxheader\]/g, '')
+            .replace(/\[divboxcontent=white\]/g, '')
+            .replace(/\[\/divboxcontent\]/g, '')
+            .replace(/\[divbox=white\]/g, '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+            .replace(/\[\/divbox\]/g, '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+            .replace(/\[table\]/g, '')
+            .replace(/\[\/table\]/g, '')
+            .replace(/\[tr\]/g, '')
+            .replace(/\[\/tr\]/g, '')
+            .replace(/\[th=black\]/g, '◆ ')
+            .replace(/\[\/th\]/g, '')
+            .replace(/\[td\]/g, '  ')
+            .replace(/\[\/td\]/g, '')
+            .replace(/\[center\]/g, '')
+            .replace(/\[\/center\]/g, '')
+            .replace(/\[b\]/g, '**')
+            .replace(/\[\/b\]/g, '**')
+            .replace(/\[i\]/g, '*')
+            .replace(/\[\/i\]/g, '*')
+            .replace(/\[hr\]/g, '────────────────────')
+            .replace(/\[\/hr\]/g, '')
+            .replace(/\[br\]\[\/br\]/g, '\n')
+            .replace(/\[\/?br\]/g, '\n');
+        
+        // Remove remaining stray BBCode tags
+        previewText = previewText.replace(/\[[^\]]*\]/g, '');
+        // Clean excessive whitespace
+        let lines = previewText.split('\n');
+        let cleaned = [];
+        for (let line of lines) {
+            let trimmed = line.trim();
+            if (trimmed.length > 0) cleaned.push(trimmed);
+            else if (cleaned.length && cleaned[cleaned.length-1] !== '') cleaned.push('');
+        }
+        let finalPreview = cleaned.join('\n');
+        document.getElementById("visualPreview").innerHTML = finalPreview.replace(/\n/g, '<br>');
+    }
+
+    // Event listeners
+    document.getElementById("generateBtn").addEventListener("click", () => refreshAll());
+    
+    const copyBtn = document.getElementById("copyBtn");
+    const copyFeedback = document.getElementById("copyFeedback");
+    copyBtn.addEventListener("click", async () => {
+        const bbText = document.getElementById("bbcodeOutput").innerText;
+        if (!bbText || bbText === "Fill in the form and click Generate.") {
+            copyFeedback.textContent = "⚠️ Generate evaluation report first!";
+            setTimeout(() => copyFeedback.textContent = "", 1800);
+            return;
+        }
+        try {
+            await navigator.clipboard.writeText(bbText);
+            copyFeedback.textContent = "✅ BBCode copied! Now paste it as a reply in the trainee's thread.";
+            setTimeout(() => copyFeedback.textContent = "", 2200);
+        } catch(e) {
+            copyFeedback.textContent = "⚠️ Manual copy required. Select text and copy.";
+            setTimeout(() => copyFeedback.textContent = "", 2000);
+        }
+    });
+    
+    const inputs = ["reportDate","reportTime","phaseNo","traineeName","traineeBadge","ftoName","ftoBadge","overallRating","patrolNarrative","reportNarrative"];
+    inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.addEventListener("input", () => refreshAll());
+    });
+    
+    // Theme handling (consistent with parking tool)
+    function initTheme() {
+        const stored = localStorage.getItem("bazmartin_theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let isDark = true;
+        if (stored === "light") isDark = false;
+        else if (stored === "dark") isDark = true;
+        else if (!prefersDark) isDark = false;
+        if (!isDark) document.body.classList.add("light-mode");
+        else document.body.classList.remove("light-mode");
+        updateToggleKnob(!isDark);
+    }
+    function updateToggleKnob(isLight) {
+        const track = document.querySelector(".toggle-track");
+        if (!track) return;
+        const knob = track.querySelector(".knob");
+        if (isLight) knob.style.transform = "translateX(34px)";
+        else knob.style.transform = "translateX(2px)";
+    }
+    function setTheme(lightMode) {
+        if (lightMode) {
+            document.body.classList.add("light-mode");
+            localStorage.setItem("bazmartin_theme", "light");
+            updateToggleKnob(true);
+        } else {
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("bazmartin_theme", "dark");
+            updateToggleKnob(false);
+        }
+    }
+    function toggleTheme() {
+        const isLight = document.body.classList.contains("light-mode");
+        setTheme(!isLight);
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+        refreshAll();
+    });
+    window.addEventListener("load", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        updateToggleKnob(isLight);
+        refreshAll();
+    });
+</script>
+</body>
+</html>
