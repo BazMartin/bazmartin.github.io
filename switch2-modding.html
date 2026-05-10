@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Switch 2 · Hack Status & Modding · BazMartin</title>
+    <!-- Google Fonts + Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== GLOBAL VARIABLES (DARK MODE DEFAULT) ========== */
+        :root {
+            --bg-gradient-start: #0B0E17;
+            --bg-gradient-end: #05070C;
+            --card-bg: rgba(12, 18, 28, 0.75);
+            --card-bg-solid: rgba(12, 18, 28, 0.85);
+            --text-primary: #EFF3FC;
+            --text-secondary: #B2C7EF;
+            --text-muted: #8FA0C0;
+            --nav-bg: rgba(15, 20, 30, 0.6);
+            --nav-border: rgba(72, 187, 255, 0.2);
+            --link-color: #CDE5FF;
+            --link-hover: #5DB0FF;
+            --footer-border: rgba(72, 110, 160, 0.3);
+            --footer-text: #4F6188;
+            --toggle-bg: #2d3748;
+            --toggle-knob: #fbbf24;
+            --hr-color: rgba(72, 120, 200, 0.25);
+            --status-bg: rgba(0,0,0,0.35);
+            --card-border: rgba(72, 120, 200, 0.2);
+            --not-started: #475569;
+            --partial: #eab308;
+            --unknown: #8b5cf6;
+            --timeline-bg: rgba(25, 35, 50, 0.6);
+        }
+
+        /* ========== LIGHT MODE OVERRIDES ========== */
+        body.light-mode {
+            --bg-gradient-start: #eef2ff;
+            --bg-gradient-end: #d9e2f0;
+            --text-primary: #0f172a;
+            --text-secondary: #1e293b;
+            --text-muted: #475569;
+            --nav-bg: rgba(245, 248, 255, 0.85);
+            --nav-border: rgba(59, 130, 246, 0.3);
+            --link-color: #1e3a8a;
+            --link-hover: #2563eb;
+            --footer-border: rgba(100, 116, 139, 0.3);
+            --footer-text: #475569;
+            --toggle-bg: #e2e8f0;
+            --toggle-knob: #1e293b;
+            --hr-color: rgba(100, 116, 139, 0.25);
+            --status-bg: rgba(0,0,0,0.05);
+            --card-border: rgba(59, 130, 246, 0.25);
+            --timeline-bg: rgba(200, 212, 230, 0.5);
+            /* LIGHT MODE CARD BACKGROUNDS — now solid light & clean */
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --card-bg-solid: #ffffff;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem 4rem;
+            transition: background 0.25s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* header + nav identical to template */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid var(--nav-border);
+        }
+
+        .nav-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+            text-shadow: 0 0 4px rgba(93, 176, 255, 0.3);
+        }
+
+        .toggle-track {
+            position: relative;
+            width: 64px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+
+        .toggle-track .knob {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            background: var(--toggle-knob);
+        }
+
+        body.light-mode .toggle-track .knob {
+            transform: translateX(34px);
+            background: #facc15;
+        }
+
+        .toggle-track .sun-moon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 0.9rem;
+            color: #fff9e0;
+        }
+        body.light-mode .toggle-track .sun-moon {
+            color: #334155;
+        }
+
+        /* page header */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        .page-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #FFFFFF, #7CB9FF);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        body.light-mode .page-header h1 {
+            background: linear-gradient(135deg, #0f2b5c, #2563eb);
+            background-clip: text;
+        }
+        .update-badge {
+            display: inline-block;
+            background: rgba(93, 176, 255, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid var(--nav-border);
+        }
+
+        /* status grid */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+        .status-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 1.5rem;
+            padding: 1.3rem 1.2rem;
+            border: 1px solid var(--card-border);
+            transition: transform 0.1s ease, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        body.light-mode .status-card {
+            background: var(--card-bg-solid);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        .status-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+        }
+        .status-value {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.3rem;
+        }
+        .status-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .status-badge {
+            display: inline-block;
+            background: var(--status-bg);
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .not-yet { color: #f87171; }
+        .partial { color: #facc15; }
+        .unknown { color: #a78bfa; }
+
+        /* timeline section */
+        .timeline-section {
+            background: var(--timeline-bg);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--link-hover);
+        }
+        body.light-mode .timeline-section {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(2px);
+        }
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.7rem;
+            border-bottom: 1px solid var(--hr-color);
+        }
+        .timeline-date {
+            min-width: 110px;
+            font-weight: 600;
+            color: var(--link-hover);
+        }
+        .timeline-text {
+            color: var(--text-secondary);
+        }
+
+        /* resource links */
+        .links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0 1rem;
+        }
+        .resource-link {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            padding: 0.6rem 1.3rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--link-color);
+            border: 1px solid var(--nav-border);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        body.light-mode .resource-link {
+            background: white;
+            color: #1e3a8a;
+            border-color: #b9d0f0;
+        }
+        .resource-link:hover {
+            background: var(--link-hover);
+            color: white;
+            border-color: transparent;
+        }
+
+        .info-note {
+            background: rgba(93, 176, 255, 0.08);
+            border-radius: 1rem;
+            padding: 1rem 1.3rem;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+            border: 1px solid var(--nav-border);
+        }
+        body.light-mode .info-note {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        hr {
+            margin: 2rem 0;
+            border: none;
+            height: 1px;
+            background: var(--hr-color);
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 680px) {
+            .status-value { font-size: 1.7rem; }
+            .page-header h1 { font-size: 1.9rem; }
+            .timeline-item { flex-direction: column; gap: 0.3rem; }
+            .timeline-date { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- identical header + theme toggle -->
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="./index.html" id="homeLink">🏠 Home</a>
+            <a href="./switch-serial-checker.html" id="checkerLink">🔎 Serial Checker V1</a>
+            <a href="https://discord.gg/vqpPaE5sku" id="discordLinkSub">💬 Discord</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <button class="toggle-track" id="themeToggleBtn" aria-label="Light/Dark mode">
+                <div class="knob"></div>
+                <div class="sun-moon">
+                    <span>☀️</span>
+                    <span>🌙</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- main content: Switch 2 hack status -->
+    <div class="page-header">
+        <h1>Nintendo Switch 2 · Modding Status</h1>
+        <div class="update-badge">📅 Updated: March 12, 2026 · Live tracking</div>
+        <p style="margin-top: 0.8rem; color: var(--text-secondary);">Current exploit progress, custom firmware readiness, and hardware insights for the new console.</p>
+    </div>
+
+    <!-- status cards (grid) -->
+    <div class="status-grid">
+        <div class="status-card">
+            <div class="status-title">Userland Exploit</div>
+            <div class="status-value not-yet">Not Yet</div>
+            <div class="status-desc">No public userland exploit available</div>
+            <span class="status-badge">🔒 Unbroken</span>
+        </div>
+        <div class="status-card">
+            <div class="status-title">Kernel Exploit</div>
+            <div class="status-value not-yet">Not Yet</div>
+            <div class="status-desc">No kernel access achieved</div>
+            <span class="status-badge">⛔ Locked</span>
+        </div>
+        <div class="status-card">
+            <div class="status-title">Custom Firmware</div>
+            <div class="status-value not-yet">Not Yet</div>
+            <div class="status-desc">Awaiting kernel exploit & bootrom analysis</div>
+            <span class="status-badge">⌛ In development</span>
+        </div>
+        <div class="status-card">
+            <div class="status-title">Modchip</div>
+            <div class="status-value unknown">Unknown</div>
+            <div class="status-desc">Hardware analysis ongoing | No commercial modchips confirmed</div>
+            <span class="status-badge">🔧 Research phase</span>
+        </div>
+        <div class="status-card">
+            <div class="status-title">Flash Cart (MIG)</div>
+            <div class="status-value partial">Partial</div>
+            <div class="status-desc">Plays Switch 1 backups only. High ban risk.</div>
+            <span class="status-badge">⚠️ Limited support</span>
+        </div>
+    </div>
+
+    <!-- timeline section (launch & key events) -->
+    <div class="timeline-section">
+        <div class="timeline-title">📆 Switch 2 Hacking Timeline</div>
+        <div class="timeline-item">
+            <div class="timeline-date">June 5, 2025</div>
+            <div class="timeline-text">🎮 Nintendo Switch 2 launched worldwide — new hardware, revised T239 chipset.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">June 15, 2025</div>
+            <div class="timeline-text">💾 MIG Flash firmware 1.2.0 adds Switch 2 support (Switch 1 titles only, cartridge emulation).</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">July 15, 2025</div>
+            <div class="timeline-text">🔧 First full hardware teardowns published — revealing internal layout, new security co-processor.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">September 1, 2025</div>
+            <div class="timeline-text">🧠 Security researchers begin analyzing boot chain & TrustZone enhancements.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">March 2026</div>
+            <div class="timeline-text">📡 Current stage: Low-level debugging, emuNAND concepts being explored. No public exploit chain.</div>
+        </div>
+        <div class="info-note" style="margin-top: 0.8rem;">
+            🔍 <strong>What to expect:</strong> The Switch 2 integrates enhanced anti-tamper measures. Historical Switch 1 entrypoints (RCM, CVE-2018-6242) do NOT work. Researchers are focusing on browser, accessory interfaces, and hardware glitching.
+        </div>
+    </div>
+
+    <!-- follow progress / resources -->
+    <h2 style="font-size: 1.5rem; margin: 1rem 0 0.5rem 0; font-weight: 600;">📡 Follow Progress & Community Hubs</h2>
+    <div class="links-grid">
+        <a href="https://gbatemp.net/forums/nintendo-switch-2.776/" class="resource-link" target="_blank" rel="noopener noreferrer">💬 GBAtemp Switch 2 Hacking Thread</a>
+        <a href="https://reddit.com/r/SwitchHacks" class="resource-link" target="_blank" rel="noopener noreferrer">🪄 r/SwitchHacks</a>
+        <a href="https://reddit.com/r/SwitchPirates" class="resource-link" target="_blank" rel="noopener noreferrer">🏴‍☠️ r/SwitchPirates</a>
+        <a href="https://www.nintendo.com/us/gaming-systems/switch-2/" class="resource-link" target="_blank" rel="noopener noreferrer">🎮 Official Switch 2 Portal</a>
+        <a href="https://www.ifixit.com/News/110926/switch-2-teardown" class="resource-link" target="_blank" rel="noopener noreferrer">🔧 iFixit Teardown</a>
+        <a href="https://gbatemp.net/download/mig-switch-firmware-for-cart-and-dumper.38508/updates" class="resource-link" target="_blank" rel="noopener noreferrer">💽 MIG firmware changelog</a>
+    </div>
+
+    <!-- additional info boxes -->
+    <div class="info-note">
+        <strong>⚠️ MIG Flash Cartridge – Current Limitations</strong><br>
+        • Supports backup loading of <strong>Nintendo Switch 1</strong> titles only when used on Switch 2 (backwards-compatible mode).<br>
+        • No known way to run Switch 2 native backups or commercial dumps. High telemetry & ban risk if used online.<br>
+        • Firmware future updates might add Switch 2 support, but security chips remain a barrier.
+    </div>
+
+    <div class="info-note">
+        <strong>🛡️ Why so slow compared to Switch 1?</strong><br>
+        Nintendo doubled down on bootROM protections, introduced hardware-based key derivation, and patched known Tegra exploits. The modding scene is rebuilding tools from scratch. Expect months or possibly 1-2 years for homebrew entrypoints.
+    </div>
+
+    <hr>
+
+    <!-- back link (optional consistent nav) -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <a href="./index.html" style="display: inline-flex; align-items: center; gap: 8px; background: var(--nav-bg); padding: 0.6rem 1.3rem; border-radius: 40px; text-decoration: none; font-size: 0.85rem; color: var(--link-color); border: 1px solid var(--nav-border);">← Back to Tool Hub</a>
+        <div style="font-size: 0.7rem; color: var(--text-muted);">#Switch2Hacking · Research purpose only</div>
+    </div>
+
+    <div class="footer-note">
+        BazMartin · Switch 2 Modding Tracker | Data aggregated from GBAtemp, hardware analysis & community reports
+    </div>
+</div>
+
+<script>
+    // ========== IDENTICAL THEME LOGIC (persisted) ==========
+    function initTheme() {
+        const stored = localStorage.getItem("bazmartin_theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let isDark = true;
+        if (stored === "light") isDark = false;
+        else if (stored === "dark") isDark = true;
+        else if (!prefersDark) isDark = false;
+        
+        if (!isDark) {
+            document.body.classList.add("light-mode");
+        } else {
+            document.body.classList.remove("light-mode");
+        }
+        updateToggleKnob(!isDark);
+    }
+
+    function updateToggleKnob(isLight) {
+        const track = document.querySelector(".toggle-track");
+        if (!track) return;
+        const knob = track.querySelector(".knob");
+        if (isLight) {
+            knob.style.transform = "translateX(34px)";
+        } else {
+            knob.style.transform = "translateX(2px)";
+        }
+    }
+
+    function setTheme(lightMode) {
+        if (lightMode) {
+            document.body.classList.add("light-mode");
+            localStorage.setItem("bazmartin_theme", "light");
+            updateToggleKnob(true);
+        } else {
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("bazmartin_theme", "dark");
+            updateToggleKnob(false);
+        }
+    }
+
+    function toggleTheme() {
+        const isLight = document.body.classList.contains("light-mode");
+        setTheme(!isLight);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+        
+        // Discord link handling (external)
+        const discordBtn = document.getElementById("discordLinkSub");
+        if (discordBtn) {
+            discordBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.open("https://discord.gg/vqpPaE5sku", "_blank");
+            });
+        }
+        
+        // home link pointing to index (consistent)
+        const homeLink = document.getElementById("homeLink");
+        if (homeLink) {
+            homeLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.location.href = "./index.html";
+            });
+        }
+        
+        // optional checker link if exists: route to serial-checker page (make sure consistent)
+        const checkerLink = document.getElementById("checkerLink");
+        if (checkerLink) {
+            checkerLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.location.href = "./switch-serial-checker.html";
+            });
+        }
+
+        // all external resource links open safely (target _blank already there, but just ensure noopener)
+        const externalLinks = document.querySelectorAll(".resource-link");
+        externalLinks.forEach(link => {
+            if (!link.getAttribute("target")) link.setAttribute("target", "_blank");
+            link.setAttribute("rel", "noopener noreferrer");
+        });
+    });
+
+    window.addEventListener("load", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        updateToggleKnob(isLight);
+    });
+</script>
+</body>
+</html>
