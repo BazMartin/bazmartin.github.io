@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Martin Media · Newspaper Studio | A4 Article Exporter</title>
+    <!-- Google Fonts + html2canvas for export -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== GLOBAL VARIABLES (DARK MODE DEFAULT SAME AS YOUR TOOL) ========== */
+        :root {
+            --bg-gradient-start: #0B0E17;
+            --bg-gradient-end: #05070C;
+            --card-bg: rgba(12, 18, 28, 0.75);
+            --text-primary: #EFF3FC;
+            --text-secondary: #B2C7EF;
+            --text-muted: #8FA0C0;
+            --nav-bg: rgba(15, 20, 30, 0.6);
+            --nav-border: rgba(72, 187, 255, 0.2);
+            --link-color: #CDE5FF;
+            --link-hover: #5DB0FF;
+            --footer-border: rgba(72, 110, 160, 0.3);
+            --footer-text: #4F6188;
+            --toggle-bg: #2d3748;
+            --toggle-knob: #fbbf24;
+            --content-bg: transparent;
+            --hr-color: rgba(72, 120, 200, 0.25);
+            --input-bg: rgba(0,0,0,0.45);
+            --input-border: rgba(72, 150, 255, 0.35);
+            --input-focus: #7ab3ff;
+            --badge-pill: rgba(72, 150, 255, 0.18);
+            --code-bg: #0A0F18;
+            --shadow-color: rgba(0,0,0,0.5);
+            --violation-hover: #0F172A;
+            --label-color: #A0B8E0;
+            --card-border: rgba(72, 150, 255, 0.2);
+            --preview-text: #CAD6F0;
+        }
+
+        /* ========== LIGHT MODE OVERRIDES ========== */
+        body.light-mode {
+            --bg-gradient-start: #f0f4fe;
+            --bg-gradient-end: #e2e9fa;
+            --text-primary: #0a1c3a;
+            --text-secondary: #1e2f4b;
+            --text-muted: #2c3e5c;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --nav-border: rgba(25, 85, 200, 0.25);
+            --link-color: #0f3b7a;
+            --link-hover: #1d4ed8;
+            --footer-border: rgba(70, 110, 160, 0.35);
+            --footer-text: #2c4c7a;
+            --toggle-bg: #cbd5e1;
+            --toggle-knob: #1e293b;
+            --hr-color: rgba(25, 85, 170, 0.3);
+            --input-bg: #ffffff;
+            --input-border: #b9ccee;
+            --input-focus: #1e40af;
+            --badge-pill: #e6edfc;
+            --code-bg: #f8fafc;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --violation-hover: #eef3ff;
+            --label-color: #1f3a64;
+            --card-border: rgba(59, 130, 246, 0.3);
+            --preview-text: #1e2f4b;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem 4rem;
+            transition: background 0.25s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* header row with nav + theme toggle (consistent with your tools) */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid var(--nav-border);
+        }
+
+        .nav-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+            text-shadow: 0 0 4px rgba(93, 176, 255, 0.2);
+        }
+
+        .toggle-track {
+            position: relative;
+            width: 64px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .toggle-track .knob {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            background: var(--toggle-knob);
+        }
+        body.light-mode .toggle-track .knob {
+            transform: translateX(34px);
+            background: #facc15;
+        }
+        .toggle-track .sun-moon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 0.9rem;
+            color: #fff9e0;
+        }
+        body.light-mode .toggle-track .sun-moon {
+            color: #2c3e50;
+        }
+
+        /* Main Tool Layout: edit panel + newspaper preview (two columns) */
+        .tool-dashboard {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 1.8rem;
+            margin: 1.2rem 0 2rem;
+        }
+
+        @media (max-width: 880px) {
+            .tool-dashboard {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* Edit Card (matching original style) */
+        .edit-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            border: 1px solid var(--card-border);
+            padding: 1.5rem 1.6rem;
+            box-shadow: 0 12px 28px var(--shadow-color);
+            transition: all 0.2s;
+            height: fit-content;
+            position: sticky;
+            top: 1.5rem;
+        }
+
+        .edit-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.3rem;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-left: 4px solid var(--link-hover);
+            padding-left: 12px;
+            color: var(--text-primary);
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--label-color);
+            margin-bottom: 0.35rem;
+        }
+        input, select, textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 16px;
+            padding: 0.7rem 1rem;
+            font-family: 'Inter', monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            transition: 0.2s;
+        }
+        body.light-mode input, body.light-mode select, body.light-mode textarea {
+            color: #0a1c3a;
+            background: #ffffff;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 2px rgba(93, 176, 255, 0.3);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        .image-row {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.7rem;
+        }
+        .image-row input {
+            flex: 1;
+            min-width: 120px;
+        }
+        .helper-tip {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .btn-primary {
+            background: var(--link-hover);
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 0.8rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.95rem;
+            margin: 0.5rem 0 0.6rem;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary:hover {
+            filter: brightness(1.05);
+            transform: scale(0.98);
+        }
+        .btn-export {
+            background: var(--toggle-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+            padding: 0.7rem;
+            border-radius: 40px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.3rem;
+        }
+        .btn-export:hover {
+            background: var(--link-hover);
+            color: white;
+        }
+        .export-status {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 0.6rem;
+            color: var(--text-muted);
+        }
+
+        /* Newspaper A4 Preview Card */
+        .preview-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            border: 1px solid var(--card-border);
+            padding: 1.3rem;
+            box-shadow: 0 12px 28px var(--shadow-color);
+        }
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .preview-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-left: 4px solid var(--link-hover);
+            padding-left: 10px;
+        }
+        .badge-a4 {
+            background: var(--badge-pill);
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .newspaper-sheet {
+            background: #fef9e8;
+            width: 100%;
+            max-width: 794px;
+            margin: 0 auto;
+            min-height: 1123px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+            border-radius: 4px;
+            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+            padding: 42px 38px;
+            transition: all 0.1s;
+            color: #2b2a27;
+        }
+        /* Newspaper typography */
+        .newspaper-sheet h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 800;
+            text-align: center;
+            letter-spacing: -0.8px;
+            color: #1a2a16;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+        .newspaper-sheet .edition-masthead {
+            text-align: center;
+            border-top: 2px solid #bc9a6c;
+            border-bottom: 1px solid #d4bc9a;
+            padding: 6px 0;
+            margin-bottom: 1.2rem;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #5f4c3b;
+            font-family: 'Inter', sans-serif;
+        }
+        .newspaper-sheet .byline {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-bottom: 1px solid #ded1bf;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            color: #4b3a2c;
+        }
+        .newspaper-sheet .article-body {
+            font-size: 17px;
+            line-height: 1.55;
+            text-align: justify;
+            column-count: 2;
+            column-gap: 40px;
+            column-rule: 1px solid #e2d5c4;
+            margin-bottom: 20px;
+        }
+        .newspaper-sheet .article-body p {
+            margin-bottom: 1rem;
+            text-indent: 1.2em;
+        }
+        .image-gallery {
+            margin: 18px 0 8px;
+        }
+        .main-image {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .main-image img {
+            max-width: 100%;
+            max-height: 260px;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border: 1px solid #e0cfba;
+            background: #f3ede3;
+        }
+        .image-caption {
+            font-size: 0.7rem;
+            color: #7c6b58;
+            margin-top: 4px;
+            font-style: italic;
+            font-family: 'Inter', sans-serif;
+        }
+        .extra-images {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .extra-images .img-block {
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+        }
+        .extra-images img {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ddceb6;
+        }
+        .footer-credit {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 0.65rem;
+            border-top: 1px solid #ddcfbe;
+            padding-top: 14px;
+            font-family: monospace;
+            color: #8a7762;
+        }
+        .scroll-preview {
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+        hr {
+            margin: 0.7rem 0;
+            border-color: var(--hr-color);
+        }
+        .footer-note-tool {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="./index.html">🏠 Home</a>
+            <a href="https://discord.gg/vqpPaE5sku" target="_blank">💬 Discord</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <button class="toggle-track" id="themeToggleBtn" aria-label="Light/Dark mode">
+                <div class="knob"></div>
+                <div class="sun-moon"><span>☀️</span><span>🌙</span></div>
+            </button>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 0.8rem;">
+        <h1>📰 Martin Media · Newspaper Studio</h1>
+        <p style="color: var(--text-muted);">Write, design & export A4 newspaper images | Vintage broadsheet style for PLV roleplay</p>
+    </div>
+
+    <div class="tool-dashboard">
+        <!-- FORM CARD (editor) -->
+        <div class="edit-card">
+            <h2>✍️ Article Editor</h2>
+            <div class="input-group">
+                <label>📰 HEADLINE</label>
+                <input type="text" id="headlineInput" placeholder="e.g., CITY HALL APPROVES NEW BILL" value="DOWNTOWN REVITALIZATION FUND PASSED">
+            </div>
+            <div class="input-group">
+                <label>📜 MASTHEAD / EDITION LINE</label>
+                <input type="text" id="mastheadInput" placeholder="e.g., MARTIN MEDIA · WEEKLY EDITION" value="MARTIN MEDIA · SPECIAL INVESTIGATIVE REPORT">
+            </div>
+            <div class="input-group">
+                <label>✒️ BYLINE / REPORTER</label>
+                <input type="text" id="bylineInput" placeholder="e.g., By Sarah Whitaker" value="By Eleanor Vance · Senior Correspondent">
+            </div>
+            <div class="input-group">
+                <label>📄 ARTICLE TEXT (supports paragraphs)</label>
+                <textarea id="articleBody" rows="6">In a landmark decision early Tuesday, the City Council voted unanimously to approve the sweeping downtown revitalization project. The initiative, backed by local business coalitions, promises to transform the historic district into a modern economic hub while preserving architectural heritage.
+
+"The future of our community depends on smart growth," said Mayor Rodriguez during the press conference. "This plan balances innovation with our unique cultural identity."
+
+Construction is set to begin in early spring, with completion expected within eighteen months. The plan allocates $47 million toward green spaces, affordable commercial leases, and enhanced public safety measures. Residents are encouraged to attend upcoming town hall meetings to review detailed blueprints.</textarea>
+            </div>
+            <div class="input-group">
+                <label>🖼️ IMAGES (URL + caption) — up to 3 images</label>
+                <div id="imageInputs">
+                    <div class="image-row">
+                        <input type="text" id="imgUrl1" placeholder="Image URL" value="https://picsum.photos/id/104/600/350">
+                        <input type="text" id="imgCap1" placeholder="Caption" value="Artistic rendering of new plaza">
+                    </div>
+                    <div class="image-row">
+                        <input type="text" id="imgUrl2" placeholder="Image URL (optional)">
+                        <input type="text" id="imgCap2" placeholder="Caption (optional)">
+                    </div>
+                    <div class="image-row">
+                        <input type="text" id="imgUrl3" placeholder="Image URL (optional)">
+                        <input type="text" id="imgCap3" placeholder="Caption (optional)">
+                    </div>
+                </div>
+                <div class="helper-tip">🔗 Direct image links recommended (Imgur, Discord CDN). First image appears as main visual.</div>
+            </div>
+            <button class="btn-primary" id="refreshPreviewBtn">⟳ Refresh Newspaper Preview</button>
+            <button class="btn-export" id="exportPngBtn">📸 Save as A4 Image (PNG)</button>
+            <div id="exportStatus" class="export-status"></div>
+        </div>
+
+        <!-- PREVIEW CARD (newspaper) -->
+        <div class="preview-card">
+            <div class="preview-header">
+                <h2>📰 Newspaper Proof (A4)</h2>
+                <span class="badge-a4">📄 A4 format · 794x1123px</span>
+            </div>
+            <div class="scroll-preview">
+                <div class="newspaper-sheet" id="newspaperContainer">
+                    <h1 id="dynamicHeadline">DOWNTOWN REVITALIZATION FUND PASSED</h1>
+                    <div class="edition-masthead" id="dynamicMasthead">MARTIN MEDIA · SPECIAL INVESTIGATIVE REPORT</div>
+                    <div class="byline" id="dynamicByline">By Eleanor Vance · Senior Correspondent</div>
+                    <div id="imageZonePreview"></div>
+                    <div class="article-body" id="dynamicArticle"></div>
+                    <div class="footer-credit" id="dynamicFooter">Martin Media Group — Est. 2023 — Trusted Local Journalism</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-note-tool">
+        Martin Media · News Studio for PLV & SAMP Roleplay · Export high-res newspaper images
+    </div>
+</div>
+
+<script>
+    // update entire newspaper preview (dynamic)
+    function updateNewspaper() {
+        // Headline
+        let headline = document.getElementById("headlineInput").value.trim();
+        if (headline === "") headline = "BREAKING NEWS";
+        document.getElementById("dynamicHeadline").innerText = headline.toUpperCase();
+        
+        // Masthead
+        let masthead = document.getElementById("mastheadInput").value.trim();
+        if (masthead === "") masthead = "MARTIN MEDIA · DAILY BULLETIN";
+        document.getElementById("dynamicMasthead").innerText = masthead;
+        
+        // Byline
+        let byline = document.getElementById("bylineInput").value.trim();
+        if (byline === "") byline = "Martin Media Staff";
+        document.getElementById("dynamicByline").innerHTML = byline;
+        
+        // Article text: convert line breaks to paragraphs
+        let rawText = document.getElementById("articleBody").value;
+        if (rawText.trim() === "") rawText = "No article content provided.";
+        const paragraphs = rawText.split(/\r?\n/).filter(p => p.trim().length > 0);
+        let articleHTML = "";
+        if (paragraphs.length === 0) {
+            articleHTML = `<p>${rawText}</p>`;
+        } else {
+            paragraphs.forEach(p => { articleHTML += `<p>${p.trim()}</p>`; });
+        }
+        document.getElementById("dynamicArticle").innerHTML = articleHTML;
+        
+        // Images handling
+        const imgItems = [
+            { url: document.getElementById("imgUrl1").value.trim(), cap: document.getElementById("imgCap1").value.trim() },
+            { url: document.getElementById("imgUrl2").value.trim(), cap: document.getElementById("imgCap2").value.trim() },
+            { url: document.getElementById("imgUrl3").value.trim(), cap: document.getElementById("imgCap3").value.trim() }
+        ].filter(img => img.url !== "");
+        
+        let imagesHTML = "";
+        if (imgItems.length > 0) {
+            const mainImg = imgItems[0];
+            imagesHTML += `<div class="main-image">
+                            <img src="${mainImg.url}" alt="news main visual" style="max-width:100%; max-height:260px; object-fit:cover;" onerror="this.src='https://placehold.co/600x300?text=Image+Not+Loaded'">
+                            ${mainImg.cap ? `<div class="image-caption">${mainImg.cap}</div>` : '<div class="image-caption">📷 Martin Media Archive</div>'}
+                           </div>`;
+            if (imgItems.length > 1) {
+                let extraImgs = `<div class="extra-images">`;
+                for (let i = 1; i < imgItems.length; i++) {
+                    const img = imgItems[i];
+                    extraImgs += `<div class="img-block">
+                                    <img src="${img.url}" onerror="this.src='https://placehold.co/400x200?text=No+Image'">
+                                    <div class="image-caption">${img.cap || "Photo"}</div>
+                                  </div>`;
+                }
+                extraImgs += `</div>`;
+                imagesHTML += extraImgs;
+            }
+        } else {
+            imagesHTML = `<div style="margin: 12px 0; padding: 10px; text-align: center; background:#f3ede3; border-radius: 12px; font-size:0.75rem;">📷 [Add image URLs to feature photos in the article]</div>`;
+        }
+        document.getElementById("imageZonePreview").innerHTML = `<div class="image-gallery">${imagesHTML}</div>`;
+        
+        // Dynamic footer date
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById("dynamicFooter").innerHTML = `Martin Media — ${formattedDate} — “Truth in Print” · All Rights Reserved`;
+    }
+    
+    // Export A4 image (high quality)
+    async function exportAsImage() {
+        const newspaperElement = document.getElementById("newspaperContainer");
+        if (!newspaperElement) return;
+        
+        updateNewspaper();  // sync before capture
+        
+        const statusDiv = document.getElementById("exportStatus");
+        statusDiv.innerHTML = "⏳ Generating high-res newspaper image...";
+        statusDiv.style.color = "#facc15";
+        
+        // wait for images to load
+        const images = newspaperElement.querySelectorAll('img');
+        const imagePromises = Array.from(images).map(img => {
+            if (img.complete && img.naturalWidth !== 0) return Promise.resolve();
+            return new Promise((resolve) => {
+                img.addEventListener('load', resolve);
+                img.addEventListener('error', resolve);
+            });
+        });
+        await Promise.all(imagePromises);
+        await new Promise(r => setTimeout(r, 180));
+        
+        try {
+            const canvas = await html2canvas(newspaperElement, {
+                scale: 2.8,
+                backgroundColor: '#fef9e8',
+                useCORS: true,
+                logging: false,
+                windowWidth: newspaperElement.scrollWidth,
+                windowHeight: newspaperElement.scrollHeight
+            });
+            let headlineRaw = document.getElementById("headlineInput").value.trim() || "article";
+            headlineRaw = headlineRaw.replace(/[^a-z0-9]/gi, '_').substring(0, 36);
+            const filename = `MartinMedia_${headlineRaw}_${Date.now()}.png`;
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            statusDiv.innerHTML = `✅ Newspaper saved as ${filename} (A4 ready)`;
+            statusDiv.style.color = "#6fcf97";
+            setTimeout(() => { if(statusDiv.innerHTML.includes(filename)) statusDiv.innerHTML = ""; }, 3200);
+        } catch (err) {
+            console.error(err);
+            statusDiv.innerHTML = "❌ Export failed (CORS/network). Check image URLs and retry.";
+            statusDiv.style.color = "#f28b82";
+        }
+    }
+    
+    // attach event listeners
+    function bindEvents() {
+        const inputs = ['headlineInput', 'mastheadInput', 'bylineInput', 'articleBody', 'imgUrl1', 'imgCap1', 'imgUrl2', 'imgCap2', 'imgUrl3', 'imgCap3'];
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', () => updateNewspaper());
+            if (el) el.addEventListener('change', () => updateNewspaper());
+        });
+        document.getElementById("refreshPreviewBtn").addEventListener('click', () => {
+            updateNewspaper();
+            const status = document.getElementById("exportStatus");
+            status.innerHTML = "✓ Preview refreshed";
+            status.style.color = "#7ab3ff";
+            setTimeout(() => { if(status.innerHTML === "✓ Preview refreshed") status.innerHTML = ""; }, 1500);
+        });
+        document.getElementById("exportPngBtn").addEventListener('click', exportAsImage);
+    }
+    
+    // theme handling (exactly as original tool)
+    function initTheme() {
+        const stored = localStorage.getItem("bazmartin_theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let isDark = true;
+        if (stored === "light") isDark = false;
+        else if (stored === "dark") isDark = true;
+        else if (!prefersDark) isDark = false;
+        if (!isDark) document.body.classList.add("light-mode");
+        else document.body.classList.remove("light-mode");
+        updateToggleKnob(!isDark);
+    }
+    function updateToggleKnob(isLight) {
+        const track = document.querySelector(".toggle-track");
+        if (!track) return;
+        const knob = track.querySelector(".knob");
+        if (isLight) knob.style.transform = "translateX(34px)";
+        else knob.style.transform = "translateX(2px)";
+    }
+    function setTheme(lightMode) {
+        if (lightMode) {
+            document.body.classList.add("light-mode");
+            localStorage.setItem("bazmartin_theme", "light");
+            updateToggleKnob(true);
+        } else {
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("bazmartin_theme", "dark");
+            updateToggleKnob(false);
+        }
+    }
+    function toggleTheme() {
+        const isLight = document.body.classList.contains("light-mode");
+        setTheme(!isLight);
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+        bindEvents();
+        updateNewspaper();
+    });
+    window.addEventListener("load", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        updateToggleKnob(isLight);
+        updateNewspaper();
+    });
+</script>
+</body>
+</html>
