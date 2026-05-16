@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>BazMartin · RP Portfolio | SAMP/MTA Experience</title>
+    <!-- Google Fonts + Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== GLOBAL VARIABLES (DARK MODE DEFAULT) ========== */
+        :root {
+            --bg-gradient-start: #0B0E17;
+            --bg-gradient-end: #05070C;
+            --card-bg: rgba(12, 18, 28, 0.75);
+            --text-primary: #EFF3FC;
+            --text-secondary: #B2C7EF;
+            --text-muted: #8FA0C0;
+            --nav-bg: rgba(15, 20, 30, 0.6);
+            --nav-border: rgba(72, 187, 255, 0.2);
+            --link-color: #CDE5FF;
+            --link-hover: #5DB0FF;
+            --footer-border: rgba(72, 110, 160, 0.3);
+            --footer-text: #4F6188;
+            --toggle-bg: #2d3748;
+            --toggle-knob: #fbbf24;
+            --content-bg: transparent;
+            --hr-color: rgba(72, 120, 200, 0.25);
+            --sidebar-bg: rgba(10, 15, 25, 0.65);
+            --sidebar-border: rgba(72, 187, 255, 0.25);
+            --tab-active-bg: rgba(93, 176, 255, 0.15);
+            --tab-hover: rgba(93, 176, 255, 0.08);
+            --article-card-bg: rgba(18, 26, 40, 0.6);
+            --article-border: rgba(72, 130, 200, 0.3);
+            --badge-bg: #1E2A3A;
+            --lightbox-bg: rgba(0,0,0,0.9);
+        }
+
+        /* ========== LIGHT MODE OVERRIDES ========== */
+        body.light-mode {
+            --bg-gradient-start: #eef2ff;
+            --bg-gradient-end: #d9e2f0;
+            --text-primary: #0f172a;
+            --text-secondary: #1e293b;
+            --text-muted: #475569;
+            --nav-bg: rgba(245, 248, 255, 0.85);
+            --nav-border: rgba(59, 130, 246, 0.3);
+            --link-color: #1e3a8a;
+            --link-hover: #2563eb;
+            --footer-border: rgba(100, 116, 139, 0.3);
+            --footer-text: #475569;
+            --toggle-bg: #e2e8f0;
+            --toggle-knob: #1e293b;
+            --hr-color: rgba(100, 116, 139, 0.25);
+            --sidebar-bg: rgba(235, 242, 255, 0.85);
+            --sidebar-border: rgba(59, 130, 246, 0.4);
+            --tab-active-bg: rgba(59, 130, 246, 0.2);
+            --tab-hover: rgba(59, 130, 246, 0.1);
+            --article-card-bg: rgba(245, 248, 255, 0.9);
+            --article-border: rgba(59, 130, 246, 0.3);
+            --badge-bg: #e2e8f0;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem 3rem;
+            transition: background 0.25s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* header row: navigation + theme toggle */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid var(--nav-border);
+        }
+
+        .nav-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--link-hover);
+            text-shadow: 0 0 4px rgba(93, 176, 255, 0.3);
+        }
+
+        .toggle-track {
+            position: relative;
+            width: 64px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        .toggle-track .knob {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            left: 2px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            background: var(--toggle-knob);
+        }
+        body.light-mode .toggle-track .knob {
+            transform: translateX(34px);
+            background: #facc15;
+        }
+        .toggle-track .sun-moon {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-size: 0.9rem;
+            color: #fff9e0;
+        }
+        body.light-mode .toggle-track .sun-moon {
+            color: #334155;
+        }
+
+        /* LAYOUT: sidebar + main content */
+        .portfolio-layout {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        /* side menu */
+        .side-menu {
+            flex: 0 0 260px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            border: 1px solid var(--sidebar-border);
+            padding: 1.5rem 0.8rem;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+            transition: all 0.2s;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: transparent;
+            border: none;
+            border-radius: 40px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item span:first-child {
+            font-size: 1.3rem;
+        }
+
+        .menu-item:hover {
+            background: var(--tab-hover);
+            color: var(--link-hover);
+            transform: translateX(4px);
+        }
+
+        .menu-item.active {
+            background: var(--tab-active-bg);
+            color: var(--link-hover);
+            border-left: 3px solid var(--link-hover);
+            font-weight: 600;
+        }
+
+        /* main content area */
+        .main-content {
+            flex: 1;
+            min-width: 260px;
+        }
+
+        /* tab panels */
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .tab-panel.active-panel {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #FFFFFF 0%, #A0C8FF 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        body.light-mode .section-title {
+            background: linear-gradient(135deg, #0f2b5c, #2563eb);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .intro-text {
+            font-size: 1.05rem;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            border-left: 3px solid var(--link-hover);
+            padding-left: 1.2rem;
+        }
+
+        /* IMAGE GRID STYLES (for news articles + evidence boxes) */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .image-card {
+            background: var(--article-card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            border: 1px solid var(--article-border);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+            border-color: var(--link-hover);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            background: #1a1f2e;
+        }
+
+        .image-caption {
+            padding: 0.8rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--article-border);
+            background: rgba(0,0,0,0.2);
+        }
+
+        body.light-mode .image-caption {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .evidence-section {
+            margin-top: 2.5rem;
+            padding-top: 1rem;
+        }
+
+        .evidence-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--link-hover);
+        }
+
+        /* experience block */
+        .exp-block {
+            background: var(--article-card-bg);
+            border-radius: 28px;
+            padding: 1.8rem;
+            margin-bottom: 1.8rem;
+            border: 1px solid var(--article-border);
+        }
+
+        .exp-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .exp-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .milestone-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        .milestone-list li {
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        /* lightbox modal for image preview */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.92);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        .close-lightbox {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .close-lightbox:hover {
+            color: var(--link-hover);
+        }
+
+        hr {
+            margin: 1.5rem 0;
+            border-color: var(--hr-color);
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 2rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--nav-bg);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--link-color);
+            border: 1px solid var(--nav-border);
+            transition: 0.2s;
+            margin-top: 1.5rem;
+        }
+        .back-link:hover {
+            background: var(--link-hover);
+            color: white;
+        }
+
+        @media (max-width: 780px) {
+            .portfolio-layout {
+                flex-direction: column;
+            }
+            .side-menu {
+                flex: auto;
+                position: relative;
+                top: 0;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+                padding: 1rem;
+            }
+            .menu-item {
+                width: auto;
+                padding: 0.6rem 1rem;
+                margin-bottom: 0;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- header: navigation row + theme toggle -->
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="./index.html" id="homeLink">🏠 Home</a>
+            <a href="https://discord.gg/vqpPaE5sku" id="discordLinkSub">💬 Discord</a>
+        </div>
+        <div class="theme-toggle-wrapper">
+            <button class="toggle-track" id="themeToggleBtn" aria-label="Light/Dark mode">
+                <div class="knob"></div>
+                <div class="sun-moon">
+                    <span>☀️</span>
+                    <span>🌙</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- RP PORTFOLIO LAYOUT: sidebar + tab content -->
+    <div class="portfolio-layout">
+        <!-- LEFT SIDEMENU -->
+        <div class="side-menu">
+            <button class="menu-item active" data-tab="about">
+                <span>👤</span> <span>About Me</span>
+            </button>
+            <button class="menu-item" data-tab="news">
+                <span>📰</span> <span>News Reporting RP</span>
+            </button>
+            <button class="menu-item" data-tab="towing">
+                <span>🚛</span> <span>Towing/Traffic RP</span>
+            </button>
+            <button class="menu-item" data-tab="sheriff">
+                <span>⭐</span> <span>Sheriff RP (LEO)</span>
+            </button>
+        </div>
+
+        <!-- RIGHT MAIN CONTENT -->
+        <div class="main-content">
+            <!-- ABOUT ME panel -->
+            <div id="about-panel" class="tab-panel active-panel">
+                <h1 class="section-title">About BazMartin</h1>
+                <div class="intro-text">
+                    Experienced roleplayer within various MTA and SAMP Communities over the course of 9 years. Focused on Legal Roleplay, I have covered several factions based on delivering results, and managing a team. 
+                </div>
+                <div class="exp-block">
+                    <div class="exp-title">📜 RP Philosophy</div>
+                    <p class="exp-desc">I focus on Legal Roleplay that interacts with the player. Through the likes of News Reporting, I worked to understand illegal operations, and government level corruption. Through Towing, I worked to understand the management of a team, official documentation, legislation, etc.</p>
+                    <div class="exp-title">🏆 Highlights</div>
+					<ul class="milestone-list">
+						<li>🎫 <a href="https://i.ibb.co/yFKMR85x/LSTS-Proof.png">Former Head of Los Santos Traffic Services (ArdicGaming - MTA)</a></li>
+						<li>🎫 <a href="https://i.ibb.co/Nns3j3mV/LSCS-Proof.png">Former Head of Los Santos City Services (SOLS - SAMP)</a></li>
+						<li>📰 <a href="https://i.ibb.co/35634rf5/Shaw-News-Proof.png">Head of Shaw News (ArdicGaming - MTA)</a></li>
+						<li>📰 <a href="https://i.ibb.co/ZzfW2Cxk/PLV-Proof.png">Head of Martin Media (Project: LV - SAMP)</a></li>
+						<li>⚠️ <a href="https://i.ibb.co/p6Q3CSR5/AGRP-Proof.png">Game Administrator (ArdicGaming - MTA)</a></li>
+						<li>⚠️ <a href="https://i.ibb.co/p6Q3CSR5/AGRP-Proof.png">Events Coordinator (ArdicGaming - MTA)</a></li>
+						<li>⚠️ <a href="https://i.ibb.co/C5bbs4dh/SOLS-Proof.png">Legal Faction Management (SOLS- SAMP)</a></li>
+						<li>🤠 <a href="https://i.ibb.co/39BR9Ssf/LSSD-Proof.png">Former Captain & Traffic Service Detail Lead - Los Santos Sheriff Department (SOLS - SAMP)</a></li>
+					</ul>
+                </div>
+                <a href="./index.html" class="back-link">← Back to Tool Hub</a>
+            </div>
+
+            <!-- NEWS REPORTING RP panel with IMAGE GRID (PNG articles) -->
+            <div id="news-panel" class="tab-panel">
+                <h1 class="section-title">📰 News Reporting Agency</h1>
+                <div class="intro-text">
+                    As a senior correspondent and editor, I have developed and led several news reporting agencies across SAMP and MTA. From human-interest stories, to investigative journalism, I have delivered written articles, in long form for members of several communities to read. Below, you can find some of the work I have completed.
+                </div>
+                <!-- Image grid for news article PNGs -->
+                <div class="image-grid" id="newsGrid"></div>
+                <a href="./index.html" class="back-link">← Back to Tool Hub</a>
+            </div>
+
+            <!-- TOWING / TRAFFIC RP panel + evidence image grid -->
+            <div id="towing-panel" class="tab-panel">
+                <h1 class="section-title">🚚 Towing & Traffic Services RP</h1>
+                <div class="intro-text">
+                    Through several towing & traffic factions, I have gained experience focusing on the lawful ticketing/impounding of vehicles, roadside assistance, liaison with law enforcement agencies and more. Through this experience, I had led teams of people into, and from incidents without a recorded injury to date.
+                </div>
+                <div class="exp-block">
+                    <div class="exp-title">🛠️ Key Contributions</div>
+                    <p class="exp-desc">Founder of "Los Santos City Services - SOLS" and "Los Santos Traffic Services - AGRP" - Responsible for Parking Enforcement in Los Santos, and the removal of vehicles at request of both private property owners, and law enforcement agencies.</p>
+                    <div class="exp-title">📋 Notable Operations</div>
+                    <ul class="milestone-list">
+                        <li>✅ Developed realistic towing/traffic reporting systems to Discord</li>
+                        <li>✅ Coordinated with LEO for incident management & evidence preservation</li>
+                        <li>✅ Trained new operators to sufficient enforce strict parking regulations</li>
+                        <li>✅ Ensured strong public relations for a negatively seen faction</li>
+                    </ul>
+                </div>
+                <!-- EVIDENCE SECTION (image grid for screenshot proof) -->
+                <div class="evidence-section">
+                    <div class="evidence-title">📸 Evidence & Screenshot Proof</div>
+                    <div class="image-grid" id="towingEvidenceGrid"></div>
+                </div>
+                <a href="./index.html" class="back-link">← Back to Tool Hub</a>
+            </div>
+
+            <!-- SHERIFF DEPARTMENT panel + evidence image grid -->
+            <div id="sheriff-panel" class="tab-panel">
+                <h1 class="section-title">⭐ Sheriff's Department (LEO RP)</h1>
+                <div class="intro-text">
+                    Through my experience in Sheriff's Department RP, I have led and managed a team of dedicated traffic deputies as a Captain. This has resulted in hundreds of traffic shops, tickets, DUI convictions and more.
+                </div>
+                <div class="exp-block">
+                    <div class="exp-title">👮 Notable Points</div>
+                    <ul class="milestone-list">
+                        <li>🔹 Traffic Service Detail Captain - Managing TSD Operations & Patrols</li>
+                        <li>🔹 Operation Ride Sober - An Operation Dedicated To DUIs</li>
+                        <li>🔹 Field Training Patrols - Training New Recruits</li>
+                        <li>🔹 Internal Vehicle Transport/Towing Operations</li>
+                    </ul>
+                </div>
+                <div class="exp-block">
+                    <div class="exp-title">📸 Notable Operations</div>
+                    <p class="exp-desc">Led Operation Ride Sober, which was a week of checkpoints and focused patrols regarding DUIs.</p>
+                </div>
+                <!-- EVIDENCE SECTION for Sheriff RP -->
+                <div class="evidence-section">
+                    <div class="evidence-title">📸 LEO Roleplay Evidence</div>
+                    <div class="image-grid" id="sheriffEvidenceGrid"></div>
+                </div>
+                <a href="./index.html" class="back-link">← Back to Tool Hub</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        BazMartin · RP Portfolio · SAMP / MTA Experience
+    </div>
+</div>
+
+<!-- Lightbox Modal for full-size image preview -->
+<div id="lightbox" class="lightbox">
+    <span class="close-lightbox">&times;</span>
+    <img id="lightbox-img" src="" alt="Full size proof">
+</div>
+
+<script>
+    // ---------- Theme logic ----------
+    function initTheme() {
+        const stored = localStorage.getItem("bazmartin_theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let isDark = true;
+        if (stored === "light") isDark = false;
+        else if (stored === "dark") isDark = true;
+        else if (!prefersDark) isDark = false;
+        
+        if (!isDark) {
+            document.body.classList.add("light-mode");
+        } else {
+            document.body.classList.remove("light-mode");
+        }
+        updateToggleKnob(!isDark);
+    }
+
+    function updateToggleKnob(isLight) {
+        const track = document.querySelector(".toggle-track");
+        if (!track) return;
+        const knob = track.querySelector(".knob");
+        if (isLight) {
+            knob.style.transform = "translateX(34px)";
+        } else {
+            knob.style.transform = "translateX(2px)";
+        }
+    }
+
+    function setTheme(lightMode) {
+        if (lightMode) {
+            document.body.classList.add("light-mode");
+            localStorage.setItem("bazmartin_theme", "light");
+            updateToggleKnob(true);
+        } else {
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("bazmartin_theme", "dark");
+            updateToggleKnob(false);
+        }
+    }
+
+    function toggleTheme() {
+        const isLight = document.body.classList.contains("light-mode");
+        setTheme(!isLight);
+    }
+
+    // --- Tab switching ---
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-panel').forEach(panel => {
+            panel.classList.remove('active-panel');
+        });
+        const activePanel = document.getElementById(`${tabId}-panel`);
+        if (activePanel) activePanel.classList.add('active-panel');
+        
+        document.querySelectorAll('.menu-item').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-tab') === tabId) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    // --- Helper: Build image grid with lightbox support ---
+    function buildImageGrid(containerId, imagesArray) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = '';
+        imagesArray.forEach(img => {
+            const card = document.createElement('div');
+            card.className = 'image-card';
+            card.innerHTML = `
+                <img src="${img.src}" alt="${img.alt}" loading="lazy">
+                <div class="image-caption">${img.caption}</div>
+            `;
+            // Add click to open lightbox
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openLightbox(img.src, img.alt);
+            });
+            container.appendChild(card);
+        });
+    }
+
+    // Lightbox functions
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    function openLightbox(src, alt) {
+        lightboxImg.src = src;
+        lightboxImg.alt = alt;
+        lightbox.classList.add('active');
+    }
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightboxImg.src = '';
+    }
+
+    // --- DEFINE IMAGE ASSETS (Placeholder PNGs - replace with actual paths) ---
+    // For News Articles (PNG exports of A4 documents)
+    const newsArticles = [
+        { src: "https://i.ibb.co/rRJXSPDF/police-targeted-in-arson-attack.png", alt: "BazMartin News - AGRP", caption: "📰 Police Agent Targeted In Arson Attack - AGRP" },
+        { src: "https://i.ibb.co/nq9VXpFw/An-insight-into-the-fire-department.png", alt: "BazMartin News - AGRP", caption: "📰 Insight Into The Los Santos Fire Department - AGRP" },
+        { src: "https://i.ibb.co/bgSkGBCx/Letter-to-PD.png", alt: "BazMartin News - AGRP", caption: "📰 Public Letter To The Police Department - AGRP" },
+        { src: "https://i.ibb.co/wFWtc8PM/Los-Santos-Crimewave.png", alt: "BazMartin News - AGRP", caption: "📰 Los Santos Crimewave - AGRP" },
+        { src: "https://i.ibb.co/PvSmyKfz/Shooting-results-in-discharge-of-US-Marshal.png", alt: "BazMartin News - AGRP", caption: "📰 US Marshal Discharge - AGRP" },
+		{ src: "https://i.ibb.co/PGWYSHHk/Prestige-LLC-Closed-For-Business.webp", alt: "BazMartin News - AGRP", caption: "📰 Prestige LLC Closed For Business - AGRP" },
+		{ src: "https://i.ibb.co/Zp8vYZLq/East-LS-Kidnapping.webp", alt: "BazMartin News - AGRP", caption: "📰 East Los Santos Kidnapping - AGRP" },
+		{ src: "https://i.ibb.co/Z1tC0xjZ/LSPD-Racism.png", alt: "BazMartin News - AGRP", caption: "📰 LSPD Racism On Our Streets - AGRP" },
+		{ src: "https://i.ibb.co/r26PnLTV/Gunshots-At-Local-Boxing-Gym.webp", alt: "BazMartin News - AGRP", caption: "📰 Gunshots At Local Boxing Gym - AGRP" },
+		{ src: "https://i.ibb.co/7dhpqwTm/Firefighter-Arrested.webp", alt: "BazMartin News - AGRP", caption: "📰 Firefighter Arrested - AGRP" },
+		{ src: "https://i.ibb.co/0kc1vS6/Officer-Offering-Money-For-Sex.webp", alt: "BazMartin News - AGRP", caption: "📰 Bishop Offering Money For Sex - AGRP" },
+		{ src: "https://i.ibb.co/zjpW7qy/Concerns-Around-Guncrime.webp", alt: "BazMartin News - AGRP", caption: "📰 Concerns Around Guncrime & Traffic Laws - AGRP" },
+		{ src: "https://i.ibb.co/S9Ltq39/Mental-Health-Struggles.webp", alt: "BazMartin News - AGRP", caption: "📰 Mental Health Struggles On The Rise - AGRP" },
+        { src: "https://i.ibb.co/4nZKNpsX/Los-Santos-Crimewave-FAILED.png", alt: "BazMartin News - AGRP", caption: "📰 Los Santos Crimewave FAILED - AGRP" }
+    ];
+
+    // Towing/Traffic evidence screenshots
+    const towingEvidence = [
+        { src: "https://i.ibb.co/nX0Y0JF/LSTS-Proof-3.png", alt: "BazMartin Towing RP", caption: "🚨 LSTS Leadership Proof" },
+		{ src: "https://i.ibb.co/sv2Zx6T7/LSCS-Proof-9.png", alt: "BazMartin Towing RP", caption: "🚨 LSCS Leadership Proof" },
+		{ src: "https://i.ibb.co/QjPqfH13/LSCS-Proof-1.png", alt: "BazMartin Towing RP", caption: "🚨 LSCS Discord Proof" },
+		{ src: "https://i.ibb.co/HDDNW4PV/LSCS-Proof-2.png", alt: "BazMartin Towing RP", caption: "🚨 LSCS Ticket Report" },
+		{ src: "https://i.ibb.co/rRQHZN57/LSCS-Proof-3.png", alt: "BazMartin Towing RP", caption: "🚨 LSCS Ticket Report" },
+		{ src: "https://i.ibb.co/bj9PQxc5/LSCS-Proof-4.png", alt: "BazMartin Towing RP", caption: "🚨 LSCS Impound Report" },
+		{ src: "https://i.ibb.co/R4t3CYh9/LSCS-Proof-5.png", alt: "BazMartin Towing RP", caption: "🚨 LSCS Impound Report" },
+		{ src: "https://i.ibb.co/M5y7PHNT/LSCS-Proof-6.png", alt: "BazMartin Towing RP", caption: "🚨 LSCS Reporting System" },
+		{ src: "https://i.ibb.co/ZDC9vd9/LSCS-Proof-7.png", alt: "BazMartin Towing RP", caption: "🚨 LSCS Department Report" },
+		{ src: "https://i.ibb.co/wrz5Cvr8/LSCS-Proof-8.png", alt: "BazMartin Towing RP", caption: "🚨 LSCS Incident Report" },
+		{ src: "https://i.ibb.co/tM6psYCG/LSTS-Proof-1.png", alt: "BazMartin Towing RP", caption: "🚨 LSTS Recruitment Criteria" },
+		{ src: "https://i.ibb.co/s96t0xtt/LSTS-Proof-2.png", alt: "BazMartin Towing RP", caption: "🚨 LSTS Discord Proof" },
+		{ src: "https://i.ibb.co/ZRYn2mBg/LSTS-Proof-4.png", alt: "BazMartin Towing RP", caption: "🚨 LSTS Impound Report" },
+		{ src: "https://i.ibb.co/xtGZmTyv/LSTS-Proof-5.png", alt: "BazMartin Towing RP", caption: "🚨 LSTS Impound Report" },
+		{ src: "https://i.ibb.co/MxR9pYLr/LSTS-Proof-6.png", alt: "BazMartin Towing RP", caption: "🚨 LSTS Parking Fines" }
+    ];
+
+    // Sheriff Department evidence screenshots
+    const sheriffEvidence = [
+        { src: "https://i.ibb.co/LdH12xw2/LSSD-Proof-1.png", alt: "BazMartin - LEO Experience", caption: "👮 LSSD - Discord Permissions" },
+		{ src: "https://i.ibb.co/Mxj7GZ3M/LSSD-Proof-2.png", alt: "BazMartin - LEO Experience", caption: "👮 Operation Ride Sober - SOLS" },
+		{ src: "https://i.ibb.co/mrJX7GNB/LSSD-Proof-3.png", alt: "BazMartin - LEO Experience", caption: "👮 DUI Checkpoint - SOLS" }
+    ];
+
+    // --- Dynamically populate all grids on page load, also handle missing images gracefully (fallback)---
+    function initImageGrids() {
+        buildImageGrid('newsGrid', newsArticles);
+        buildImageGrid('towingEvidenceGrid', towingEvidence);
+        buildImageGrid('sheriffEvidenceGrid', sheriffEvidence);
+    }
+
+    // --- Event listeners & DOM ready ---
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        const toggleBtn = document.getElementById("themeToggleBtn");
+        if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+        
+        // Initialize all evidence/news grids
+        initImageGrids();
+        
+        // Side menu tab switching
+        const menuBtns = document.querySelectorAll('.menu-item');
+        menuBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabValue = btn.getAttribute('data-tab');
+                if (tabValue) switchTab(tabValue);
+            });
+        });
+        
+        // Lightbox close events
+        const closeBtn = document.querySelector('.close-lightbox');
+        if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+        
+        // Discord & Home links
+        const discordLink = document.getElementById("discordLinkSub");
+        if (discordLink) {
+            discordLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.open("https://discord.gg/vqpPaE5sku", "_blank");
+            });
+        }
+        const homeLink = document.getElementById("homeLink");
+        if (homeLink) {
+            homeLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.location.href = "./index.html";
+            });
+        }
+        
+        // ensure default tab 'about' active on load
+        switchTab('about');
+    });
+    
+    window.addEventListener("load", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        updateToggleKnob(isLight);
+    });
+</script>
+</body>
+</html>
